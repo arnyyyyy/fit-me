@@ -1,0 +1,2 @@
+/Users/arno/AndroidStudioProjects/fit_me/android/app/.cxx/RelWithDebInfo/3a2e6uu7/x86/CMakeFiles/edit_cache.dir
+/Users/arno/AndroidStudioProjects/fit_me/android/app/.cxx/RelWithDebInfo/3a2e6uu7/x86/CMakeFiles/rebuild_cache.dir
