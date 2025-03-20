@@ -1,4 +1,4 @@
-# fit_me
+# fit-me
 
 A new Flutter project.
 
