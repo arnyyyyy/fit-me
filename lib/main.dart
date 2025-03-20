@@ -120,7 +120,7 @@ class _PositionedDraggableImageState extends State<PositionedDraggableImage> {
         },
         onScaleUpdate: (details) {
           setState(() {
-            _scale = (_previousScale * details.scale).clamp(1.0, 3.0);
+            _scale = (_previousScale * details.scale).clamp(0.001, 3.0);
             _offset += details.focalPointDelta;
 
             _offset = Offset(
