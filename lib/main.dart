@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'dart:ui' as ui;
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,6 +32,7 @@ class CollageApp extends StatefulWidget {
 class _CollageAppState extends State<CollageApp> {
   final List<File> _images = [];
   final ImagePicker _picker = ImagePicker();
+  final GlobalKey _stackKey = GlobalKey();
 
   Future<void> _pickImage() async {
     if (_images.length >= 6) {
@@ -52,27 +58,60 @@ class _CollageAppState extends State<CollageApp> {
     });
   }
 
+  Future<void> _saveCollage() async {
+    try {
+      RenderRepaintBoundary boundary = _stackKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      ui.Image image = await boundary.toImage();
+      ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+      final directory = await getTemporaryDirectory();
+      final imagePath = '${directory.path}/collage.png';
+      File imageFile = File(imagePath);
+      await imageFile.writeAsBytes(pngBytes);
+
+      await Share.shareXFiles([XFile(imagePath)], text: 'My Collage');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Collage shared successfully')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to share collage: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Demo of collage creation'),
-      ),
-      body: Stack(
-        children: [
-          Container(color: Colors.grey[200]),
-          for (int i = 0; i < _images.length; i++)
-            PositionedDraggableImage(
-              key: ValueKey(_images[i]),
-              image: _images[i],
-              onDelete: () {
-                setState(() {
-                  _images.removeAt(i);
-                });
-              },
-              onTap: () => _bringToFront(i),
-            ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: _saveCollage,
+          ),
         ],
+      ),
+      body: RepaintBoundary(
+        key: _stackKey,
+        child: Stack(
+          children: [
+            Container(color: Colors.grey[200]),
+            for (int i = 0; i < _images.length; i++)
+              PositionedDraggableImage(
+                key: ValueKey(_images[i]),
+                image: _images[i],
+                onDelete: () {
+                  setState(() {
+                    _images.removeAt(i);
+                  });
+                },
+                onTap: () => _bringToFront(i),
+              ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _pickImage,
