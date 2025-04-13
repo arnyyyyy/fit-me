@@ -4,7 +4,11 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:hive/hive.dart';
+
+import '../saved_image.dart';
+import 'image_meta_screen.dart';
+
 
 class ImageEditorScreen extends StatefulWidget {
   final File imageFile;
@@ -20,7 +24,6 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
   late ui.Image _originalImage;
 
   final List<ErasePoint> _points = [];
-  final List<ErasePoint> _undonePoints = [];
 
   double _brushRadius = 25.0;
 
@@ -54,21 +57,6 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
     });
   }
 
-  void _undo() {
-    if (_points.isNotEmpty) {
-      setState(() {
-        _undonePoints.add(_points.removeLast());
-      });
-    }
-  }
-
-  void _redo() {
-    if (_undonePoints.isNotEmpty) {
-      setState(() {
-        _points.add(_undonePoints.removeLast());
-      });
-    }
-  }
 
   Future<Uint8List> _generateEditedImageBytes() async {
     final recorder = ui.PictureRecorder();
@@ -108,18 +96,8 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
     return byteData!.buffer.asUint8List();
   }
 
-  Future<void> _shareEditedImage() async {
-    final pngBytes = await _generateEditedImageBytes();
-    final tempDir = await getTemporaryDirectory();
-    final file = await File('${tempDir.path}/shared_image.png').create();
-    await file.writeAsBytes(pngBytes);
-
-    await Share.shareXFiles([XFile(file.path)]);
-  }
-
   Future<void> _saveEditedImage() async {
-    final pngBytes = await _generateEditedImageBytes();
-    print('Сохранено изображение, байт: ${pngBytes.length}');
+    await _generateEditedImageBytes();
   }
 
   @override
@@ -128,13 +106,22 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
       appBar: AppBar(
         title: const Text("Редактор"),
         actions: [
-          IconButton(icon: const Icon(Icons.undo), onPressed: _undo),
-          IconButton(icon: const Icon(Icons.redo), onPressed: _redo),
           IconButton(icon: const Icon(Icons.save), onPressed: _saveEditedImage),
           IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: _image == null ? null : _shareEditedImage,
+            icon: const Icon(Icons.save_alt),
+            onPressed: _image == null
+                ? null
+                : () async {
+              final imageBytes = await _generateEditedImageBytes();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ImageMetaScreen(imageBytes: imageBytes),
+                ),
+              );
+            },
           ),
+
           IconButton(
             icon: Icon(_isErasing ? Icons.remove : Icons.add),
             onPressed: () {
@@ -265,4 +252,21 @@ class ErasePoint {
   final double radius;
 
   ErasePoint(this.point, this.isErase, this.radius);
+}
+
+
+Future<void> saveImageWithMeta({
+  required Uint8List imageBytes,
+  required String name,
+  required List<String> tags,
+}) async {
+  final dir = await getApplicationDocumentsDirectory();
+  final imagePath = '${dir.path}/$name.png';
+
+  final file = File(imagePath);
+  await file.writeAsBytes(imageBytes);
+
+  final box = Hive.box<SavedImage>('imagesBox');
+  final image = SavedImage(name: name, imagePath: imagePath, tags: tags);
+  await box.add(image);
 }
