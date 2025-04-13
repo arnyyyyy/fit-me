@@ -22,7 +22,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
   final List<ErasePoint> _points = [];
   final List<ErasePoint> _undonePoints = [];
 
-  final double _brushRadius = 25.0;
+  double _brushRadius = 25.0;
 
   late double _scale;
   late Offset _imageOffset;
@@ -50,7 +50,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
     final imagePosition = (localPosition - _imageOffset) / _scale;
 
     setState(() {
-      _points.add(ErasePoint(imagePosition, _isErasing));
+      _points.add(ErasePoint(imagePosition, _isErasing, _brushRadius));
     });
   }
 
@@ -81,12 +81,12 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
         final paint = Paint()
           ..blendMode = BlendMode.clear
           ..style = PaintingStyle.fill;
-        canvas.drawCircle(p.point, _brushRadius, paint);
+        canvas.drawCircle(p.point, p.radius, paint);
       } else {
         final srcRect = Rect.fromCenter(
           center: p.point,
-          width: _brushRadius * 2,
-          height: _brushRadius * 2,
+          width: p.radius * 2,
+          height: p.radius * 2,
         );
 
         final dstRect = srcRect;
@@ -101,9 +101,9 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
     }
 
     final renderedImage =
-    await recorder.endRecording().toImage(_image!.width, _image!.height);
+        await recorder.endRecording().toImage(_image!.width, _image!.height);
     final byteData =
-    await renderedImage.toByteData(format: ui.ImageByteFormat.png);
+        await renderedImage.toByteData(format: ui.ImageByteFormat.png);
 
     return byteData!.buffer.asUint8List();
   }
@@ -148,60 +148,78 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
       body: _image == null
           ? const Center(child: CircularProgressIndicator())
           : LayoutBuilder(
-        builder: (context, constraints) {
-          final imgWidth = _image!.width.toDouble();
-          final imgHeight = _image!.height.toDouble();
+              builder: (context, constraints) {
+                final imgWidth = _image!.width.toDouble();
+                final imgHeight = _image!.height.toDouble();
 
-          final scaleX = constraints.maxWidth / imgWidth;
-          final scaleY = constraints.maxHeight / imgHeight;
+                final scaleX = constraints.maxWidth / imgWidth;
+                final scaleY = constraints.maxHeight / imgHeight;
 
-          _scale = scaleX < scaleY ? scaleX : scaleY;
+                _scale = scaleX < scaleY ? scaleX : scaleY;
 
-          final displayWidth = imgWidth * _scale;
-          final displayHeight = imgHeight * _scale;
+                final displayWidth = imgWidth * _scale;
+                final displayHeight = imgHeight * _scale;
 
-          _imageOffset = Offset(
-            (constraints.maxWidth - displayWidth) / 2,
-            (constraints.maxHeight - displayHeight) / 2,
-          );
+                _imageOffset = Offset(
+                  (constraints.maxWidth - displayWidth) / 2,
+                  (constraints.maxHeight - displayHeight) / 2,
+                );
 
-          return GestureDetector(
-            onPanUpdate: _handlePan,
-            child: Stack(
-              children: [
-                Positioned(
-                  left: _imageOffset.dx,
-                  top: _imageOffset.dy,
-                  width: displayWidth,
-                  height: displayHeight,
-                  child: CustomPaint(
-                    painter: EraserPainter(
-                      originalImage: _originalImage,
-                      points: _points,
-                      brushRadius: _brushRadius,
-                      scale: _scale,
-                    ),
-
+                return GestureDetector(
+                  onPanUpdate: _handlePan,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: _imageOffset.dx,
+                        top: _imageOffset.dy,
+                        width: displayWidth,
+                        height: displayHeight,
+                        child: CustomPaint(
+                          painter: EraserPainter(
+                            originalImage: _originalImage,
+                            points: _points,
+                            scale: _scale,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                );
+              },
             ),
-          );
-        },
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text("Размер кисти"),
+            Slider(
+              value: _brushRadius,
+              min: 5,
+              max: 100,
+              divisions: 19,
+              label: _brushRadius.round().toString(),
+              onChanged: (value) {
+                setState(() {
+                  _brushRadius = value;
+                });
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
 class EraserPainter extends CustomPainter {
   final ui.Image originalImage;
   final List<ErasePoint> points;
-  final double brushRadius;
   final double scale;
 
   EraserPainter({
     required this.originalImage,
     required this.points,
-    required this.brushRadius,
     required this.scale,
   });
 
@@ -216,12 +234,12 @@ class EraserPainter extends CustomPainter {
         final paint = Paint()
           ..blendMode = BlendMode.clear
           ..style = PaintingStyle.fill;
-        canvas.drawCircle(p.point, brushRadius, paint);
+        canvas.drawCircle(p.point, p.radius, paint);
       } else {
         final srcRect = Rect.fromCenter(
           center: p.point,
-          width: brushRadius * 2,
-          height: brushRadius * 2,
+          width: p.radius * 2,
+          height: p.radius * 2,
         );
 
         final dstRect = srcRect;
@@ -241,10 +259,10 @@ class EraserPainter extends CustomPainter {
       oldDelegate.points != points || oldDelegate.scale != scale;
 }
 
-
 class ErasePoint {
   final Offset point;
   final bool isErase;
+  final double radius;
 
-  ErasePoint(this.point, this.isErase);
+  ErasePoint(this.point, this.isErase, this.radius);
 }
