@@ -1,4 +1,5 @@
 import 'package:fit_me/saved_image.dart';
+import 'package:fit_me/services/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'screens/select_image_screen.dart';
@@ -22,8 +23,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: SelectImageScreen(),
+    return MaterialApp(
+      home: const SelectImageScreen(),
+      onGenerateRoute: RoutesBuilder.onGenerateRoute,
+      routes: RoutesBuilder.routes,
     );
   }
 }

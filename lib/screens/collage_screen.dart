@@ -11,14 +11,14 @@ import '../widgets/positioned_draggable_image.dart';
 import '../widgets/checkerboard_painter.dart';
 import '../services/image_service.dart';
 
-class CollageApp extends StatefulWidget {
-  const CollageApp({super.key});
+class CollageScreen extends StatefulWidget {
+  const CollageScreen({super.key});
 
   @override
-  _CollageAppState createState() => _CollageAppState();
+  _CollageScreenState createState() => _CollageScreenState();
 }
 
-class _CollageAppState extends State<CollageApp> {
+class _CollageScreenState extends State<CollageScreen> {
   final List<File> _images = [];
   final ImagePicker _picker = ImagePicker();
   final GlobalKey _stackKey = GlobalKey();
