@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../screens/all_clothes_screen.dart';
 import '../screens/collage_screen.dart';
+import '../screens/home_screen.dart';
 
 abstract class RouteNames {
   const RouteNames._();
@@ -13,6 +14,8 @@ abstract class RouteNames {
   static const add_clothes = '/add_clothes';
   static const all_collages = '/all_collages';
   static const add_collages = '/add_collages';
+  static const main = '/main';
+
 
 
 }
@@ -24,6 +27,7 @@ abstract class RoutesBuilder {
     },
     RouteNames.add_clothes: (_) => const SelectImageScreen(),
     RouteNames.all_clothes: (_) => const AllClothesScreen(),
+    RouteNames.main: (_) => const MainScreen(),
 
   };
 
@@ -47,6 +51,12 @@ abstract class RoutesBuilder {
           builder: (_) => const AllClothesScreen(),
           settings: settings,
         );
+      case RouteNames.main:
+        return MaterialPageRoute(
+          builder: (_) => const MainScreen(),
+          settings: settings,
+        );
+
     }
 
     return null;

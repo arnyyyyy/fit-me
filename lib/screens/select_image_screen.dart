@@ -9,13 +9,15 @@ class SelectImageScreen extends StatelessWidget {
 
   Future<void> _pickImage(BuildContext context) async {
     final picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ImageEditorScreen(imageFile: File(pickedFile.path)),
+          builder: (context) =>
+              ImageEditorScreen(imageFile: File(pickedFile.path)),
         ),
       );
     }
@@ -25,18 +27,12 @@ class SelectImageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Выберите изображение')),
-      body: Row(children: [Center(
+      body: Center(
         child: ElevatedButton(
           onPressed: () => _pickImage(context),
           child: const Text('Открыть галерею'),
         ),
-      ), ElevatedButton(
-        onPressed: () {
-          Navigator.pushNamed(context, RouteNames.all_clothes);
-        },
-        child: const Text('Показать сохранённые изображения'),
       ),
-      ])
     );
   }
 }
