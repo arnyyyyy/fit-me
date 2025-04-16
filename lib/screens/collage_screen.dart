@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -7,9 +8,17 @@ import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../saved_image.dart';
 import '../widgets/positioned_draggable_image.dart';
 import '../widgets/checkerboard_painter.dart';
-import '../services/image_service.dart';
+
+enum CollageBackground {
+  transparent,
+  white,
+  black,
+}
+
+
 
 class CollageScreen extends StatefulWidget {
   const CollageScreen({super.key});
@@ -19,6 +28,9 @@ class CollageScreen extends StatefulWidget {
 }
 
 class _CollageScreenState extends State<CollageScreen> {
+  CollageBackground _background = CollageBackground.transparent;
+
+
   final List<File> _images = [];
   final ImagePicker _picker = ImagePicker();
   final GlobalKey _stackKey = GlobalKey();
@@ -27,22 +39,33 @@ class _CollageScreenState extends State<CollageScreen> {
   @override
   void initState() {
     super.initState();
-    _loadSavedImages();
   }
 
-  Future<void> _loadSavedImages() async {
-    final appDir = await getApplicationDocumentsDirectory();
-    final processedDir = Directory('${appDir.path}/processed_images');
-    
-    if (await processedDir.exists()) {
-      final files = await processedDir.list().toList();
-      for (final file in files) {
-        if (file is File) {
-          await file.delete();
-        }
-      }
+  Future<List<File>> _loadSavedImages() async {
+    final box = await Hive.openBox<SavedImage>('imagesBox');
+    final List<SavedImage> savedImages = box.values.toList();
+
+    return savedImages.map((img) => File(img.imagePath)).toList();
+  }
+
+  Future<void> _openImageSelectionScreen() async {
+    final images = await _loadSavedImages();
+
+    final selected = await Navigator.push<List<File>>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => _ImagePickerFromHive(images: images),
+      ),
+    );
+
+    if (selected != null) {
+      setState(() {
+        _images.addAll(selected.where((img) => !_images.contains(img)));
+      });
     }
   }
+
+
 
   Future<void> _pickImage() async {
     if (_images.length >= 6) {
@@ -68,38 +91,6 @@ class _CollageScreenState extends State<CollageScreen> {
     });
   }
 
-  Future<void> _removeBackground(File imageFile) async {
-    setState(() {
-      _isProcessing = true;
-    });
-
-    try {
-      final imageService = ImageService();
-      final processedFilePath = await imageService.removeBackground(imageFile);
-      
-      setState(() {
-        final index = _images.indexOf(imageFile);
-        if (index != -1) {
-          print('Updating image at index $index from ${_images[index].path} to $processedFilePath');
-          _images[index] = File(processedFilePath);
-        } else {
-          print('Image not found in list: ${imageFile.path}');
-        }
-      });
-
-      await Share.shareXFiles([XFile(processedFilePath)], text: 'Изображение без фона');
-
-    } catch (e) {
-      print('Error in background removal: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    } finally {
-      setState(() {
-        _isProcessing = false;
-      });
-    }
-  }
 
   Future<void> _saveCollage() async {
     try {
@@ -135,6 +126,29 @@ class _CollageScreenState extends State<CollageScreen> {
             icon: const Icon(Icons.save),
             onPressed: _saveCollage,
           ),
+          PopupMenuButton<CollageBackground>(
+            icon: const Icon(Icons.layers),
+            onSelected: (value) {
+              setState(() {
+                _background = value;
+              });
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: CollageBackground.transparent,
+                child: Text("Прозрачный фон"),
+              ),
+              const PopupMenuItem(
+                value: CollageBackground.white,
+                child: Text("Белый фон"),
+              ),
+              const PopupMenuItem(
+                value: CollageBackground.black,
+                child: Text("Чёрный фон"),
+              ),
+            ],
+          ),
+
         ],
       ),
       body: Stack(
@@ -144,15 +158,19 @@ class _CollageScreenState extends State<CollageScreen> {
             child: Stack(
               children: [
                 Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    image: null,
+                  decoration: BoxDecoration(
+                    color: _background == CollageBackground.transparent
+                        ? null
+                        : (_background == CollageBackground.white ? Colors.white : Colors.black),
                   ),
-                  child: CustomPaint(
+                  child: _background == CollageBackground.transparent
+                      ? CustomPaint(
                     painter: CheckerboardPainter(),
                     size: Size.infinite,
-                  ),
+                  )
+                      : null,
                 ),
+
                 for (int i = 0; i < _images.length; i++)
                   PositionedDraggableImage(
                     key: ValueKey(_images[i].path),
@@ -163,7 +181,6 @@ class _CollageScreenState extends State<CollageScreen> {
                       });
                     },
                     onTap: () => _bringToFront(i),
-                    onRemoveBackground: () => _removeBackground(_images[i]),
                   ),
               ],
             ),
@@ -178,8 +195,8 @@ class _CollageScreenState extends State<CollageScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _pickImage,
-        child: const Icon(Icons.add_a_photo),
+        onPressed: _openImageSelectionScreen,
+        child: const Icon(Icons.add_photo_alternate),
       ),
     );
   }
@@ -187,5 +204,66 @@ class _CollageScreenState extends State<CollageScreen> {
   @override
   void dispose() {
     super.dispose();
+  }
+}
+
+class _ImagePickerFromHive extends StatefulWidget {
+  final List<File> images;
+
+  const _ImagePickerFromHive({required this.images});
+
+  @override
+  State<_ImagePickerFromHive> createState() => _ImagePickerFromHiveState();
+}
+
+class _ImagePickerFromHiveState extends State<_ImagePickerFromHive> {
+  final Set<File> _selected = {};
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Выбери изображения"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.done),
+            onPressed: () => Navigator.pop(context, _selected.toList()),
+          )
+        ],
+      ),
+      body: GridView.builder(
+        padding: const EdgeInsets.all(8),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+        ),
+        itemCount: widget.images.length,
+        itemBuilder: (context, index) {
+          final file = widget.images[index];
+          final isSelected = _selected.contains(file);
+
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                isSelected ? _selected.remove(file) : _selected.add(file);
+              });
+            },
+            child: Stack(
+              children: [
+                Image.file(file, fit: BoxFit.cover, width: double.infinity, height: double.infinity),
+                if (isSelected)
+                  Container(
+                    color: Colors.black45,
+                    child: const Center(
+                      child: Icon(Icons.check_circle, color: Colors.white, size: 40),
+                    ),
+                  ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }

@@ -5,13 +5,11 @@ class PositionedDraggableImage extends StatefulWidget {
   final File image;
   final VoidCallback onDelete;
   final VoidCallback onTap;
-  final VoidCallback onRemoveBackground;
 
   const PositionedDraggableImage({
     required this.image,
     required this.onDelete,
     required this.onTap,
-    required this.onRemoveBackground,
     super.key,
   });
 
@@ -88,15 +86,6 @@ class _PositionedDraggableImageState extends State<PositionedDraggableImage> {
                   ),
                 ),
                 key: ValueKey(_currentImagePath), 
-              ),
-            ),
-            Positioned(
-              right: 0,
-              top: 0,
-              child: IconButton(
-                icon: const Icon(Icons.auto_fix_high, color: Colors.white),
-                onPressed: widget.onRemoveBackground,
-                tooltip: 'Удалить фон',
               ),
             ),
           ],
