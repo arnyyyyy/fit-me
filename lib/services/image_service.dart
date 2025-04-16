@@ -57,7 +57,7 @@ class ImageService {
         final distance = sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
 
         if (distance < threshold) {
-          resultImage.setPixel(x, y, img.ColorRgba8(0, 0, 0, 255));
+          resultImage.setPixel(x, y, img.ColorRgba8(0, 0, 0, 0));
         } else {
           resultImage.setPixel(x, y, img.ColorRgba8(r.toInt(), g.toInt(), b.toInt(), 255));
         }

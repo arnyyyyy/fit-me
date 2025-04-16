@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 import '../saved_image.dart';
+import '../utils/app_colors.dart';
+import '../utils/app_text_styles.dart';
 import 'select_image_screen.dart';
 
 class AllClothesScreen extends StatefulWidget {
@@ -27,7 +29,6 @@ class _AllClothesScreenState extends State<AllClothesScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,24 +36,16 @@ class _AllClothesScreenState extends State<AllClothesScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
-          "my clothes",
-          style: TextStyle(
-            color: Color(0xFF4C1A1A),
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Courier',
-          ),
-        ),
+        title: const Text("my clothes", style: AppTextStyles.appBarTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
-            color: Color(0xFF5B1F1F),
+            color: AppColors.icon,
             onPressed: () {},
           ),
           IconButton(
             icon: const Icon(Icons.add),
-            color: Color(0xFF5B1F1F),
+            color: AppColors.icon,
             onPressed: () {
               Navigator.push(
                 context,
@@ -76,11 +69,7 @@ class _AllClothesScreenState extends State<AllClothesScreen> {
             return const Center(
               child: Text(
                 "the closet is still empty...",
-                style: TextStyle(
-                  color: Color(0xFF7C3A3A),
-                  fontSize: 16,
-                  fontFamily: 'Courier',
-                ),
+                style: AppTextStyles.emptyText,
               ),
             );
           }
@@ -111,13 +100,13 @@ class _AllClothesScreenState extends State<AllClothesScreen> {
                       offset: const Offset(3, 4),
                     ),
                   ],
-                  border: Border.all(color: const Color(0xFFDFCFC1), width: 1),
+                  border: Border.all(color: AppColors.cardBackground, width: 1),
                 ),
                 child: Column(
                   children: [
                     ClipRRect(
-                      borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(16)),
+                      borderRadius:
+                          const BorderRadius.vertical(top: Radius.circular(16)),
                       child: Image.file(
                         File(saved.imagePath),
                         width: double.infinity,
@@ -134,13 +123,7 @@ class _AllClothesScreenState extends State<AllClothesScreen> {
                           children: [
                             Text(
                               saved.name.toLowerCase(),
-                              style: const TextStyle(
-                                fontFamily: 'Courier',
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Color(
-                                    0xFF5B1F1F),
-                              ),
+                              style: AppTextStyles.imageTitle,
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 6),
@@ -153,16 +136,12 @@ class _AllClothesScreenState extends State<AllClothesScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFF4DDD3),
+                                      color: AppColors.cardBackground,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(
                                       "#$tag",
-                                      style: const TextStyle(
-                                        fontSize: 10,
-                                        fontFamily: 'Courier',
-                                        color: Color(0xFF5B1F1F),
-                                      ),
+                                      style: AppTextStyles.tagText,
                                     ),
                                   ),
                                 if (hiddenCount > 0)
@@ -170,16 +149,12 @@ class _AllClothesScreenState extends State<AllClothesScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 6, vertical: 4),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFD9B9B4),
+                                      color: AppColors.moreTagBackground,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(
                                       "+$hiddenCount",
-                                      style: const TextStyle(
-                                        fontSize: 10,
-                                        fontFamily: 'Courier',
-                                        color: Color(0xFF5B1F1F),
-                                      ),
+                                      style: AppTextStyles.tagText,
                                     ),
                                   ),
                               ],
