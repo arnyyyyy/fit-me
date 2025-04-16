@@ -1,7 +1,6 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../services/routes.dart';
 import 'image_editor_screen.dart';
 
 class SelectImageScreen extends StatelessWidget {
@@ -10,14 +9,15 @@ class SelectImageScreen extends StatelessWidget {
   Future<void> _pickImage(BuildContext context) async {
     final picker = ImagePicker();
     final XFile? pickedFile =
-        await picker.pickImage(source: ImageSource.gallery);
+    await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
+      final Uint8List bytes = await pickedFile.readAsBytes();
+
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              ImageEditorScreen(imageFile: File(pickedFile.path)),
+          builder: (context) => ImageEditorScreen(imageBytes: bytes),
         ),
       );
     }
@@ -36,3 +36,4 @@ class SelectImageScreen extends StatelessWidget {
     );
   }
 }
+

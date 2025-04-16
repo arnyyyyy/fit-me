@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:io';
 
+import 'package:fit_me/screens/tags.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,13 +20,31 @@ class _ImageMetaScreenState extends State<ImageMetaScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _tagsController = TextEditingController();
 
+  List<String> _allTags = [];
+  List<String> _selectedTags = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTags();
+  }
+
+  Future<void> _loadTags() async {
+    final box = await Hive.openBox<SavedImage>('imagesBox');
+    final allImages = box.values.toList();
+    final Set<String> tagsSet = {};
+    for (final image in allImages) {
+      tagsSet.addAll(image.tags);
+    }
+    setState(() {
+      _allTags = tagsSet.toList()..sort();
+    });
+  }
+
+
   Future<void> _saveImage() async {
     final name = _nameController.text.trim();
-    final tags = _tagsController.text
-        .split(',')
-        .map((tag) => tag.trim())
-        .where((tag) => tag.isNotEmpty)
-        .toList();
+    final tags = _selectedTags;
 
     if (name.isEmpty) return;
 
@@ -49,9 +68,10 @@ class _ImageMetaScreenState extends State<ImageMetaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Сохранить изображение")),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.memory(widget.imageBytes, height: 200),
             const SizedBox(height: 16),
@@ -59,10 +79,15 @@ class _ImageMetaScreenState extends State<ImageMetaScreen> {
               controller: _nameController,
               decoration: const InputDecoration(labelText: "Название"),
             ),
-            TextField(
-              controller: _tagsController,
-              decoration:
-              const InputDecoration(labelText: "Теги (через запятую)"),
+            const SizedBox(height: 16),
+            TagSelectorWidget(
+              initialTags: _selectedTags,
+              allAvailableTags: _allTags,
+              onTagsChanged: (tags) {
+                setState(() {
+                  _selectedTags = tags;
+                });
+              },
             ),
             const SizedBox(height: 16),
             ElevatedButton.icon(

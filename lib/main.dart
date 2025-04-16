@@ -1,9 +1,9 @@
 import 'package:fit_me/saved_image.dart';
 import 'package:fit_me/screens/home_screen.dart';
 import 'package:fit_me/services/routes.dart';
+import 'package:fit_me/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'screens/select_image_screen.dart';
 import 'package:hive/hive.dart';
 
 
@@ -12,8 +12,12 @@ Future<void> main() async {
   final appDocDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocDir.path);
   Hive.registerAdapter(SavedImageAdapter());
+  Hive.registerAdapter(TagAdapter());
+
 
   await Hive.openBox<SavedImage>('imagesBox');
+  await Hive.openBox<Tag>('tagsBox');
+
 
 
   runApp(const MyApp());

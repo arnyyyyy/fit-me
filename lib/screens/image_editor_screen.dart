@@ -1,19 +1,18 @@
-import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
-
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 import '../saved_image.dart';
+import '../services/image_service.dart';
 import 'image_meta_screen.dart';
 
-
 class ImageEditorScreen extends StatefulWidget {
-  final File imageFile;
+  final Uint8List imageBytes;
 
-  const ImageEditorScreen({super.key, required this.imageFile});
+  const ImageEditorScreen({super.key, required this.imageBytes});
 
   @override
   State<ImageEditorScreen> createState() => _ImageEditorScreenState();
@@ -22,11 +21,11 @@ class ImageEditorScreen extends StatefulWidget {
 class _ImageEditorScreenState extends State<ImageEditorScreen> {
   ui.Image? _image;
   late ui.Image _originalImage;
+  late ui.Image _originalImageBeforeRemoveBg;
 
   final List<ErasePoint> _points = [];
 
   double _brushRadius = 25.0;
-
   late double _scale;
   late Offset _imageOffset;
   bool _isErasing = true;
@@ -34,16 +33,16 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
   @override
   void initState() {
     super.initState();
-    _loadImage();
+    _loadImage(widget.imageBytes);
   }
 
-  Future<void> _loadImage() async {
-    final data = await widget.imageFile.readAsBytes();
-    final codec = await ui.instantiateImageCodec(data);
+  Future<void> _loadImage(Uint8List bytes) async {
+    final codec = await ui.instantiateImageCodec(bytes);
     final frame = await codec.getNextFrame();
     setState(() {
       _image = frame.image;
       _originalImage = frame.image;
+      _originalImageBeforeRemoveBg = frame.image;
     });
   }
 
@@ -57,11 +56,9 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
     });
   }
 
-
   Future<Uint8List> _generateEditedImageBytes() async {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
-
     canvas.drawImage(_originalImage, Offset.zero, Paint());
 
     for (final p in _points) {
@@ -76,28 +73,52 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
           width: p.radius * 2,
           height: p.radius * 2,
         );
-
-        final dstRect = srcRect;
-
         canvas.drawImageRect(
-          _originalImage,
+          _originalImageBeforeRemoveBg,
           srcRect,
-          dstRect,
+          srcRect,
           Paint(),
         );
       }
     }
 
-    final renderedImage =
-        await recorder.endRecording().toImage(_image!.width, _image!.height);
-    final byteData =
-        await renderedImage.toByteData(format: ui.ImageByteFormat.png);
-
+    final renderedImage = await recorder.endRecording().toImage(_image!.width, _image!.height);
+    final byteData = await renderedImage.toByteData(format: ui.ImageByteFormat.png);
     return byteData!.buffer.asUint8List();
   }
 
   Future<void> _saveEditedImage() async {
-    await _generateEditedImageBytes();
+    final editedBytes = await _generateEditedImageBytes();
+
+    if (!mounted) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ImageMetaScreen(imageBytes: editedBytes),
+      ),
+    );
+  }
+
+
+
+  Future<void> _removeBackgroundAndUpdate() async {
+    final pngBytes = await _generateEditedImageBytes();
+    final tempDir = await getTemporaryDirectory();
+    final tempFile = File('${tempDir.path}/temp_image.png');
+    await tempFile.writeAsBytes(pngBytes);
+
+    final service = ImageService();
+    final noBgPath = await service.removeBackground(tempFile);
+    final noBgBytes = await File(noBgPath).readAsBytes();
+    final codec = await ui.instantiateImageCodec(noBgBytes);
+    final frame = await codec.getNextFrame();
+
+    setState(() {
+      _originalImage = frame.image;
+      _image = frame.image;
+      _points.clear();
+    });
   }
 
   @override
@@ -108,20 +129,27 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
         actions: [
           IconButton(icon: const Icon(Icons.save), onPressed: _saveEditedImage),
           IconButton(
-            icon: const Icon(Icons.save_alt),
+            icon: const Icon(Icons.auto_fix_high),
+            tooltip: "Удалить фон",
             onPressed: _image == null
                 ? null
                 : () async {
-              final imageBytes = await _generateEditedImageBytes();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ImageMetaScreen(imageBytes: imageBytes),
-                ),
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (_) => const Center(child: CircularProgressIndicator()),
               );
+              try {
+                await _removeBackgroundAndUpdate();
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Ошибка удаления фона: $e')),
+                );
+              } finally {
+                Navigator.pop(context);
+              }
             },
           ),
-
           IconButton(
             icon: Icon(_isErasing ? Icons.remove : Icons.add),
             onPressed: () {
@@ -135,45 +163,44 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
       body: _image == null
           ? const Center(child: CircularProgressIndicator())
           : LayoutBuilder(
-              builder: (context, constraints) {
-                final imgWidth = _image!.width.toDouble();
-                final imgHeight = _image!.height.toDouble();
+        builder: (context, constraints) {
+          final imgWidth = _image!.width.toDouble();
+          final imgHeight = _image!.height.toDouble();
+          final scaleX = constraints.maxWidth / imgWidth;
+          final scaleY = constraints.maxHeight / imgHeight;
 
-                final scaleX = constraints.maxWidth / imgWidth;
-                final scaleY = constraints.maxHeight / imgHeight;
+          _scale = scaleX < scaleY ? scaleX : scaleY;
+          final displayWidth = imgWidth * _scale;
+          final displayHeight = imgHeight * _scale;
 
-                _scale = scaleX < scaleY ? scaleX : scaleY;
+          _imageOffset = Offset(
+            (constraints.maxWidth - displayWidth) / 2,
+            (constraints.maxHeight - displayHeight) / 2,
+          );
 
-                final displayWidth = imgWidth * _scale;
-                final displayHeight = imgHeight * _scale;
-
-                _imageOffset = Offset(
-                  (constraints.maxWidth - displayWidth) / 2,
-                  (constraints.maxHeight - displayHeight) / 2,
-                );
-
-                return GestureDetector(
-                  onPanUpdate: _handlePan,
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: _imageOffset.dx,
-                        top: _imageOffset.dy,
-                        width: displayWidth,
-                        height: displayHeight,
-                        child: CustomPaint(
-                          painter: EraserPainter(
-                            originalImage: _originalImage,
-                            points: _points,
-                            scale: _scale,
-                          ),
-                        ),
-                      ),
-                    ],
+          return GestureDetector(
+            onPanUpdate: _handlePan,
+            child: Stack(
+              children: [
+                Positioned(
+                  left: _imageOffset.dx,
+                  top: _imageOffset.dy,
+                  width: displayWidth,
+                  height: displayHeight,
+                  child: CustomPaint(
+                    painter: EraserPainter(
+                      originalImage: _originalImage,
+                      restoreImage: _originalImageBeforeRemoveBg,
+                      points: _points,
+                      scale: _scale,
+                    ),
                   ),
-                );
-              },
+                ),
+              ],
             ),
+          );
+        },
+      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -201,11 +228,13 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
 
 class EraserPainter extends CustomPainter {
   final ui.Image originalImage;
+  final ui.Image restoreImage;
   final List<ErasePoint> points;
   final double scale;
 
   EraserPainter({
     required this.originalImage,
+    required this.restoreImage,
     required this.points,
     required this.scale,
   });
@@ -213,6 +242,12 @@ class EraserPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     canvas.scale(scale);
+
+    final bgPaint = Paint()..color = Colors.black;
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, originalImage.width.toDouble(), originalImage.height.toDouble()),
+      bgPaint,
+    );
 
     canvas.drawImage(originalImage, Offset.zero, Paint());
 
@@ -228,19 +263,15 @@ class EraserPainter extends CustomPainter {
           width: p.radius * 2,
           height: p.radius * 2,
         );
-
-        final dstRect = srcRect;
-
         canvas.drawImageRect(
-          originalImage,
+          restoreImage,
           srcRect,
-          dstRect,
+          srcRect,
           Paint(),
         );
       }
     }
   }
-
   @override
   bool shouldRepaint(EraserPainter oldDelegate) =>
       oldDelegate.points != points || oldDelegate.scale != scale;
