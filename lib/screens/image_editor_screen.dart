@@ -7,6 +7,8 @@ import 'package:path_provider/path_provider.dart';
 
 import '../saved_image.dart';
 import '../services/image_service.dart';
+import '../utils/app_colors.dart';
+import '../utils/app_text_styles.dart';
 import 'image_meta_screen.dart';
 
 class ImageEditorScreen extends StatefulWidget {
@@ -125,7 +127,9 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Редактор"),
+        title: Text("Редактор", style: AppTextStyles.title),
+        backgroundColor: AppColors.background,
+        iconTheme: IconThemeData(color: AppColors.text),
         actions: [
           IconButton(icon: const Icon(Icons.save), onPressed: _saveEditedImage),
           IconButton(
@@ -202,16 +206,25 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
         },
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Размер кисти"),
+            Text(
+              "Размер кисти",
+              style: AppTextStyles.subtitle.copyWith(
+                fontWeight: FontWeight.w500,
+                color: AppColors.text,
+              ),
+            ),
             Slider(
               value: _brushRadius,
               min: 5,
               max: 100,
               divisions: 19,
+              activeColor: AppColors.primary,
+              inactiveColor: AppColors.primary.withOpacity(0.3),
               label: _brushRadius.round().toString(),
               onChanged: (value) {
                 setState(() {

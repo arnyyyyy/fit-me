@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import '../saved_image.dart';
+import '../utils/app_colors.dart';
+import '../utils/app_text_styles.dart';
 
 class ImageMetaScreen extends StatefulWidget {
   final Uint8List imageBytes;
@@ -37,7 +39,8 @@ class _ImageMetaScreenState extends State<ImageMetaScreen> {
       tagsSet.addAll(image.tags);
     }
     setState(() {
-      _allTags = tagsSet.toList()..sort();
+      _allTags = tagsSet.toList()
+        ..sort();
     });
   }
 
@@ -67,19 +70,46 @@ class _ImageMetaScreenState extends State<ImageMetaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Сохранить изображение")),
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        title: Text(
+          "Сохранить изображение",
+          style: AppTextStyles.title,
+        ),
+        iconTheme: IconThemeData(color: AppColors.text),
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.memory(widget.imageBytes, height: 200),
-            const SizedBox(height: 16),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.memory(
+                widget.imageBytes,
+                height: 220,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(height: 24),
             TextField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: "Название"),
+              style: AppTextStyles.body,
+              decoration: InputDecoration(
+                labelText: "Название",
+                labelStyle: AppTextStyles.body.copyWith(
+                    color: AppColors.text.withOpacity(0.6)),
+                filled: true,
+                fillColor: AppColors.inputBackground,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12)),
+              ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
+            Text("Теги", style: AppTextStyles.subtitle),
+            const SizedBox(height: 8),
             TagSelectorWidget(
               initialTags: _selectedTags,
               allAvailableTags: _allTags,
@@ -89,11 +119,20 @@ class _ImageMetaScreenState extends State<ImageMetaScreen> {
                 });
               },
             ),
-            const SizedBox(height: 16),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.save),
-              label: const Text("Сохранить"),
-              onPressed: _saveImage,
+            const SizedBox(height: 30),
+            Center(
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24, vertical: 14),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                ),
+                icon: const Icon(Icons.save, color: Colors.white,),
+                label: Text("Сохранить", style: AppTextStyles.buttonWhite),
+                onPressed: _saveImage,
+              ),
             ),
           ],
         ),

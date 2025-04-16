@@ -27,4 +27,72 @@ class AppTextStyles {
     fontFamily: 'Courier',
     color: AppColors.tagText,
   );
+
+  static const TextStyle navLabelSelected = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    color: AppColors.primary,
+    letterSpacing: 0.5,
+    fontFamily: 'Courier',
+  );
+
+  static const TextStyle navLabel = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: AppColors.tagText,
+    letterSpacing: 0.5,
+    fontFamily: 'Courier',
+  );
+
+  static const TextStyle title = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    color: AppColors.text,
+    fontFamily: 'Courier',
+
+  );
+
+// Подписи под фото, описание
+  static const TextStyle subtitle = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textMuted,
+    fontFamily: 'Courier',
+
+  );
+
+  static const TextStyle button = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: AppColors.primary,
+    fontFamily: 'Courier',
+    letterSpacing: 0.3,
+  );
+
+  static const TextStyle buttonWhite = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
+    letterSpacing: 0.3,
+    fontFamily: 'Courier',
+
+  );
+
+
+
+  static const TextStyle body = TextStyle(
+    fontSize: 15,
+    color: AppColors.text,
+    fontFamily: 'Courier',
+
+  );
+
+  static const TextStyle muted = TextStyle(
+    fontSize: 14,
+    color: AppColors.mutedText,
+    fontFamily: 'Courier',
+  );
+
+
+
 }

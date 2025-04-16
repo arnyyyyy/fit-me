@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../utils/app_colors.dart';
+import '../utils/app_text_styles.dart';
 
 class TagSelectorWidget extends StatefulWidget {
   final List<String> initialTags;
@@ -58,8 +60,7 @@ class _TagSelectorWidgetState extends State<TagSelectorWidget> {
           optionsBuilder: (TextEditingValue textEditingValue) {
             return widget.allAvailableTags.where((tag) =>
             tag.toLowerCase().contains(textEditingValue.text.toLowerCase()) &&
-                !_selectedTags.contains(tag)
-            );
+                !_selectedTags.contains(tag));
           },
           onSelected: _addTag,
           fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
@@ -67,9 +68,17 @@ class _TagSelectorWidgetState extends State<TagSelectorWidget> {
             return TextField(
               controller: controller,
               focusNode: focusNode,
-              decoration: const InputDecoration(
+              style: AppTextStyles.body,
+              decoration: InputDecoration(
                 labelText: "Добавить тег",
-                suffixIcon: Icon(Icons.add),
+                labelStyle: AppTextStyles.body,
+                filled: true,
+                fillColor: AppColors.inputBackground,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+                suffixIcon: Icon(Icons.add, color: AppColors.accent),
               ),
               onSubmitted: (value) {
                 _addTag(value);
@@ -78,30 +87,41 @@ class _TagSelectorWidgetState extends State<TagSelectorWidget> {
             );
           },
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 12),
         Wrap(
           spacing: 8,
           runSpacing: 4,
           children: _selectedTags.map((tag) {
             return Chip(
-              label: Text(tag),
+              label: Text(tag, style: AppTextStyles.body.copyWith(color: Colors.white)),
+              backgroundColor: AppColors.accent,
+              deleteIconColor: Colors.white,
               onDeleted: () => _removeTag(tag),
-              deleteIcon: const Icon(Icons.close),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             );
           }).toList(),
         ),
-        const SizedBox(height: 16),
-        Text("Существующие теги:", style: Theme.of(context).textTheme.titleSmall),
+        const SizedBox(height: 24),
+        Text(
+          "Существующие теги:",
+          style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w500),
+        ),
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
           runSpacing: 8,
           children: availableNotSelected.map((tag) {
             return ActionChip(
-              label: Text(tag),
+              label: Text(tag, style: AppTextStyles.body),
+              backgroundColor: AppColors.surface,
               onPressed: () => _addTag(tag),
-              backgroundColor: Colors.grey[200],
-              shape: StadiumBorder(),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 2,
+              shadowColor: AppColors.accent.withOpacity(0.2),
             );
           }).toList(),
         ),

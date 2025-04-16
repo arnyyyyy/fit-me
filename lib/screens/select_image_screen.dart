@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../utils/app_colors.dart';
+import '../utils/app_text_styles.dart';
 import 'image_editor_screen.dart';
 
 class SelectImageScreen extends StatelessWidget {
@@ -26,14 +28,26 @@ class SelectImageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Выберите изображение')),
+      backgroundColor: AppColors.background,
       body: Center(
-        child: ElevatedButton(
+        child: ElevatedButton.icon(
           onPressed: () => _pickImage(context),
-          child: const Text('Открыть галерею'),
+          icon: const Icon(Icons.photo_library, color: Colors.white),
+          label: const Text(
+            'Открыть галерею',
+            style: AppTextStyles.buttonWhite,
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            elevation: 6,
+            shadowColor: AppColors.accent.withOpacity(0.4),
+          ),
         ),
       ),
     );
   }
 }
-
