@@ -6,11 +6,11 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../saved_image.dart';
 import '../widgets/positioned_draggable_image.dart';
 import '../widgets/checkerboard_painter.dart';
+import 'collage_meta_screen.dart';
 
 enum CollageBackground {
   transparent,
@@ -104,7 +104,14 @@ class _CollageScreenState extends State<CollageScreen> {
       File imageFile = File(imagePath);
       await imageFile.writeAsBytes(pngBytes);
 
-      await Share.shareXFiles([XFile(imagePath)], text: 'My Collage');
+      if (context.mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => CollageMetaScreen(collageBytes: pngBytes),
+          ),
+        );
+      }
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Collage shared successfully')),

@@ -1,2 +1,0 @@
-/Users/arno/AndroidStudioProjects/fit_me/android/app/.cxx/Debug/2n5s1yk6/x86_64/CMakeFiles/edit_cache.dir
-/Users/arno/AndroidStudioProjects/fit_me/android/app/.cxx/Debug/2n5s1yk6/x86_64/CMakeFiles/rebuild_cache.dir

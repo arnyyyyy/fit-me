@@ -1,3 +1,4 @@
+import 'package:fit_me/saved_collage.dart';
 import 'package:fit_me/saved_image.dart';
 import 'package:fit_me/screens/home_screen.dart';
 import 'package:fit_me/services/routes.dart';
@@ -12,13 +13,13 @@ Future<void> main() async {
   final appDocDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocDir.path);
   Hive.registerAdapter(SavedImageAdapter());
+  Hive.registerAdapter(SavedCollageAdapter());
   Hive.registerAdapter(TagAdapter());
 
 
   await Hive.openBox<SavedImage>('imagesBox');
+  await Hive.openBox<SavedCollage>('collagesBox');
   await Hive.openBox<Tag>('tagsBox');
-
-
 
   runApp(const MyApp());
 }

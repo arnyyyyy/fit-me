@@ -1,1 +1,0 @@
-/Users/arno/AndroidStudioProjects/fit_me/build/app/intermediates/cxx/RelWithDebInfo/3a2e6uu7/obj/arm64-v8a
