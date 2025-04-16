@@ -20,7 +20,13 @@ class _AllClothesScreenState extends State<AllClothesScreen> {
   void initState() {
     super.initState();
     _imageBoxFuture = Hive.openBox<SavedImage>('imagesBox');
+    _imageBoxFuture.then((box) {
+      for (var image in box.values) {
+        precacheImage(FileImage(File(image.imagePath)), context);
+      }
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -192,4 +198,3 @@ class _AllClothesScreenState extends State<AllClothesScreen> {
     );
   }
 }
-
