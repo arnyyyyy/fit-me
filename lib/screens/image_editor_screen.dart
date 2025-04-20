@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-import '../saved_image.dart';
+import '../models/saved_image.dart';
 import '../services/image_service.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-import '../saved_image.dart';
+import '../models/saved_image.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
 import 'select_image_screen.dart';

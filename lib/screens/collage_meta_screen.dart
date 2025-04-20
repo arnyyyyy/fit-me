@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../saved_collage.dart';
-import '../saved_image.dart';
+import '../models/saved_collage.dart';
+import '../models/saved_image.dart';
 import '../screens/tags.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';

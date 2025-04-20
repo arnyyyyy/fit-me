@@ -6,25 +6,20 @@ import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({super.key});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin {
+class _MainScreenState extends State<MainScreen>
+    with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = const [
     CollageScreen(),
     SelectImageScreen(),
     AllClothesScreen(),
-  ];
-
-  final List<String> _titles = [
-    'коллажи',
-    'добавить образ',
-    'гардероб',
   ];
 
   void _onItemTapped(int index) {
@@ -35,20 +30,11 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          _titles[_selectedIndex],
-          style: AppTextStyles.appBarTitle,
-        ),
-        centerTitle: true,
-      ),
       body: _screens[_selectedIndex],
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.surface,
-          borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
           ),
@@ -56,7 +42,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
             BoxShadow(
               color: Colors.black12,
               blurRadius: 10,
-              offset: const Offset(0, -2),
+              offset: Offset(0, -2),
             ),
           ],
         ),
@@ -71,18 +57,21 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
           unselectedLabelStyle: AppTextStyles.navLabel,
           type: BottomNavigationBarType.fixed,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
-
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.image_outlined, color: AppColors.tagText),
               label: 'Коллажи',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.add_photo_alternate_outlined, color: AppColors.tagText),
+              icon: Icon(Icons.add_photo_alternate_outlined,
+                  color: AppColors.tagText),
               label: 'Добавить',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.checkroom_outlined, color: AppColors.tagText,),
+              icon: Icon(
+                Icons.checkroom_outlined,
+                color: AppColors.tagText,
+              ),
               label: 'Гардероб',
             ),
           ],

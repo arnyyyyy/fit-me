@@ -7,7 +7,7 @@ import 'dart:ui' as ui;
 import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
 
-import '../saved_image.dart';
+import '../models/saved_image.dart';
 import '../widgets/positioned_draggable_image.dart';
 import '../widgets/checkerboard_painter.dart';
 import 'collage_meta_screen.dart';

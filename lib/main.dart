@@ -1,8 +1,8 @@
-import 'package:fit_me/saved_collage.dart';
-import 'package:fit_me/saved_image.dart';
+import 'package:fit_me/models/saved_collage.dart';
+import 'package:fit_me/models/saved_image.dart';
 import 'package:fit_me/screens/home_screen.dart';
 import 'package:fit_me/services/routes.dart';
-import 'package:fit_me/tag.dart';
+import 'package:fit_me/models/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
