@@ -17,15 +17,37 @@ class AllClothesScreen extends StatefulWidget {
 
 class _AllClothesScreenState extends State<AllClothesScreen> {
   late Future<Box<SavedImage>> _imageBoxFuture;
+  List<SavedImage> _allImages = [];
+  List<SavedImage> _filteredImages = [];
 
   @override
   void initState() {
     super.initState();
     _imageBoxFuture = Hive.openBox<SavedImage>('imagesBox');
     _imageBoxFuture.then((box) {
-      for (var image in box.values) {
+      final images = box.values.toList();
+      setState(() {
+        _allImages = images;
+        _filteredImages = images;
+      });
+
+      for (var image in images) {
         precacheImage(FileImage(File(image.imagePath)), context);
       }
+    });
+  }
+
+  void _filterImages(String query) {
+    final lowerQuery = query.toLowerCase();
+    final filtered = _allImages.where((image) {
+      final nameMatches = image.name.toLowerCase().contains(lowerQuery);
+      final tagMatches =
+          image.tags.any((tag) => tag.toLowerCase().contains(lowerQuery));
+      return nameMatches || tagMatches;
+    }).toList();
+
+    setState(() {
+      _filteredImages = filtered;
     });
   }
 
@@ -33,7 +55,7 @@ class _AllClothesScreenState extends State<AllClothesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5EFE7),
-      appBar: const CustomAppBar(),
+      appBar: CustomAppBar(onSearch: _filterImages),
       body: FutureBuilder<Box<SavedImage>>(
         future: _imageBoxFuture,
         builder: (context, snapshot) {
@@ -41,13 +63,11 @@ class _AllClothesScreenState extends State<AllClothesScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final images = snapshot.data!.values.toList();
-
-          if (images.isEmpty) {
+          if (_filteredImages.isEmpty) {
             return const EmptyClosetMessage();
           }
 
-          return ClothesGrid(images: images);
+          return ClothesGrid(images: _filteredImages);
         },
       ),
     );

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:fit_me/clothes/tag_chip.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../models/saved_image.dart';
