@@ -14,11 +14,11 @@ class PositionedDraggableImage extends StatefulWidget {
   });
 
   @override
-  _PositionedDraggableImageState createState() =>
-      _PositionedDraggableImageState();
+  PositionedDraggableImageState createState() =>
+      PositionedDraggableImageState();
 }
 
-class _PositionedDraggableImageState extends State<PositionedDraggableImage> {
+class PositionedDraggableImageState extends State<PositionedDraggableImage> {
   double _scale = 1.0;
   double _previousScale = 1.0;
   Offset _offset = Offset.zero;

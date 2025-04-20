@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
@@ -24,14 +23,13 @@ class CollageScreen extends StatefulWidget {
   const CollageScreen({super.key});
 
   @override
-  _CollageScreenState createState() => _CollageScreenState();
+  CollageScreenState createState() => CollageScreenState();
 }
 
-class _CollageScreenState extends State<CollageScreen> {
+class CollageScreenState extends State<CollageScreen> {
   CollageBackground _background = CollageBackground.transparent;
 
   final List<File> _images = [];
-  final ImagePicker _picker = ImagePicker();
   final GlobalKey _stackKey = GlobalKey();
   bool _isProcessing = false;
 
@@ -52,23 +50,6 @@ class _CollageScreenState extends State<CollageScreen> {
     if (selected != null) {
       setState(() {
         _images.addAll(selected.where((img) => !_images.contains(img)));
-      });
-    }
-  }
-
-  Future<void> _pickImage() async {
-    if (_images.length >= 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('максимум 6 фотографий')),
-      );
-      return;
-    }
-
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _images.add(File(pickedFile.path));
       });
     }
   }
@@ -182,7 +163,7 @@ class _CollageScreenState extends State<CollageScreen> {
           ),
           if (_isProcessing)
             Container(
-              color: Colors.black.withOpacity(0.5),
+              color: Colors.black.withValues(alpha: 0.5),
               child: const Center(child: CircularProgressIndicator()),
             ),
         ],

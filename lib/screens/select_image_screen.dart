@@ -44,7 +44,7 @@ class SelectImageScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
             elevation: 6,
-            shadowColor: AppColors.accent.withOpacity(0.4),
+            shadowColor: AppColors.accent.withValues(alpha: 0.4),
           ),
         ),
       ),

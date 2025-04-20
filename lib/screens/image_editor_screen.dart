@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'dart:io';
@@ -58,6 +59,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
     });
   }
 
+
   Future<Uint8List> _generateEditedImageBytes() async {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
@@ -90,17 +92,19 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
   }
 
   Future<void> _saveEditedImage() async {
-    final editedBytes = await _generateEditedImageBytes();
+    final editedBytesFuture = _generateEditedImageBytes();
 
     if (!mounted) return;
 
+    // Переходим на следующий экран, сразу передав Future для обработки изображения
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => ImageMetaScreen(imageBytes: editedBytes),
+        builder: (_) => ImageMetaScreen(imageBytesFuture: editedBytesFuture),
       ),
     );
   }
+
 
 
 
@@ -127,9 +131,9 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Редактор", style: AppTextStyles.title),
+        title: const Text("Редактор", style: AppTextStyles.title),
         backgroundColor: AppColors.background,
-        iconTheme: IconThemeData(color: AppColors.text),
+        iconTheme: const IconThemeData(color: AppColors.text),
         actions: [
           IconButton(icon: const Icon(Icons.save), onPressed: _saveEditedImage),
           IconButton(
@@ -224,7 +228,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
               max: 100,
               divisions: 19,
               activeColor: AppColors.primary,
-              inactiveColor: AppColors.primary.withOpacity(0.3),
+              inactiveColor: AppColors.primary.withValues(alpha: 0.3),
               label: _brushRadius.round().toString(),
               onChanged: (value) {
                 setState(() {

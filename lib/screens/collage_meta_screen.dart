@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../models/saved_collage.dart';
 import '../models/saved_image.dart';
-import '../screens/tags.dart';
+import '../tags/tags.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
 
@@ -107,7 +107,7 @@ class _CollageMetaScreenState extends State<CollageMetaScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            Text("tags", style: AppTextStyles.imageTitle),
+            const Text("tags", style: AppTextStyles.imageTitle),
             const SizedBox(height: 8),
             TagSelectorWidget(
               initialTags: _selectedTags,

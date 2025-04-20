@@ -1,18 +1,18 @@
 import 'dart:typed_data';
 import 'dart:io';
 
-import 'package:fit_me/screens/tags.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import '../models/saved_image.dart';
+import '../tags/tags.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
 
 class ImageMetaScreen extends StatefulWidget {
-  final Uint8List imageBytes;
+  final Future<Uint8List> imageBytesFuture;
 
-  const ImageMetaScreen({super.key, required this.imageBytes});
+  const ImageMetaScreen({super.key, required this.imageBytesFuture});
 
   @override
   State<ImageMetaScreen> createState() => _ImageMetaScreenState();
@@ -20,7 +20,6 @@ class ImageMetaScreen extends StatefulWidget {
 
 class _ImageMetaScreenState extends State<ImageMetaScreen> {
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _tagsController = TextEditingController();
 
   List<String> _allTags = [];
   List<String> _selectedTags = [];
@@ -39,11 +38,9 @@ class _ImageMetaScreenState extends State<ImageMetaScreen> {
       tagsSet.addAll(image.tags);
     }
     setState(() {
-      _allTags = tagsSet.toList()
-        ..sort();
+      _allTags = tagsSet.toList()..sort();
     });
   }
-
 
   Future<void> _saveImage() async {
     final name = _nameController.text.trim();
@@ -54,7 +51,7 @@ class _ImageMetaScreenState extends State<ImageMetaScreen> {
     final dir = await getApplicationDocumentsDirectory();
     final filePath = '${dir.path}/$name.png';
     final file = File(filePath);
-    await file.writeAsBytes(widget.imageBytes);
+    await file.writeAsBytes(await widget.imageBytesFuture);
 
     final box = await Hive.openBox<SavedImage>('imagesBox');
     await box.add(SavedImage(name: name, imagePath: filePath, tags: tags));
@@ -73,25 +70,43 @@ class _ImageMetaScreenState extends State<ImageMetaScreen> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        title: Text(
+        title: const Text(
           "Сохранить изображение",
           style: AppTextStyles.title,
         ),
-        iconTheme: IconThemeData(color: AppColors.text),
+        iconTheme: const IconThemeData(color: AppColors.text),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Image.memory(
-                widget.imageBytes,
-                height: 220,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+            FutureBuilder<Uint8List>(
+              future: widget.imageBytesFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.hasError) {
+                  return const Center(
+                      child: Text('Ошибка загрузки изображения'));
+                }
+
+                if (snapshot.hasData) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.memory(
+                      snapshot.data!,
+                      height: 220,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }
+
+                return const SizedBox();
+              },
             ),
             const SizedBox(height: 24),
             TextField(
@@ -99,16 +114,16 @@ class _ImageMetaScreenState extends State<ImageMetaScreen> {
               style: AppTextStyles.body,
               decoration: InputDecoration(
                 labelText: "Название",
-                labelStyle: AppTextStyles.body.copyWith(
-                    color: AppColors.text.withOpacity(0.6)),
+                labelStyle: AppTextStyles.body
+                    .copyWith(color: AppColors.text.withValues(alpha: 0.6)),
                 filled: true,
                 fillColor: AppColors.inputBackground,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               ),
             ),
             const SizedBox(height: 20),
-            Text("Теги", style: AppTextStyles.subtitle),
+            const Text("Теги", style: AppTextStyles.subtitle),
             const SizedBox(height: 8),
             TagSelectorWidget(
               initialTags: _selectedTags,
@@ -124,13 +139,14 @@ class _ImageMetaScreenState extends State<ImageMetaScreen> {
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 24, vertical: 14),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16)),
                 ),
-                icon: const Icon(Icons.save, color: Colors.white,),
-                label: Text("Сохранить", style: AppTextStyles.buttonWhite),
+                icon: const Icon(Icons.save, color: Colors.white),
+                label:
+                    const Text("Сохранить", style: AppTextStyles.buttonWhite),
                 onPressed: _saveImage,
               ),
             ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fit_me/screens/all_clothes_screen.dart';
+import 'package:fit_me/clothes/all_clothes_screen.dart';
 import 'package:fit_me/screens/collage_screen.dart';
 import 'package:fit_me/screens/select_image_screen.dart';
 import '../utils/app_colors.dart';
