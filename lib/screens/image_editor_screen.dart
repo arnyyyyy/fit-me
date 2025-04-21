@@ -97,7 +97,6 @@ class _ImageEditorScreenState extends ConsumerState<ImageEditorScreen> {
 
     if (!mounted) return;
 
-    // Переходим на следующий экран, сразу передав Future для обработки изображения
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -318,6 +317,5 @@ Future<void> saveImageWithMeta({
 
   final image = SavedImage(name: name, imagePath: imagePath, tags: tags);
   
-  // Используем провайдер для сохранения изображения
   await ref.read(imageOperationsProvider).addImage(image);
 }
