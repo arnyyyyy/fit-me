@@ -21,4 +21,7 @@ class AppColors {
   static const Color accent = Color(0xFF874141);
   static const Color mutedText =  Color(0xFFFFFBF6);
   static const Color inputBackground =  Color(0xFFFFFBF6);
+  static const Color allClothesBackground = Color(0xFFF5EFE7);
+  static const Color clothesCardBackground = Color(0xFFFFFBF6);
+  static const Color metaScreenBackground = Color(0xFFF5EFE7);
 }

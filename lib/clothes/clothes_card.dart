@@ -20,7 +20,7 @@ class ClothesCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFFFFBF6),
+        color: AppColors.clothesCardBackground,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(

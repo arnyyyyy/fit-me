@@ -2,70 +2,31 @@ import 'dart:typed_data';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import '../models/saved_image.dart';
+import '../providers/hive_providers.dart';
 import '../tags/tags.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
 
-class ImageMetaScreen extends StatefulWidget {
+class ImageMetaScreen extends ConsumerStatefulWidget {
   final Future<Uint8List> imageBytesFuture;
 
   const ImageMetaScreen({super.key, required this.imageBytesFuture});
 
   @override
-  State<ImageMetaScreen> createState() => _ImageMetaScreenState();
+  ConsumerState<ImageMetaScreen> createState() => _ImageMetaScreenState();
 }
 
-class _ImageMetaScreenState extends State<ImageMetaScreen> {
+class _ImageMetaScreenState extends ConsumerState<ImageMetaScreen> {
   final TextEditingController _nameController = TextEditingController();
-
-  List<String> _allTags = [];
   List<String> _selectedTags = [];
 
   @override
-  void initState() {
-    super.initState();
-    _loadTags();
-  }
-
-  Future<void> _loadTags() async {
-    final box = await Hive.openBox<SavedImage>('imagesBox');
-    final allImages = box.values.toList();
-    final Set<String> tagsSet = {};
-    for (final image in allImages) {
-      tagsSet.addAll(image.tags);
-    }
-    setState(() {
-      _allTags = tagsSet.toList()..sort();
-    });
-  }
-
-  Future<void> _saveImage() async {
-    final name = _nameController.text.trim();
-    final tags = _selectedTags;
-
-    if (name.isEmpty) return;
-
-    final dir = await getApplicationDocumentsDirectory();
-    final filePath = '${dir.path}/$name.png';
-    final file = File(filePath);
-    await file.writeAsBytes(await widget.imageBytesFuture);
-
-    final box = await Hive.openBox<SavedImage>('imagesBox');
-    await box.add(SavedImage(name: name, imagePath: filePath, tags: tags));
-
-    if (context.mounted) {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Изображение сохранено')),
-      );
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final tagsAsync = ref.watch(tagsProvider);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -125,14 +86,18 @@ class _ImageMetaScreenState extends State<ImageMetaScreen> {
             const SizedBox(height: 20),
             const Text("Теги", style: AppTextStyles.subtitle),
             const SizedBox(height: 8),
-            TagSelectorWidget(
-              initialTags: _selectedTags,
-              allAvailableTags: _allTags,
-              onTagsChanged: (tags) {
-                setState(() {
-                  _selectedTags = tags;
-                });
-              },
+            tagsAsync.when(
+              data: (allTags) => TagSelectorWidget(
+                initialTags: _selectedTags,
+                allAvailableTags: allTags,
+                onTagsChanged: (tags) {
+                  setState(() {
+                    _selectedTags = tags;
+                  });
+                },
+              ),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (_, __) => const Text("Не удалось загрузить теги"),
             ),
             const SizedBox(height: 30),
             Center(
@@ -154,5 +119,27 @@ class _ImageMetaScreenState extends State<ImageMetaScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _saveImage() async {
+    final name = _nameController.text.trim();
+    final tags = _selectedTags;
+
+    if (name.isEmpty) return;
+
+    final dir = await getApplicationDocumentsDirectory();
+    final filePath = '${dir.path}/$name.png';
+    final file = File(filePath);
+    await file.writeAsBytes(await widget.imageBytesFuture);
+
+    final savedImage = SavedImage(name: name, imagePath: filePath, tags: tags);
+    await ref.read(imageOperationsProvider).addImage(savedImage);
+
+    if (context.mounted) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Изображение сохранено')),
+      );
+    }
   }
 }

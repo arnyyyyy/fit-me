@@ -1,71 +1,32 @@
 import 'dart:typed_data';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/saved_collage.dart';
-import '../models/saved_image.dart';
+import '../providers/hive_providers.dart';
 import '../tags/tags.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
 
-class CollageMetaScreen extends StatefulWidget {
+class CollageMetaScreen extends ConsumerStatefulWidget {
   final Uint8List collageBytes;
 
   const CollageMetaScreen({super.key, required this.collageBytes});
 
   @override
-  State<CollageMetaScreen> createState() => _CollageMetaScreenState();
+  ConsumerState<CollageMetaScreen> createState() => _CollageMetaScreenState();
 }
 
-class _CollageMetaScreenState extends State<CollageMetaScreen> {
+class _CollageMetaScreenState extends ConsumerState<CollageMetaScreen> {
   final TextEditingController _nameController = TextEditingController();
   final List<String> _selectedTags = [];
-  List<String> _allTags = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadTags();
-  }
-
-  Future<void> _loadTags() async {
-    final box = await Hive.openBox<SavedImage>('imagesBox');
-    final Set<String> tagsSet = {};
-    for (var img in box.values) {
-      tagsSet.addAll(img.tags);
-    }
-    setState(() {
-      _allTags = tagsSet.toList()..sort();
-    });
-  }
-
-  Future<void> _saveCollage() async {
-    final name = _nameController.text.trim();
-    if (name.isEmpty) return;
-
-    final dir = await getApplicationDocumentsDirectory();
-    final path = '${dir.path}/$name.png';
-    final file = File(path);
-    await file.writeAsBytes(widget.collageBytes);
-
-    final box = await Hive.openBox<SavedCollage>('collagesBox');
-    await box.add(SavedCollage(name: name, imagePath: path, tags: _selectedTags));
-
-    if (context.mounted) {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('коллаж сохранён.')),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    final tagsAsync = ref.watch(tagsProvider);
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF5EFE7),
+      backgroundColor: AppColors.metaScreenBackground,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -109,16 +70,20 @@ class _CollageMetaScreenState extends State<CollageMetaScreen> {
             const SizedBox(height: 20),
             const Text("tags", style: AppTextStyles.imageTitle),
             const SizedBox(height: 8),
-            TagSelectorWidget(
-              initialTags: _selectedTags,
-              allAvailableTags: _allTags,
-              onTagsChanged: (tags) {
-                setState(() {
-                  _selectedTags
-                    ..clear()
-                    ..addAll(tags);
-                });
-              },
+            tagsAsync.when(
+              data: (allTags) => TagSelectorWidget(
+                initialTags: _selectedTags,
+                allAvailableTags: allTags,
+                onTagsChanged: (tags) {
+                  setState(() {
+                    _selectedTags
+                      ..clear()
+                      ..addAll(tags);
+                  });
+                },
+              ),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (_, __) => const Text("Failed to load tags"),
             ),
             const SizedBox(height: 28),
             Center(
@@ -128,8 +93,8 @@ class _CollageMetaScreenState extends State<CollageMetaScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 32, vertical: 14),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
                   elevation: 2,
                 ),
                 icon: const Icon(Icons.save, color: Colors.white),
@@ -149,5 +114,20 @@ class _CollageMetaScreenState extends State<CollageMetaScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _saveCollage() async {
+    final name = _nameController.text.trim();
+    if (name.isEmpty) return;
+
+    await ref.read(collageOperationsProvider).saveCollage(
+        name: name, collageBytes: widget.collageBytes, tags: _selectedTags);
+
+    if (mounted) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('collage is saved')),
+      );
+    }
   }
 }

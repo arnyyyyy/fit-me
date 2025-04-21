@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../clothes/all_clothes_screen.dart';
 import '../screens/collage_screen.dart';
-import '../screens/home_screen.dart';
+import '../screens/main_screen.dart';
 
 abstract class RouteNames {
   const RouteNames._();

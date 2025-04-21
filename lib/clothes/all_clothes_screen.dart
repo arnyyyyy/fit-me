@@ -1,74 +1,74 @@
 import 'dart:io';
 
+import 'package:fit_me/utils/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/saved_image.dart';
+import '../providers/hive_providers.dart';
 import '../utils/app_text_styles.dart';
 import 'clothes_grid.dart';
 import 'custom_app_bar.dart';
 
-class AllClothesScreen extends StatefulWidget {
+class AllClothesScreen extends ConsumerStatefulWidget {
   const AllClothesScreen({super.key});
 
   @override
-  State<AllClothesScreen> createState() => _AllClothesScreenState();
+  ConsumerState<AllClothesScreen> createState() => _AllClothesScreenState();
 }
 
-class _AllClothesScreenState extends State<AllClothesScreen> {
-  late Future<Box<SavedImage>> _imageBoxFuture;
-  List<SavedImage> _allImages = [];
-  List<SavedImage> _filteredImages = [];
+class _AllClothesScreenState extends ConsumerState<AllClothesScreen> {
+  String _currentQuery = '';
 
   @override
   void initState() {
     super.initState();
-    _imageBoxFuture = Hive.openBox<SavedImage>('imagesBox');
-    _imageBoxFuture.then((box) {
-      final images = box.values.toList();
-      setState(() {
-        _allImages = images;
-        _filteredImages = images;
-      });
-
-      for (var image in images) {
-        precacheImage(FileImage(File(image.imagePath)), context);
-      }
-    });
   }
 
   void _filterImages(String query) {
-    final lowerQuery = query.toLowerCase();
-    final filtered = _allImages.where((image) {
-      final nameMatches = image.name.toLowerCase().contains(lowerQuery);
+    setState(() {
+      _currentQuery = query.toLowerCase();
+    });
+  }
+
+  List<SavedImage> _getFilteredImages(List<SavedImage> allImages) {
+    if (_currentQuery.isEmpty) {
+      return allImages;
+    }
+    
+    return allImages.where((image) {
+      final nameMatches = image.name.toLowerCase().contains(_currentQuery);
       final tagMatches =
-          image.tags.any((tag) => tag.toLowerCase().contains(lowerQuery));
+          image.tags.any((tag) => tag.toLowerCase().contains(_currentQuery));
       return nameMatches || tagMatches;
     }).toList();
-
-    setState(() {
-      _filteredImages = filtered;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF5EFE7),
-      appBar: CustomAppBar(onSearch: _filterImages),
-      body: FutureBuilder<Box<SavedImage>>(
-        future: _imageBoxFuture,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    final imagesAsync = ref.watch(imagesProvider);
 
-          if (_filteredImages.isEmpty) {
+    return Scaffold(
+      backgroundColor: AppColors.allClothesBackground,
+      appBar: CustomAppBar(onSearch: _filterImages),
+      body: imagesAsync.when(
+        data: (allImages) {
+          for (var image in allImages) {
+            precacheImage(FileImage(File(image.imagePath)), context);
+          }
+          
+          final filtered = _getFilteredImages(allImages);
+          
+          if (filtered.isEmpty) {
             return const EmptyClosetMessage();
           }
-
-          return ClothesGrid(images: _filteredImages);
+          
+          return ClothesGrid(images: filtered);
         },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (_, __) => const Center(
+          child: Text("smth went wrong", style: AppTextStyles.emptyText),
+        ),
       ),
     );
   }

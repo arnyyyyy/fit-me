@@ -2,26 +2,27 @@ import 'dart:ui' as ui;
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/saved_image.dart';
+import '../providers/hive_providers.dart';
 import '../services/image_service.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
 import 'image_meta_screen.dart';
 
-class ImageEditorScreen extends StatefulWidget {
+class ImageEditorScreen extends ConsumerStatefulWidget {
   final Uint8List imageBytes;
 
   const ImageEditorScreen({super.key, required this.imageBytes});
 
   @override
-  State<ImageEditorScreen> createState() => _ImageEditorScreenState();
+  ConsumerState<ImageEditorScreen> createState() => _ImageEditorScreenState();
 }
 
-class _ImageEditorScreenState extends State<ImageEditorScreen> {
+class _ImageEditorScreenState extends ConsumerState<ImageEditorScreen> {
   ui.Image? _image;
   late ui.Image _originalImage;
   late ui.Image _originalImageBeforeRemoveBg;
@@ -228,7 +229,7 @@ class _ImageEditorScreenState extends State<ImageEditorScreen> {
               max: 100,
               divisions: 19,
               activeColor: AppColors.primary,
-              inactiveColor: AppColors.primary.withValues(alpha: 0.3),
+              inactiveColor: AppColors.primary.withAlpha(76),
               label: _brushRadius.round().toString(),
               onChanged: (value) {
                 setState(() {
@@ -307,6 +308,7 @@ Future<void> saveImageWithMeta({
   required Uint8List imageBytes,
   required String name,
   required List<String> tags,
+  required WidgetRef ref,
 }) async {
   final dir = await getApplicationDocumentsDirectory();
   final imagePath = '${dir.path}/$name.png';
@@ -314,7 +316,8 @@ Future<void> saveImageWithMeta({
   final file = File(imagePath);
   await file.writeAsBytes(imageBytes);
 
-  final box = Hive.box<SavedImage>('imagesBox');
   final image = SavedImage(name: name, imagePath: imagePath, tags: tags);
-  await box.add(image);
+  
+  // Используем провайдер для сохранения изображения
+  await ref.read(imageOperationsProvider).addImage(image);
 }

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:hive/hive.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/saved_image.dart';
 import '../widgets/positioned_draggable_image.dart';
 import '../widgets/checkerboard_painter.dart';
+import '../providers/hive_providers.dart';
 import 'collage_meta_screen.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_text_styles.dart';
@@ -19,14 +19,14 @@ enum CollageBackground {
   black,
 }
 
-class CollageScreen extends StatefulWidget {
+class CollageScreen extends ConsumerStatefulWidget {
   const CollageScreen({super.key});
 
   @override
-  CollageScreenState createState() => CollageScreenState();
+  ConsumerState<CollageScreen> createState() => CollageScreenState();
 }
 
-class CollageScreenState extends State<CollageScreen> {
+class CollageScreenState extends ConsumerState<CollageScreen> {
   CollageBackground _background = CollageBackground.transparent;
 
   final List<File> _images = [];
@@ -34,8 +34,8 @@ class CollageScreenState extends State<CollageScreen> {
   bool _isProcessing = false;
 
   Future<List<File>> _loadSavedImages() async {
-    final box = await Hive.openBox<SavedImage>('imagesBox');
-    return box.values.map((img) => File(img.imagePath)).toList();
+    final imagesAsync = await ref.read(imagesProvider.future);
+    return imagesAsync.map((img) => File(img.imagePath)).toList();
   }
 
   Future<void> _openImageSelectionScreen() async {

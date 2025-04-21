@@ -1,27 +1,19 @@
-import 'package:fit_me/models/saved_collage.dart';
-import 'package:fit_me/models/saved_image.dart';
-import 'package:fit_me/screens/home_screen.dart';
+import 'package:fit_me/repositories/hive_repository.dart';
+import 'package:fit_me/screens/main_screen.dart';
 import 'package:fit_me/services/routes.dart';
-import 'package:fit_me/models/tag.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:hive/hive.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final appDocDir = await getApplicationDocumentsDirectory();
-  Hive.init(appDocDir.path);
-  Hive.registerAdapter(SavedImageAdapter());
-  Hive.registerAdapter(SavedCollageAdapter());
-  Hive.registerAdapter(TagAdapter());
 
+  await HiveRepository.init();
 
-  await Hive.openBox<SavedImage>('imagesBox');
-  await Hive.openBox<SavedCollage>('collagesBox');
-  await Hive.openBox<Tag>('tagsBox');
-
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
