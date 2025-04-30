@@ -1,10 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/saved_collage.dart';
-import '../models/saved_image.dart';
-import '../repositories/hive_repository.dart';
+
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
+
+import '../../features/clothes/saved_image.dart';
+import '../../features/collages/saved_collage.dart';
+import '../repositories/hive_repository.dart';
 
 final hiveRepositoryProvider = Provider<HiveRepository>((ref) {
   return HiveRepository();

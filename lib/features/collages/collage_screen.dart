@@ -6,12 +6,12 @@ import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../widgets/positioned_draggable_image.dart';
-import '../widgets/checkerboard_painter.dart';
-import '../providers/hive_providers.dart';
+import '../../core/providers/hive_providers.dart';
+import '../../widgets/positioned_draggable_image.dart';
+import '../../widgets/checkerboard_painter.dart';
 import 'collage_meta_screen.dart';
-import '../utils/app_colors.dart';
-import '../utils/app_text_styles.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_text_styles.dart';
 
 enum CollageBackground {
   transparent,

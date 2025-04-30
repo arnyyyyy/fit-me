@@ -1,9 +1,9 @@
-import 'package:fit_me/screens/select_image_screen.dart';
+import 'package:fit_me/features/screens/select_image_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../clothes/all_clothes_screen.dart';
-import '../screens/collage_screen.dart';
-import '../screens/main_screen.dart';
+import '../../features/clothes/all_clothes_screen.dart';
+import '../../features/collages/collage_screen.dart';
+import '../../features/screens/main_screen.dart';
 
 abstract class RouteNames {
   const RouteNames._();

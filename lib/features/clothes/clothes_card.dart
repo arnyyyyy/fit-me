@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:fit_me/clothes/tag_chip.dart';
+import 'package:fit_me/features/tags/tag_chip.dart';
 import 'package:flutter/material.dart';
 
-import '../models/saved_image.dart';
-import '../utils/app_colors.dart';
-import '../utils/app_text_styles.dart';
+import 'saved_image.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_text_styles.dart';
 
 class ClothesCard extends StatelessWidget {
   final SavedImage savedImage;

@@ -1,8 +1,9 @@
-import 'package:fit_me/repositories/hive_repository.dart';
-import 'package:fit_me/screens/main_screen.dart';
-import 'package:fit_me/services/routes.dart';
+import 'package:fit_me/core/repositories/hive_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'core/services/routes.dart';
+import 'features/screens/main_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

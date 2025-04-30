@@ -4,11 +4,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
-import '../models/saved_image.dart';
-import '../providers/hive_providers.dart';
+import '../../core/providers/hive_providers.dart';
+import '../clothes/saved_image.dart';
 import '../tags/tags.dart';
-import '../utils/app_colors.dart';
-import '../utils/app_text_styles.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_text_styles.dart';
 
 class ImageMetaScreen extends ConsumerStatefulWidget {
   final Future<Uint8List> imageBytesFuture;

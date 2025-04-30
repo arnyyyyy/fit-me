@@ -4,8 +4,8 @@ import 'package:fit_me/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/filter_providers.dart';
-import '../utils/app_text_styles.dart';
+import '../../core/providers/filter_providers.dart';
+import '../../utils/app_text_styles.dart';
 import 'clothes_grid.dart';
 import 'custom_app_bar.dart';
 

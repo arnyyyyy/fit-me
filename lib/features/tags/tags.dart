@@ -1,7 +1,8 @@
-import 'package:fit_me/tags/selected_tags_chips.dart';
-import 'package:fit_me/tags/tag_input_field.dart';
+import 'package:fit_me/features/tags/selected_tags_chips.dart';
+import 'package:fit_me/features/tags/tag_input_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'available_tags_selector.dart';
 
 class TagSelectorWidget extends StatefulWidget {

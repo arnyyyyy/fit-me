@@ -6,12 +6,12 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/saved_image.dart';
-import '../providers/hive_providers.dart';
-import '../services/image_service.dart';
-import '../utils/app_colors.dart';
-import '../utils/app_text_styles.dart';
-import 'image_meta_screen.dart';
+import '../../core/providers/hive_providers.dart';
+import '../clothes/saved_image.dart';
+import '../../core/services/image_service.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_text_styles.dart';
+import '../image_saver/image_meta_screen.dart';
 
 class ImageEditorScreen extends ConsumerStatefulWidget {
   final Uint8List imageBytes;

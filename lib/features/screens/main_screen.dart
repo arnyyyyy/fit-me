@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:fit_me/clothes/all_clothes_screen.dart';
-import 'package:fit_me/screens/collage_screen.dart';
-import 'package:fit_me/screens/select_image_screen.dart';
-import '../utils/app_colors.dart';
-import '../utils/app_text_styles.dart';
+import 'package:fit_me/features/clothes/all_clothes_screen.dart';
+import 'package:fit_me/features/collages/collage_screen.dart';
+import 'package:fit_me/features/screens/select_image_screen.dart';
+
+import '../../utils/app_colors.dart';
+import '../../utils/app_text_styles.dart';
+
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

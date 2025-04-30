@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../utils/app_colors.dart';
-import '../utils/app_text_styles.dart';
-import 'image_editor_screen.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_text_styles.dart';
+import '../image_editor/image_editor_screen.dart';
 
 class SelectImageScreen extends StatelessWidget {
   const SelectImageScreen({super.key});

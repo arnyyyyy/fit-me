@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/filter_providers.dart';
+import '../../core/providers/filter_providers.dart';
 import '../screens/select_image_screen.dart';
-import '../utils/app_colors.dart';
-import '../utils/app_text_styles.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_text_styles.dart';
 
 class CustomAppBar extends ConsumerStatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});

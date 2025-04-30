@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-import '../utils/app_colors.dart';
-import '../utils/app_text_styles.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_text_styles.dart';
 
 class TagChip extends StatelessWidget {
   final String label;

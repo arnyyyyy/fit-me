@@ -1,4 +1,4 @@
-import '../models/saved_image.dart';
+import '../../features/clothes/saved_image.dart';
 
 class FilterService {
   List<SavedImage> filterImages(List<SavedImage> images, String query) {

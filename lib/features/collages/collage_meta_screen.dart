@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/hive_providers.dart';
+import '../../core/providers/hive_providers.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_text_styles.dart';
 import '../tags/tags.dart';
-import '../utils/app_colors.dart';
-import '../utils/app_text_styles.dart';
 
 class CollageMetaScreen extends ConsumerStatefulWidget {
   final Uint8List collageBytes;

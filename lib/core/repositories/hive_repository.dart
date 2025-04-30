@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import '../models/saved_collage.dart';
-import '../models/saved_image.dart';
-import '../models/tag.dart';
+import '../../features/collages/saved_collage.dart';
+import '../../features/clothes/saved_image.dart';
+import '../../features/tags/tag.dart';
 
 class HiveRepository {
   static Future<void> init() async {

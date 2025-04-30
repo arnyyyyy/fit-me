@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../models/saved_image.dart';
+import 'saved_image.dart';
 import 'clothes_card.dart';
 
 class ClothesGrid extends StatelessWidget {
