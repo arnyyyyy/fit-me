@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 
-
 part 'saved_image.g.dart';
+
 @HiveType(typeId: 0)
 class SavedImage extends HiveObject {
   @HiveField(0)
@@ -19,4 +19,3 @@ class SavedImage extends HiveObject {
     required this.tags,
   });
 }
-

@@ -1,7 +1,7 @@
 import 'package:fit_me/features/screens/select_image_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../../features/clothes/all_clothes_screen.dart';
+import '../../features/wardrobe/view/main_wardrobe_screen.dart';
 import '../../features/collages/collage_screen.dart';
 import '../../features/screens/main_screen.dart';
 
@@ -25,7 +25,7 @@ abstract class RoutesBuilder {
       return const CollageScreen();
     },
     RouteNames.addClothes: (_) => const SelectImageScreen(),
-    RouteNames.allClothes: (_) => const AllClothesScreen(),
+    RouteNames.allClothes: (_) => const WardrobeScreen(),
     RouteNames.main: (_) => const MainScreen(),
 
   };
@@ -47,7 +47,7 @@ abstract class RoutesBuilder {
         );
       case RouteNames.allClothes:
         return MaterialPageRoute(
-          builder: (_) => const AllClothesScreen(),
+          builder: (_) => const WardrobeScreen(),
           settings: settings,
         );
       case RouteNames.main:

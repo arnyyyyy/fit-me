@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fit_me/features/clothes/all_clothes_screen.dart';
 import 'package:fit_me/features/collages/collage_screen.dart';
 import 'package:fit_me/features/screens/select_image_screen.dart';
 
 import '../../utils/app_colors.dart';
 import '../../utils/app_text_styles.dart';
+import '../wardrobe/view/main_wardrobe_screen.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -21,7 +21,7 @@ class _MainScreenState extends State<MainScreen>
   final List<Widget> _screens = const [
     CollageScreen(),
     SelectImageScreen(),
-    AllClothesScreen(),
+    WardrobeScreen(),
   ];
 
   void _onItemTapped(int index) {

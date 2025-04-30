@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../features/collages/saved_collage.dart';
-import '../../features/clothes/saved_image.dart';
+import '../../features/wardrobe/model/saved_image.dart';
 import '../../features/tags/tag.dart';
 
 class HiveRepository {

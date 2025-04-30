@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:fit_me/features/tags/tag_chip.dart';
 import 'package:flutter/material.dart';
 
-import 'saved_image.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/app_text_styles.dart';
+import '../model/saved_image.dart';
+import '../../../utils/app_colors.dart';
+import '../../../utils/app_text_styles.dart';
 
 class ClothesCard extends StatelessWidget {
   final SavedImage savedImage;
@@ -58,8 +58,7 @@ class ClothesCard extends StatelessWidget {
                     spacing: 6,
                     runSpacing: -4,
                     children: [
-                      for (var tag in visibleTags)
-                        TagChip(label: "#$tag"),
+                      for (var tag in visibleTags) TagChip(label: "#$tag"),
                       if (hiddenCount > 0)
                         TagChip(label: "+$hiddenCount", isMoreTag: true),
                     ],

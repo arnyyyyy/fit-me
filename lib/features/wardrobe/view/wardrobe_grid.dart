@@ -1,15 +1,16 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'saved_image.dart';
+import '../model/saved_image.dart';
 import 'clothes_card.dart';
 
-class ClothesGrid extends StatelessWidget {
+class WardrobeGrid extends ConsumerWidget {
   final List<SavedImage> images;
 
-  const ClothesGrid({super.key, required this.images});
+  const WardrobeGrid({super.key, required this.images});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GridView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

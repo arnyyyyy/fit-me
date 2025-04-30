@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../features/clothes/saved_image.dart';
+import '../../features/wardrobe/model/saved_image.dart';
 import '../services/filter_service.dart';
 import 'hive_providers.dart';
 

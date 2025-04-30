@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/providers/hive_providers.dart';
-import '../clothes/saved_image.dart';
+import '../wardrobe/model/saved_image.dart';
 import '../../core/services/image_service.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_text_styles.dart';
