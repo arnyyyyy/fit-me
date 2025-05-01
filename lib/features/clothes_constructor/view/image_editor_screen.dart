@@ -196,6 +196,13 @@ class _ImageEditorScreenState extends ConsumerState<ImageEditorScreen> {
                         top: _imageOffset.dy,
                         width: displayWidth,
                         height: displayHeight,
+                        child: Container(color: Colors.white),
+                      ),
+                      Positioned(
+                        left: _imageOffset.dx,
+                        top: _imageOffset.dy,
+                        width: displayWidth,
+                        height: displayHeight,
                         child: CustomPaint(
                           key: _canvasKey,
                           painter: EraserPainter(
@@ -270,21 +277,23 @@ class EraserPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     canvas.scale(scale);
 
-    final bgPaint = Paint()..color = Colors.black;
+    final width = originalImage.width.toDouble();
+    final height = originalImage.height.toDouble();
+
+    final whiteBgPaint = Paint()..color = Colors.white;
     canvas.drawRect(
-      Rect.fromLTWH(0, 0, originalImage.width.toDouble(),
-          originalImage.height.toDouble()),
-      bgPaint,
+      Rect.fromLTWH(0, 0, width, height),
+      whiteBgPaint,
     );
 
     canvas.drawImage(originalImage, Offset.zero, Paint());
 
     for (final p in points) {
       if (p.isErase) {
-        final paint = Paint()
-          ..blendMode = BlendMode.clear
+        final whitePaint = Paint()
+          ..color = Colors.white
           ..style = PaintingStyle.fill;
-        canvas.drawCircle(p.point, p.radius, paint);
+        canvas.drawCircle(p.point, p.radius, whitePaint);
       } else {
         final srcRect = Rect.fromCenter(
           center: p.point,
