@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../model/model.dart';
 import '../message/message.dart';
-import '../view/collage_meta_screen.dart';
+import '../view/collage_saving_screen.dart';
 
 abstract class CollagesEffect {}
 

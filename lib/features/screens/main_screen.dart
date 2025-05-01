@@ -3,7 +3,7 @@ import 'package:fit_me/features/screens/select_image_screen.dart';
 
 import '../../utils/app_colors.dart';
 import '../../utils/app_text_styles.dart';
-import '../collages/view/collage_screen.dart';
+import '../collage_constructor/view/collage_constructor_screen.dart';
 import '../wardrobe/view/main_wardrobe_screen.dart';
 
 
