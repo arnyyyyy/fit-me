@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../features/collage_constructor/model/saved_collage.dart';
 import '../../features/wardrobe/model/saved_image.dart';
-import '../../features/tags/tag.dart';
+import '../../features/tags/model/tag.dart';
 
 class HiveRepository {
   static Future<void> init() async {

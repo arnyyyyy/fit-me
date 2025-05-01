@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fit_me/features/tags/tag_chip.dart';
+import 'package:fit_me/features/tags/view/tag_chip.dart';
 import 'package:flutter/material.dart';
 
 import '../model/saved_image.dart';

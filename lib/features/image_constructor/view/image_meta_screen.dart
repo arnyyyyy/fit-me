@@ -88,7 +88,7 @@ class _ImageMetaScreenState extends ConsumerState<ImageMetaScreen> {
             const SizedBox(height: 8),
             model.isTagsLoading
                 ? const Center(child: CircularProgressIndicator())
-                : TagSelectorWidget(
+                : TagSelector(
                     initialTags: model.selectedTags,
                     allAvailableTags: model.availableTags,
                     onTagsChanged: (tags) {

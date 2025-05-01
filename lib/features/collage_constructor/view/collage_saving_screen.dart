@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text_styles.dart';
 import '../../../features/tags/tags.dart';
@@ -92,7 +91,7 @@ class _CollageMetaScreenState extends ConsumerState<CollageMetaScreen> {
             const SizedBox(height: 8),
             model.isTagsLoading
                 ? const Center(child: CircularProgressIndicator())
-                : TagSelectorWidget(
+                : TagSelector(
                     initialTags: model.selectedTags,
                     allAvailableTags: model.availableTags,
                     onTagsChanged: (tags) {
@@ -139,3 +138,4 @@ class _CollageMetaScreenState extends ConsumerState<CollageMetaScreen> {
     );
   }
 }
+
