@@ -1,34 +1,42 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/app_text_styles.dart';
-import '../image_editor/image_editor_screen.dart';
 
-class SelectImageScreen extends StatelessWidget {
+import '../../../utils/app_colors.dart';
+import '../../../utils/app_text_styles.dart';
+import 'image_editor_screen.dart';
+
+class SelectImageScreen extends ConsumerWidget {
   const SelectImageScreen({super.key});
 
   Future<void> _pickImage(BuildContext context) async {
     final picker = ImagePicker();
-    final XFile? pickedFile =
-    await picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       final Uint8List bytes = await pickedFile.readAsBytes();
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ImageEditorScreen(imageBytes: bytes),
-        ),
-      );
+      if (context.mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ImageEditorScreen(imageBytes: bytes),
+          ),
+        );
+      }
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text("Добавить изображение", style: AppTextStyles.appBarTitle),
+      ),
       body: Center(
         child: ElevatedButton.icon(
           onPressed: () => _pickImage(context),

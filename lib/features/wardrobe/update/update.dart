@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../screens/select_image_screen.dart';
+import '../../image_constructor/view/select_image_screen.dart';
 import '../model/model.dart';
 import '../message/message.dart';
 import '../model/saved_image.dart';

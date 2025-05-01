@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text_styles.dart';
 
-class ImagePickerScreen extends StatefulWidget {
+class ClothesPickerScreen extends StatefulWidget {
   final List<File> images;
 
-  const ImagePickerScreen({super.key, required this.images});
+  const ClothesPickerScreen({super.key, required this.images});
 
   @override
-  State<ImagePickerScreen> createState() => _ImagePickerScreenState();
+  State<ClothesPickerScreen> createState() => _ClothesPickerScreenState();
 }
 
-class _ImagePickerScreenState extends State<ImagePickerScreen> {
+class _ClothesPickerScreenState extends State<ClothesPickerScreen> {
   final Set<File> _selected = {};
 
   @override

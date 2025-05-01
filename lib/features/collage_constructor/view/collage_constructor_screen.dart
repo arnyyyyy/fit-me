@@ -9,7 +9,7 @@ import '../../../utils/app_text_styles.dart';
 import '../effect/runtime.dart';
 import '../message/message.dart';
 import '../model/model.dart';
-import 'image_picker_screen.dart';
+import 'clothes_picker_screen.dart';
 
 class CollageScreen extends ConsumerStatefulWidget {
   const CollageScreen({super.key});
@@ -118,7 +118,7 @@ class _CollageScreenState extends ConsumerState<CollageScreen> {
             final selectedImages = await Navigator.push<List<File>>(
               context,
               MaterialPageRoute(
-                builder: (_) => ImagePickerScreen(images: images),
+                builder: (_) => ClothesPickerScreen(images: images),
               ),
             );
 
