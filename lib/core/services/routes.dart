@@ -1,8 +1,8 @@
 import 'package:fit_me/features/screens/select_image_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../features/collages/view/collage_screen.dart';
 import '../../features/wardrobe/view/main_wardrobe_screen.dart';
-import '../../features/collages/collage_screen.dart';
 import '../../features/screens/main_screen.dart';
 
 abstract class RouteNames {

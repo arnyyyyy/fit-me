@@ -3,10 +3,11 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/providers/hive_providers.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/app_text_styles.dart';
-import '../tags/tags.dart';
+import '../../../utils/app_colors.dart';
+import '../../../utils/app_text_styles.dart';
+import '../../../features/tags/tags.dart';
+import '../effect/runtime.dart';
+import '../message/message.dart';
 
 class CollageMetaScreen extends ConsumerStatefulWidget {
   final Uint8List collageBytes;
@@ -19,11 +20,27 @@ class CollageMetaScreen extends ConsumerStatefulWidget {
 
 class _CollageMetaScreenState extends ConsumerState<CollageMetaScreen> {
   final TextEditingController _nameController = TextEditingController();
-  final List<String> _selectedTags = [];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final runtime = CollagesRuntime(context, ref);
+      runtime.dispatch(InitMetaScreen(widget.collageBytes));
+      runtime.loadTags();
+    });
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final tagsAsync = ref.watch(tagsProvider);
+    final model = ref.watch(collagesModelProvider);
+    final runtime = CollagesRuntime(context, ref);
 
     return Scaffold(
       backgroundColor: AppColors.metaScreenBackground,
@@ -66,68 +83,59 @@ class _CollageMetaScreenState extends ConsumerState<CollageMetaScreen> {
                   vertical: 12,
                 ),
               ),
+              onChanged: (value) {
+                runtime.dispatch(CollageNameChanged(value));
+              },
             ),
             const SizedBox(height: 20),
             const Text("tags", style: AppTextStyles.imageTitle),
             const SizedBox(height: 8),
-            tagsAsync.when(
-              data: (allTags) => TagSelectorWidget(
-                initialTags: _selectedTags,
-                allAvailableTags: allTags,
-                onTagsChanged: (tags) {
-                  setState(() {
-                    _selectedTags
-                      ..clear()
-                      ..addAll(tags);
-                  });
-                },
-              ),
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (_, __) => const Text("Failed to load tags"),
-            ),
+            model.isTagsLoading
+                ? const Center(child: CircularProgressIndicator())
+                : TagSelectorWidget(
+                    initialTags: model.selectedTags,
+                    allAvailableTags: model.availableTags,
+                    onTagsChanged: (tags) {
+                      runtime.dispatch(CollageTagsChanged(tags));
+                    },
+                  ),
             const SizedBox(height: 28),
-            Center(
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.icon,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+            if (model.isProcessing)
+              const Center(child: CircularProgressIndicator())
+            else
+              Center(
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.icon,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 14),
+                    elevation: 2,
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-                  elevation: 2,
-                ),
-                icon: const Icon(Icons.save, color: Colors.white),
-                label: const Text(
-                  "save collage",
-                  style: TextStyle(
-                    fontFamily: 'Futura',
-                    color: Colors.white,
-                    fontSize: 16,
-                    letterSpacing: 1.1,
+                  icon: const Icon(Icons.save, color: Colors.white),
+                  label: const Text(
+                    "save collage",
+                    style: TextStyle(
+                      fontFamily: 'Futura',
+                      color: Colors.white,
+                      fontSize: 16,
+                      letterSpacing: 1.1,
+                    ),
                   ),
+                  onPressed: () {
+                    final name = _nameController.text.trim();
+                    if (name.isEmpty) return;
+
+                    runtime.saveCollageWithMetadata(
+                        name, model.selectedTags, widget.collageBytes);
+                  },
                 ),
-                onPressed: _saveCollage,
               ),
-            ),
           ],
         ),
       ),
     );
-  }
-
-  Future<void> _saveCollage() async {
-    final name = _nameController.text.trim();
-    if (name.isEmpty) return;
-
-    await ref.read(collageOperationsProvider).saveCollage(
-        name: name, collageBytes: widget.collageBytes, tags: _selectedTags);
-
-    if (mounted) {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('collage is saved')),
-      );
-    }
   }
 }
