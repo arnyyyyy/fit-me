@@ -6,7 +6,9 @@ import '../wardrobe/view/main_wardrobe_screen.dart';
 import '../collages/view/main_collages_screen.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final int initialTabIndex;
+
+  const MainScreen({super.key, this.initialTabIndex = 1});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -14,7 +16,13 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
-  int _selectedIndex = 1;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialTabIndex;
+  }
 
   final List<Widget> _screens = const [
     CollageConstructorScreen(),

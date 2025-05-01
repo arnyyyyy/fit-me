@@ -4,6 +4,7 @@ import '../model/model.dart';
 import '../message/message.dart';
 import '../view/image_meta_screen.dart';
 import '../view/image_editor_screen.dart';
+import '../../main/main_screen.dart';
 
 abstract class ImageConstructorEffect {}
 
@@ -11,6 +12,12 @@ class NavigationEffect extends ImageConstructorEffect {
   final Widget destination;
 
   NavigationEffect(this.destination);
+}
+
+class NavigateToMainScreenEffect extends ImageConstructorEffect {
+  final int tabIndex;
+
+  NavigateToMainScreenEffect(this.tabIndex);
 }
 
 class SnackBarEffect extends ImageConstructorEffect {
@@ -175,7 +182,7 @@ UpdateResult update(
         model.copyWith(isSaving: false),
         {
           SnackBarEffect("Изображение сохранено"),
-          NavigationEffect(const PopNavigator()),
+          NavigateToMainScreenEffect(2),
         },
       );
 
@@ -190,6 +197,25 @@ UpdateResult update(
   }
 
   return UpdateResult(model);
+}
+
+class NavigateToMainScreen extends StatelessWidget {
+  final int tabIndex;
+
+  const NavigateToMainScreen({super.key, this.tabIndex = 2});
+
+  @override
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => MainScreen(initialTabIndex: tabIndex),
+        ),
+        (route) => false,
+      );
+    });
+    return const SizedBox.shrink();
+  }
 }
 
 class PopNavigator extends StatelessWidget {
