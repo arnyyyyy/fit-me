@@ -12,7 +12,7 @@ import '../../wardrobe/model/saved_image.dart';
 import '../model/model.dart';
 import '../message/message.dart';
 import '../update/update.dart';
-import '../model/saved_collage.dart';
+import '../../collages/model/saved_collage.dart';
 
 final collagesModelProvider =
     StateProvider<CollagesModel>((ref) => const CollagesModel());

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import '../model/saved_collage.dart';
+import '../../collages/model/saved_collage.dart';
 import '../model/model.dart';
 
 abstract class CollagesMessage {}

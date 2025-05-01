@@ -1,7 +1,6 @@
+import 'package:fit_me/features/collages/view/main_collages_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../../features/collage_constructor/view/collage_constructor_screen.dart';
-import '../../features/image_constructor/view/select_image_screen.dart';
 import '../../features/wardrobe/view/main_wardrobe_screen.dart';
 import '../../features/main/main_screen.dart';
 
@@ -14,20 +13,16 @@ abstract class RouteNames {
   static const allCollages = '/all_collages';
   static const addCollages = '/add_collages';
   static const main = '/main';
-
-
-
 }
 
 abstract class RoutesBuilder {
   static final routes = <String, Widget Function(BuildContext)>{
     RouteNames.home: (context) {
-      return const CollageScreen();
+      return const CollagesScreen();
     },
-    RouteNames.addClothes: (_) => const SelectImageScreen(),
+    RouteNames.allCollages: (_) => const CollagesScreen(),
     RouteNames.allClothes: (_) => const WardrobeScreen(),
     RouteNames.main: (_) => const MainScreen(),
-
   };
 
   static Route<Object?>? onGenerateRoute(RouteSettings settings) {
@@ -35,16 +30,11 @@ abstract class RoutesBuilder {
       case RouteNames.home:
         return MaterialPageRoute(
           builder: (_) {
-            return const CollageScreen();
+            return const CollagesScreen();
           },
           settings: settings,
         );
 
-      case RouteNames.addClothes:
-        return MaterialPageRoute(
-          builder: (_) => const SelectImageScreen(),
-          settings: settings,
-        );
       case RouteNames.allClothes:
         return MaterialPageRoute(
           builder: (_) => const WardrobeScreen(),
@@ -55,7 +45,11 @@ abstract class RoutesBuilder {
           builder: (_) => const MainScreen(),
           settings: settings,
         );
-
+      case RouteNames.allCollages:
+        return MaterialPageRoute(
+          builder: (_) => const CollagesScreen(),
+          settings: settings,
+        );
     }
 
     return null;

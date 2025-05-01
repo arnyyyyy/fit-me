@@ -1,10 +1,9 @@
+import 'package:fit_me/features/collage_constructor/view/collage_constructor_screen.dart';
 import 'package:flutter/material.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_text_styles.dart';
-import '../collage_constructor/view/collage_constructor_screen.dart';
-import '../image_constructor/view/select_image_screen.dart';
 import '../wardrobe/view/main_wardrobe_screen.dart';
-
+import '../collages/view/main_collages_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,11 +14,11 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   final List<Widget> _screens = const [
-    CollageScreen(),
-    SelectImageScreen(),
+    CollageConstructorScreen(),
+    CollagesScreen(),
     WardrobeScreen(),
   ];
 
@@ -60,13 +59,13 @@ class _MainScreenState extends State<MainScreen>
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.image_outlined, color: AppColors.tagText),
-              label: 'Коллажи',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.add_photo_alternate_outlined,
                   color: AppColors.tagText),
               label: 'Добавить',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.image_outlined, color: AppColors.tagText),
+              label: 'Коллажи',
             ),
             BottomNavigationBarItem(
               icon: Icon(

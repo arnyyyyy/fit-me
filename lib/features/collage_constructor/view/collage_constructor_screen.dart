@@ -11,14 +11,14 @@ import '../message/message.dart';
 import '../model/model.dart';
 import 'clothes_picker_screen.dart';
 
-class CollageScreen extends ConsumerStatefulWidget {
-  const CollageScreen({super.key});
+class CollageConstructorScreen extends ConsumerStatefulWidget {
+  const CollageConstructorScreen({super.key});
 
   @override
-  ConsumerState<CollageScreen> createState() => _CollageScreenState();
+  ConsumerState<CollageConstructorScreen> createState() => _CollageConstructorScreen();
 }
 
-class _CollageScreenState extends ConsumerState<CollageScreen> {
+class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> {
   final GlobalKey _stackKey = GlobalKey();
 
   @override

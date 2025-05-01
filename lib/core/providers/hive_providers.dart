@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
 
-import '../../features/collage_constructor/model/saved_collage.dart';
+import '../../features/collages/model/saved_collage.dart';
 import '../../features/wardrobe/model/saved_image.dart';
 import '../repositories/hive_repository.dart';
 
