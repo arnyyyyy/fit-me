@@ -6,10 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../utils/app_text_styles.dart';
+import '../../../widgets/search_app_bar.dart';
 import '../model/model.dart';
 import '../effect/runtime.dart';
 import 'wardrobe_grid.dart';
-import 'wardrobe_app_bar.dart';
+
+final searchControllerProvider =
+    Provider.autoDispose<TextEditingController>((ref) {
+  final controller = TextEditingController();
+  ref.onDispose(() => controller.dispose());
+  return controller;
+});
 
 class WardrobeScreen extends ConsumerStatefulWidget {
   const WardrobeScreen({super.key});
@@ -36,9 +43,28 @@ class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
       precacheImage(FileImage(File(cloth.imagePath)), context);
     }
 
+    final runtime = Runtime(context, ref);
+    final controller = ref.watch(searchControllerProvider);
+
     return Scaffold(
       backgroundColor: AppColors.wardrobeBackground,
-      appBar: const WardrobeAppBar(),
+      appBar: SearchAppBar(
+        title: "my clothes",
+        hintText: "name or tags",
+        model: model,
+        controller: controller,
+        onSearchChanged: (query) => runtime.dispatch(SearchQueryChanged(query)),
+        onToggleSearch: () =>
+            runtime.dispatch(ToggleSearch(!model.isSearching)),
+        onToggleFilter: () {
+          runtime.dispatch(ToggleTagFilter(!model.isTagFilterVisible));
+          if (!model.isTagFilterVisible) {
+            runtime.dispatch(LoadAvailableTags());
+          }
+        },
+        onLoadTags: () => runtime.dispatch(LoadAvailableTags()),
+        onAdd: () => runtime.dispatch(NavigateToAddImage()),
+      ),
       body: Column(
         children: [
           if (model.isTagFilterVisible && model.availableTags.isNotEmpty)
@@ -53,7 +79,7 @@ class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
 
   Widget _buildTagFilterBar(ClothesModel model) {
     final runtime = Runtime(context, ref);
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(
@@ -92,7 +118,8 @@ class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
                     style: TextButton.styleFrom(
                       foregroundColor: AppColors.primary,
                       visualDensity: VisualDensity.compact,
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                     ),
                   ),
                 ],
@@ -103,7 +130,7 @@ class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
             runSpacing: 8.0,
             children: model.availableTags.map((tag) {
               final isSelected = model.selectedTags.contains(tag);
-              
+
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 child: FilterChip(
@@ -117,16 +144,19 @@ class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                     side: BorderSide(
-                      color: isSelected ? AppColors.primary : Colors.transparent,
+                      color:
+                          isSelected ? AppColors.primary : Colors.transparent,
                       width: 1,
                     ),
                   ),
                   elevation: isSelected ? 2 : 0,
                   shadowColor: AppColors.shadow.withValues(alpha: 0.3),
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                   labelStyle: AppTextStyles.tagText.copyWith(
                     color: isSelected ? Colors.white : AppColors.tagText,
-                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                    fontWeight:
+                        isSelected ? FontWeight.w600 : FontWeight.normal,
                   ),
                   labelPadding: const EdgeInsets.symmetric(horizontal: 4),
                   showCheckmark: false,
