@@ -12,16 +12,19 @@ class AppColors {
   static const border = Color(0xFFDFCFC1);
   static const shadow = Colors.brown;
   static const Color surface = Color(0xFFFFFFFF);
+
   // static const Color primary = Color(0xFFB76E79);
   static const Color text = Color(0xFF333333);
-  static const Color textMuted =  Color(0xFFFFFBF6);
+  static const Color textMuted = Color(0xFFFFFBF6);
 
   static const Color primary = Color(0xFF613E3E);
 
   static const Color accent = Color(0xFF874141);
-  static const Color mutedText =  Color(0xFFFFFBF6);
-  static const Color inputBackground =  Color(0xFFFFFBF6);
-  static const Color WardrobeBackground = Color(0xFFF5EFE7);
+  static const Color mutedText = Color(0xFFFFFBF6);
+  static const Color inputBackground = Color(0xFFFFFBF6);
+  static const Color wardrobeBackground = Color(0xFFF5EFE7);
   static const Color clothesCardBackground = Color(0xFFFFFBF6);
   static const Color metaScreenBackground = Color(0xFFF5EFE7);
+
+  static const Color tagSelected = Color(0xFF874141);
 }

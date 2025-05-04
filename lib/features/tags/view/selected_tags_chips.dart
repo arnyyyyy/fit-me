@@ -29,14 +29,30 @@ class SelectedTagsChips extends StatelessWidget {
       spacing: 8,
       runSpacing: 8,
       children: selectedTags.map((tag) {
-        return Chip(
-          label: Text(tag, style: AppTextStyles.body),
-          backgroundColor: AppColors.tagBackground,
-          deleteIcon: const Icon(Icons.close, size: 16),
-          onDeleted: () => onTagRemoved(tag),
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          child: Chip(
+            label: Text(
+              tag, 
+              style: AppTextStyles.tagText.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            backgroundColor: AppColors.tagSelected,
+            deleteIconColor: Colors.white.withValues(alpha: 0.9),
+            deleteIcon: const Icon(Icons.close, size: 16),
+            onDeleted: () => onTagRemoved(tag),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: BorderSide(
+                color: Colors.white.withValues(alpha: 0.15),
+                width: 1,
+              ),
+            ),
+            elevation: 2,
+            shadowColor: AppColors.shadow.withValues(alpha: 0.3),
           ),
         );
       }).toList(),

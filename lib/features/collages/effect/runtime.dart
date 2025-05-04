@@ -50,4 +50,8 @@ class Runtime {
       dispatch(CollagesLoadError(e.toString()));
     }
   }
+  
+  Future<void> loadTags() async {
+    dispatch(LoadAvailableTags());
+  }
 }

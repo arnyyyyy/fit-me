@@ -35,3 +35,26 @@ class AddImage extends Message {
 }
 
 class NavigateToAddImage extends Message {}
+
+class ToggleTagFilter extends Message {
+  final bool isVisible;
+
+  ToggleTagFilter(this.isVisible);
+}
+
+class LoadAvailableTags extends Message {}
+
+class TagsLoaded extends Message {
+  final List<String> tags;
+
+  TagsLoaded(this.tags);
+}
+
+class TagSelected extends Message {
+  final String tag;
+  final bool isSelected;
+
+  TagSelected(this.tag, this.isSelected);
+}
+
+class ClearTagFilters extends Message {}

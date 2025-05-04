@@ -25,11 +25,13 @@ UpdateResult update(ClothesModel model, Message message) {
       return UpdateResult(model.copyWith(isLoading: true));
 
     case ImagesLoaded(:final images):
-      final filtered = _filterClothes(images, model.searchQuery);
+      final availableTags = _extractAllTags(images);
+      final filtered = _applyAllFilters(images, model.searchQuery, model.selectedTags);
       return UpdateResult(model.copyWith(
         isLoading: false,
         allImages: images,
         filteredImages: filtered,
+        availableTags: availableTags,
       ));
 
     case ImagesLoadError(:final message):
@@ -40,7 +42,7 @@ UpdateResult update(ClothesModel model, Message message) {
 
     case ToggleSearch(:final isSearching):
       final query = isSearching ? model.searchQuery : '';
-      final filtered = isSearching ? model.filteredClothes : model.allImages;
+      final filtered = _applyAllFilters(model.allImages, query, model.selectedTags);
       return UpdateResult(model.copyWith(
         isSearching: isSearching,
         searchQuery: query,
@@ -48,7 +50,7 @@ UpdateResult update(ClothesModel model, Message message) {
       ));
 
     case SearchQueryChanged(:final query):
-      final filtered = _filterClothes(model.allImages, query);
+      final filtered = _applyAllFilters(model.allImages, query, model.selectedTags);
       return UpdateResult(model.copyWith(
         searchQuery: query,
         filteredImages: filtered,
@@ -56,17 +58,79 @@ UpdateResult update(ClothesModel model, Message message) {
 
     case AddImage(:final image):
       final updatedAll = List<SavedImage>.from(model.allImages)..add(image);
-      final filtered = _filterClothes(updatedAll, model.searchQuery);
+      final allTags = _extractAllTags(updatedAll);
+      final filtered = _applyAllFilters(updatedAll, model.searchQuery, model.selectedTags);
       return UpdateResult(model.copyWith(
         allImages: updatedAll,
         filteredImages: filtered,
+        availableTags: allTags,
       ));
 
     case NavigateToAddImage():
       return UpdateResult(model, {NavigationEffect(const SelectImageScreen())});
+      
+    case ToggleTagFilter(:final isVisible):
+      return UpdateResult(model.copyWith(
+        isTagFilterVisible: isVisible,
+      ));
+      
+    case LoadAvailableTags():
+      final allTags = _extractAllTags(model.allImages);
+      return UpdateResult(model.copyWith(
+        availableTags: allTags,
+      ));
+      
+    case TagsLoaded(:final tags):
+      return UpdateResult(model.copyWith(
+        availableTags: tags,
+      ));
+      
+    case TagSelected(:final tag, :final isSelected):
+      List<String> updatedTags;
+      if (isSelected) {
+        updatedTags = List<String>.from(model.selectedTags)..add(tag);
+      } else {
+        updatedTags = model.selectedTags.where((t) => t != tag).toList();
+      }
+      
+      final filtered = _applyAllFilters(model.allImages, model.searchQuery, updatedTags);
+      return UpdateResult(model.copyWith(
+        selectedTags: updatedTags,
+        filteredImages: filtered,
+      ));
+      
+    case ClearTagFilters():
+      final filtered = _filterClothes(model.allImages, model.searchQuery);
+      return UpdateResult(model.copyWith(
+        selectedTags: [],
+        filteredImages: filtered,
+      ));
   }
 
   return UpdateResult(model);
+}
+
+List<String> _extractAllTags(List<SavedImage> images) {
+  final allTags = <String>{};
+  for (final image in images) {
+    allTags.addAll(image.tags);
+  }
+  return allTags.toList()..sort();
+}
+
+List<SavedImage> _applyAllFilters(
+    List<SavedImage> images,
+    String searchQuery,
+    List<String> selectedTags) {
+  var filtered = _filterClothes(images, searchQuery);
+  
+  if (selectedTags.isNotEmpty) {
+    filtered = filtered.where((image) {
+      return selectedTags.every((tag) => image.tags.contains(tag));
+    }).toList();
+  }
+  
+  return filtered;
 }
 
 List<SavedImage> _filterClothes(List<SavedImage> images, String query) {

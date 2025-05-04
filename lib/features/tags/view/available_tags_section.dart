@@ -39,16 +39,25 @@ class AvailableTagsSection extends StatelessWidget {
           children: availableTags.map((tag) {
             return GestureDetector(
               onTap: () => onTagSelected(tag),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.2),
+                  color: AppColors.tagBackground,
                   borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.shadow.withValues(alpha: 0.1),
+                      blurRadius: 3,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
                 ),
                 child: Text(
                   tag,
-                  style: AppTextStyles.body,
+                  style: AppTextStyles.tagText.copyWith(
+                    fontSize: 12,
+                  ),
                 ),
               ),
             );

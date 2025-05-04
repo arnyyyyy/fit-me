@@ -6,18 +6,20 @@ import '../../../utils/app_text_styles.dart';
 import '../message/message.dart';
 import '../effect/runtime.dart';
 
-final searchControllerProvider = Provider.autoDispose<TextEditingController>((ref) {
+final searchControllerProvider =
+    Provider.autoDispose<TextEditingController>((ref) {
   final controller = TextEditingController();
   ref.onDispose(() => controller.dispose());
   return controller;
 });
 
-class WardrobeAppBar extends ConsumerStatefulWidget implements PreferredSizeWidget {
+class WardrobeAppBar extends ConsumerStatefulWidget
+    implements PreferredSizeWidget {
   const WardrobeAppBar({super.key});
 
   @override
   ConsumerState<WardrobeAppBar> createState() => _WardrobeAppBarState();
-  
+
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
@@ -34,9 +36,10 @@ class _WardrobeAppBarState extends ConsumerState<WardrobeAppBar> {
     if (!_isListeningToModel) {
       _isListeningToModel = true;
       controller.text = model.searchQuery;
-      controller.selection = TextSelection.collapsed(offset: model.searchQuery.length);
+      controller.selection =
+          TextSelection.collapsed(offset: model.searchQuery.length);
     }
-    
+
     if (!model.isSearching) {
       _isListeningToModel = false;
     }
@@ -65,6 +68,16 @@ class _WardrobeAppBarState extends ConsumerState<WardrobeAppBar> {
           color: AppColors.icon,
           onPressed: () {
             runtime.dispatch(ToggleSearch(!model.isSearching));
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.filter_list),
+          color: AppColors.icon,
+          onPressed: () {
+            runtime.dispatch(ToggleTagFilter(!model.isTagFilterVisible));
+            if (!model.isTagFilterVisible) {
+              runtime.dispatch(LoadAvailableTags());
+            }
           },
         ),
         IconButton(
