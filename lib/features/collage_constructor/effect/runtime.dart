@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../main/main_screen.dart';
 import '../../wardrobe/model/saved_image.dart';
 import '../model/model.dart';
 import '../message/message.dart';
@@ -43,6 +44,13 @@ class CollagesRuntime {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => effect.destination),
+      );
+    } else if (effect is NavigateToMainScreenEffect) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => MainScreen(initialTabIndex: effect.tabIndex),
+        ),
+        (route) => false,
       );
     } else if (effect is SnackBarEffect) {
       ScaffoldMessenger.of(context).showSnackBar(

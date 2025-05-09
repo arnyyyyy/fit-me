@@ -14,6 +14,12 @@ class NavigationEffect extends CollagesEffect {
   NavigationEffect(this.destination);
 }
 
+class NavigateToMainScreenEffect extends CollagesEffect {
+  final int tabIndex;
+
+  NavigateToMainScreenEffect(this.tabIndex);
+}
+
 class SnackBarEffect extends CollagesEffect {
   final String message;
 
@@ -28,11 +34,11 @@ class LocalizableSnackBarEffect extends CollagesEffect {
 
   String getLocalizedMessage(BuildContext context) {
     final loc = AppLocalizations.of(context);
-    
-    switch(messageKey) {
+
+    switch (messageKey) {
       case 'imagesLoadError':
         return loc.imagesLoadError(args?['message'] ?? '');
-      case 'saveError': 
+      case 'saveError':
         return loc.saveError(args?['message'] ?? '');
       case 'tagsLoadError':
         return loc.tagsLoadError(args?['message'] ?? '');
@@ -62,7 +68,9 @@ UpdateResult update(CollagesModel model, CollagesMessage message) {
     case ImagesLoadError(:final message):
       return UpdateResult(
         model.copyWith(isProcessing: false, error: message),
-        {LocalizableSnackBarEffect('imagesLoadError', {'message': message})},
+        {
+          LocalizableSnackBarEffect('imagesLoadError', {'message': message})
+        },
       );
 
     case AddImagesToCollage(:final images):
@@ -92,15 +100,17 @@ UpdateResult update(CollagesModel model, CollagesMessage message) {
 
     case StartSavingCollage():
     case SaveCollageWithMetadata():
-      return UpdateResult(model.copyWith(
-        isProcessing: true,
-        collageName: message is SaveCollageWithMetadata
-            ? message.name
-            : model.collageName,
-        selectedTags: message is SaveCollageWithMetadata
-            ? message.tags
-            : model.selectedTags,
-      ));
+      return UpdateResult(
+        model.copyWith(
+          isProcessing: true,
+          collageName: message is SaveCollageWithMetadata
+              ? message.name
+              : model.collageName,
+          selectedTags: message is SaveCollageWithMetadata
+              ? message.tags
+              : model.selectedTags,
+        ),
+      );
 
     case CollageImageSaved(:final collageBytes):
       return UpdateResult(
@@ -115,7 +125,9 @@ UpdateResult update(CollagesModel model, CollagesMessage message) {
     case CollageWithMetadataSaveError(:final message):
       return UpdateResult(
         model.copyWith(isProcessing: false, error: message),
-        {LocalizableSnackBarEffect('saveError', {'message': message})},
+        {
+          LocalizableSnackBarEffect('saveError', {'message': message})
+        },
       );
 
     case InitMetaScreen(:final collageBytes):
@@ -135,7 +147,9 @@ UpdateResult update(CollagesModel model, CollagesMessage message) {
     case TagsLoadError(:final message):
       return UpdateResult(
         model.copyWith(isTagsLoading: false, error: message),
-        {LocalizableSnackBarEffect('tagsLoadError', {'message': message})},
+        {
+          LocalizableSnackBarEffect('tagsLoadError', {'message': message})
+        },
       );
 
     case CollageNameChanged(:final name):
@@ -149,7 +163,7 @@ UpdateResult update(CollagesModel model, CollagesMessage message) {
         model.copyWith(isProcessing: false),
         {
           LocalizableSnackBarEffect('imageSaved'),
-          NavigationEffect(const PopNavigator()),
+          NavigateToMainScreenEffect(1),
         },
       );
   }
