@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../model/model.dart';
 import '../message/message.dart';
@@ -24,6 +25,34 @@ class SnackBarEffect extends ImageConstructorEffect {
   final String message;
 
   SnackBarEffect(this.message);
+}
+
+class LocalizableSnackBarEffect extends ImageConstructorEffect {
+  final String messageKey;
+  final Map<String, String>? args;
+
+  LocalizableSnackBarEffect(this.messageKey, [this.args]);
+
+  String getLocalizedMessage(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+
+    switch (messageKey) {
+      case 'imageSelectionError':
+        return loc.imageSelectionError(args?['message'] ?? '');
+      case 'imageLoadError':
+        return loc.imageLoadError;
+      case 'backgroundRemoveError':
+        return loc.backgroundRemoveError(args?['message'] ?? '');
+      case 'imageSaveError':
+        return loc.imageSaveError(args?['message'] ?? '');
+      case 'tagsLoadError':
+        return loc.tagsLoadError(args?['message'] ?? '');
+      case 'imageSaved':
+        return loc.imageSaved;
+      default:
+        return messageKey;
+    }
+  }
 }
 
 class PickImageEffect extends ImageConstructorEffect {}
@@ -62,7 +91,7 @@ UpdateResult update(
           isProcessingImage: false,
           errorMessage: message,
         ),
-        {SnackBarEffect("Ошибка выбора изображения: $message")},
+        {LocalizableSnackBarEffect('imageSelectionError', {'message': message})},
       );
 
     case InitEditorWithImage():
@@ -85,7 +114,7 @@ UpdateResult update(
           isProcessingImage: false,
           errorMessage: message,
         ),
-        {SnackBarEffect("Ошибка загрузки изображения: $message")},
+        {LocalizableSnackBarEffect('imageLoadError', {'message': message})},
       );
 
     case AddErasePoint(:final point):
@@ -116,7 +145,7 @@ UpdateResult update(
           isProcessingImage: false,
           errorMessage: message,
         ),
-        {SnackBarEffect("Ошибка удаления фона: $message")},
+        {LocalizableSnackBarEffect('backgroundRemoveError', {'message': message})},
       );
 
     case SaveEditedImage():
@@ -137,7 +166,7 @@ UpdateResult update(
           isProcessingImage: false,
           errorMessage: message,
         ),
-        {SnackBarEffect("Ошибка сохранения изображения: $message")},
+        {LocalizableSnackBarEffect('imageSaveError', {'message': message})},
       );
 
     case InitMetaScreen(:final imageBytes):
@@ -161,7 +190,7 @@ UpdateResult update(
           isTagsLoading: false,
           errorMessage: message,
         ),
-        {SnackBarEffect("Ошибка загрузки тегов: $message")},
+        {LocalizableSnackBarEffect('tagsLoadError', {'message': message})},
       );
 
     case ChangeImageName(:final name):
@@ -181,7 +210,7 @@ UpdateResult update(
       return UpdateResult(
         model.copyWith(isSaving: false),
         {
-          SnackBarEffect("Изображение сохранено"),
+          LocalizableSnackBarEffect('imageSaved'),
           NavigateToMainScreenEffect(2),
         },
       );
@@ -192,7 +221,7 @@ UpdateResult update(
           isSaving: false,
           errorMessage: message,
         ),
-        {SnackBarEffect("Ошибка сохранения изображения: $message")},
+        {LocalizableSnackBarEffect('imageSaveError', {'message': message})},
       );
   }
 

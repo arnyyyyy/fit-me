@@ -184,5 +184,32 @@
         "type": "String"
       }
     }
+  },
+  "imageSelectionError": "Error selecting image: {message}",
+  "@imageSelectionError": {
+    "description": "Error message when selecting an image",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "backgroundRemoveError": "Error removing background: {message}",
+  "@backgroundRemoveError": {
+    "description": "Error message when removing background",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "imageSaveError": "Error saving image: {message}",
+  "@imageSaveError": {
+    "description": "Error message when saving an image",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
   }
 }
