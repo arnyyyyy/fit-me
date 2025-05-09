@@ -1,0 +1,188 @@
+{
+  "@@locale": "en",
+  "noSelectedTags": "No selected tags",
+  "@noSelectedTags": {
+    "description": "Text displayed when no tags are selected"
+  },
+  "myClothes": "my clothes",
+  "@myClothes": {
+    "description": "Title of the wardrobe screen"
+  },
+  "myCollages": "my collages",
+  "@myCollages": {
+    "description": "Title of the collages screen"
+  },
+  "searchNameOrTags": "name or tags",
+  "@searchNameOrTags": {
+    "description": "Hint for the search field by name or tags"
+  },
+  "activeFilters": "Active filters: {count}",
+  "@activeFilters": {
+    "description": "Text with number of active filters",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "clearFilters": "Clear",
+  "@clearFilters": {
+    "description": "Button to clear filters"
+  },
+  "enterNewTag": "Enter new tag...",
+  "@enterNewTag": {
+    "description": "Hint for the new tag input field"
+  },
+  "noAvailableTags": "No available tags",
+  "@noAvailableTags": {
+    "description": "Message about no available tags"
+  },
+  "availableTags": "Available tags:",
+  "@availableTags": {
+    "description": "Header of the available tags section"
+  },
+  "emptyWardrobe": "the closet is still empty...",
+  "@emptyWardrobe": {
+    "description": "Message about empty wardrobe"
+  },
+  "emptyCollages": "You don't have any collages yet...",
+  "@emptyCollages": {
+    "description": "Message about no collages"
+  },
+  "error": "Something went wrong: {message}",
+  "@error": {
+    "description": "Error message",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "add": "add",
+  "@add": {
+    "description": "Add button"
+  },
+  "save": "save",
+  "@save": {
+    "description": "Save button"
+  },
+  "collageStudio": "collage studio",
+  "@collageStudio": {
+    "description": "Title of the collage creation screen"
+  },
+  "saveCollage": "save collage",
+  "@saveCollage": {
+    "description": "Save collage button text"
+  },
+  "collageName": "collage name...",
+  "@collageName": {
+    "description": "Hint for the collage name field"
+  },
+  "tags": "tags",
+  "@tags": {
+    "description": "Tags section header"
+  },
+  "transparentBackground": "transparent background",
+  "@transparentBackground": {
+    "description": "Transparent background option"
+  },
+  "whiteBackground": "white background",
+  "@whiteBackground": {
+    "description": "White background option"
+  },
+  "blackBackground": "black background",
+  "@blackBackground": {
+    "description": "Black background option"
+  },
+  "selectPhotos": "select photos",
+  "@selectPhotos": {
+    "description": "Title of the photo selection screen"
+  },
+  "editor": "Editor",
+  "@editor": {
+    "description": "Title of the image editor"
+  },
+  "saveImage": "Save image",
+  "@saveImage": {
+    "description": "Title of the image save screen"
+  },
+  "name": "Name",
+  "@name": {
+    "description": "Label for the name input field"
+  },
+  "brushSize": "Brush size",
+  "@brushSize": {
+    "description": "Label for the brush size slider"
+  },
+  "addImage": "Add image",
+  "@addImage": {
+    "description": "Title of the add image screen"
+  },
+  "openGallery": "Open gallery",
+  "@openGallery": {
+    "description": "Open gallery button"
+  },
+  "wardrobeTabLabel": "Wardrobe",
+  "@wardrobeTabLabel": {
+    "description": "Wardrobe tab label"
+  },
+  "collagesTabLabel": "Collages",
+  "@collagesTabLabel": {
+    "description": "Collages tab label"
+  },
+  "addTabLabel": "Add",
+  "@addTabLabel": {
+    "description": "Add tab label"
+  },
+  "saveButton": "Save",
+  "@saveButton": {
+    "description": "Save button text"
+  },
+  "imageLoadError": "Error loading image",
+  "@imageLoadError": {
+    "description": "Image loading error message"
+  },
+  "retryButton": "Retry",
+  "@retryButton": {
+    "description": "Retry button"
+  },
+  "cancelButton": "Cancel",
+  "@cancelButton": {
+    "description": "Cancel button"
+  },
+  "loadingTakesLonger": "Loading takes longer than usual...",
+  "@loadingTakesLonger": {
+    "description": "Message about long loading time"
+  },
+  "imageSaved": "Image saved",
+  "@imageSaved": {
+    "description": "Notification about successful image saving"
+  },
+  "saveError": "Error saving image: {message}",
+  "@saveError": {
+    "description": "Error message when saving image",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "imagesLoadError": "Error loading images: {message}",
+  "@imagesLoadError": {
+    "description": "Error message when loading images",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "tagsLoadError": "Error loading tags: {message}",
+  "@tagsLoadError": {
+    "description": "Error message when loading tags",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../model/model.dart';
 import '../message/message.dart';
@@ -17,6 +18,30 @@ class SnackBarEffect extends CollagesEffect {
   final String message;
 
   SnackBarEffect(this.message);
+}
+
+class LocalizableSnackBarEffect extends CollagesEffect {
+  final String messageKey;
+  final Map<String, String>? args;
+
+  LocalizableSnackBarEffect(this.messageKey, [this.args]);
+
+  String getLocalizedMessage(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+    
+    switch(messageKey) {
+      case 'imagesLoadError':
+        return loc.imagesLoadError(args?['message'] ?? '');
+      case 'saveError': 
+        return loc.saveError(args?['message'] ?? '');
+      case 'tagsLoadError':
+        return loc.tagsLoadError(args?['message'] ?? '');
+      case 'imageSaved':
+        return loc.imageSaved;
+      default:
+        return messageKey;
+    }
+  }
 }
 
 class UpdateResult {
@@ -37,7 +62,7 @@ UpdateResult update(CollagesModel model, CollagesMessage message) {
     case ImagesLoadError(:final message):
       return UpdateResult(
         model.copyWith(isProcessing: false, error: message),
-        {SnackBarEffect("Ошибка загрузки изображений: $message")},
+        {LocalizableSnackBarEffect('imagesLoadError', {'message': message})},
       );
 
     case AddImagesToCollage(:final images):
@@ -90,7 +115,7 @@ UpdateResult update(CollagesModel model, CollagesMessage message) {
     case CollageWithMetadataSaveError(:final message):
       return UpdateResult(
         model.copyWith(isProcessing: false, error: message),
-        {SnackBarEffect("Ошибка сохранения коллажа: $message")},
+        {LocalizableSnackBarEffect('saveError', {'message': message})},
       );
 
     case InitMetaScreen(:final collageBytes):
@@ -110,7 +135,7 @@ UpdateResult update(CollagesModel model, CollagesMessage message) {
     case TagsLoadError(:final message):
       return UpdateResult(
         model.copyWith(isTagsLoading: false, error: message),
-        {SnackBarEffect("Ошибка загрузки тегов: $message")},
+        {LocalizableSnackBarEffect('tagsLoadError', {'message': message})},
       );
 
     case CollageNameChanged(:final name):
@@ -123,7 +148,7 @@ UpdateResult update(CollagesModel model, CollagesMessage message) {
       return UpdateResult(
         model.copyWith(isProcessing: false),
         {
-          SnackBarEffect("Коллаж успешно сохранен"),
+          LocalizableSnackBarEffect('imageSaved'),
           NavigationEffect(const PopNavigator()),
         },
       );

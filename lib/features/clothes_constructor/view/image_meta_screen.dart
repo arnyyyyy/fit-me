@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text_styles.dart';
@@ -46,8 +47,8 @@ class _ImageMetaScreenState extends ConsumerState<ImageMetaScreen> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        title: const Text(
-          "Сохранить изображение",
+        title: Text(
+          AppLocalizations.of(context).saveImage,
           style: AppTextStyles.title,
         ),
         iconTheme: const IconThemeData(color: AppColors.text),
@@ -71,9 +72,9 @@ class _ImageMetaScreenState extends ConsumerState<ImageMetaScreen> {
               controller: _nameController,
               style: AppTextStyles.body,
               decoration: InputDecoration(
-                labelText: "Название",
+                labelText: AppLocalizations.of(context).name,
                 labelStyle: AppTextStyles.body
-                    .copyWith(color: AppColors.text.withValues(alpha: 0.6)),
+                    .copyWith(color: AppColors.text.withOpacity(0.6)),
                 filled: true,
                 fillColor: AppColors.inputBackground,
                 border:
@@ -84,7 +85,7 @@ class _ImageMetaScreenState extends ConsumerState<ImageMetaScreen> {
               },
             ),
             const SizedBox(height: 20),
-            const Text("Теги", style: AppTextStyles.subtitle),
+            Text(AppLocalizations.of(context).tags, style: AppTextStyles.subtitle),
             const SizedBox(height: 8),
             model.isTagsLoading
                 ? const Center(child: CircularProgressIndicator())
@@ -107,7 +108,7 @@ class _ImageMetaScreenState extends ConsumerState<ImageMetaScreen> {
                 ),
                 icon: const Icon(Icons.save, color: Colors.white),
                 label:
-                    const Text("Сохранить", style: AppTextStyles.buttonWhite),
+                    Text(AppLocalizations.of(context).saveButton, style: AppTextStyles.buttonWhite),
                 onPressed: model.isSaving
                     ? null
                     : () {

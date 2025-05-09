@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text_styles.dart';
 import '../../../features/tags/tags.dart';
@@ -46,7 +47,7 @@ class _CollageMetaScreenState extends ConsumerState<CollageMetaScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text("save collage", style: AppTextStyles.appBarTitle),
+        title: Text(AppLocalizations.of(context).saveCollage, style: AppTextStyles.appBarTitle),
         iconTheme: const IconThemeData(color: AppColors.icon),
       ),
       body: SingleChildScrollView(
@@ -69,7 +70,7 @@ class _CollageMetaScreenState extends ConsumerState<CollageMetaScreen> {
               cursorColor: AppColors.icon,
               style: AppTextStyles.imageTitle,
               decoration: InputDecoration(
-                hintText: "collage name...",
+                hintText: AppLocalizations.of(context).collageName,
                 hintStyle: AppTextStyles.emptyText,
                 filled: true,
                 fillColor: AppColors.cardBackground,
@@ -87,7 +88,7 @@ class _CollageMetaScreenState extends ConsumerState<CollageMetaScreen> {
               },
             ),
             const SizedBox(height: 20),
-            const Text("tags", style: AppTextStyles.imageTitle),
+            Text(AppLocalizations.of(context).tags, style: AppTextStyles.imageTitle),
             const SizedBox(height: 8),
             model.isTagsLoading
                 ? const Center(child: CircularProgressIndicator())
@@ -114,9 +115,9 @@ class _CollageMetaScreenState extends ConsumerState<CollageMetaScreen> {
                     elevation: 2,
                   ),
                   icon: const Icon(Icons.save, color: Colors.white),
-                  label: const Text(
-                    "save collage",
-                    style: TextStyle(
+                  label: Text(
+                    AppLocalizations.of(context).saveCollage,
+                    style: const TextStyle(
                       fontFamily: 'Futura',
                       color: Colors.white,
                       fontSize: 16,

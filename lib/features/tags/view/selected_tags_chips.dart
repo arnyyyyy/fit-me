@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text_styles.dart';
 
@@ -15,11 +16,11 @@ class SelectedTagsChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (selectedTags.isEmpty) {
-      return const SizedBox(
+      return SizedBox(
         width: double.infinity,
         child: Text(
-          'Нет выбранных тегов',
-          style: TextStyle(
+          AppLocalizations.of(context).noSelectedTags,
+          style: const TextStyle(
               color: AppColors.emptyText, fontStyle: FontStyle.italic),
         ),
       );

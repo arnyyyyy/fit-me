@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text_styles.dart';
 
@@ -15,11 +16,11 @@ class AvailableTagsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (availableTags.isEmpty) {
-      return const SizedBox(
+      return SizedBox(
         width: double.infinity,
         child: Text(
-          'Нет доступных тегов',
-          style: TextStyle(
+          AppLocalizations.of(context).noAvailableTags,
+          style: const TextStyle(
               color: AppColors.emptyText, fontStyle: FontStyle.italic),
         ),
       );
@@ -28,8 +29,8 @@ class AvailableTagsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Доступные теги:',
+        Text(
+          AppLocalizations.of(context).availableTags,
           style: AppTextStyles.subtitle,
         ),
         const SizedBox(height: 8),

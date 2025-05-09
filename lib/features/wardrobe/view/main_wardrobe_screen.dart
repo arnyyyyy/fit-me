@@ -4,6 +4,7 @@ import 'package:fit_me/features/wardrobe/message/message.dart';
 import 'package:fit_me/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../utils/app_text_styles.dart';
 import '../../../widgets/search_app_bar.dart';
@@ -49,8 +50,8 @@ class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
     return Scaffold(
       backgroundColor: AppColors.wardrobeBackground,
       appBar: SearchAppBar(
-        title: "my clothes",
-        hintText: "name or tags",
+        title: AppLocalizations.of(context).myClothes,
+        hintText: AppLocalizations.of(context).searchNameOrTags,
         model: model,
         controller: controller,
         onSearchChanged: (query) => runtime.dispatch(SearchQueryChanged(query)),
@@ -103,7 +104,7 @@ class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Активные фильтры: ${model.selectedTags.length}',
+                    AppLocalizations.of(context).activeFilters(model.selectedTags.length),
                     style: AppTextStyles.subtitle.copyWith(
                       color: AppColors.tagText,
                       fontWeight: FontWeight.w500,
@@ -111,7 +112,7 @@ class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
                   ),
                   TextButton.icon(
                     icon: const Icon(Icons.clear_all, size: 18),
-                    label: const Text('Очистить'),
+                    label: Text(AppLocalizations.of(context).clearFilters),
                     onPressed: () {
                       runtime.dispatch(ClearTagFilters());
                     },
@@ -177,7 +178,7 @@ class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
     if (model.errorMessage != null) {
       return Center(
         child: Text(
-          "smth went wrong: ${model.errorMessage}",
+          AppLocalizations.of(context).error(model.errorMessage!),
           style: AppTextStyles.emptyText,
         ),
       );
@@ -196,9 +197,9 @@ class EmptyWardrobeMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Text(
-        "the closet is still empty...",
+        AppLocalizations.of(context).emptyWardrobe,
         style: AppTextStyles.emptyText,
       ),
     );

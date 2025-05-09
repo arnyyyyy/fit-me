@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text_styles.dart';
 
@@ -20,7 +21,7 @@ class TagInputField extends StatelessWidget {
           child: TextField(
             controller: controller,
             decoration: InputDecoration(
-              hintText: 'Введите новый тег...',
+              hintText: AppLocalizations.of(context).enterNewTag,
               hintStyle: AppTextStyles.subtitle.copyWith(
                 color: AppColors.text.withValues(alpha: 0.5),
                 fontStyle: FontStyle.italic,

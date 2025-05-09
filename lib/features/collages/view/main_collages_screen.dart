@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text_styles.dart';
@@ -48,8 +49,8 @@ class _CollagesScreenState extends ConsumerState<CollagesScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: SearchAppBar(
-        title: "my collages",
-        hintText: "name or tags",
+        title: AppLocalizations.of(context).myCollages,
+        hintText: AppLocalizations.of(context).searchNameOrTags,
         model: model,
         controller: controller,
         onSearchChanged: (query) => runtime.dispatch(SearchQueryChanged(query)),
@@ -102,7 +103,7 @@ class _CollagesScreenState extends ConsumerState<CollagesScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Активные фильтры: ${model.selectedTags.length}',
+                    AppLocalizations.of(context).activeFilters(model.selectedTags.length),
                     style: AppTextStyles.subtitle.copyWith(
                       color: AppColors.tagText,
                       fontWeight: FontWeight.w500,
@@ -110,7 +111,7 @@ class _CollagesScreenState extends ConsumerState<CollagesScreen> {
                   ),
                   TextButton.icon(
                     icon: const Icon(Icons.clear_all, size: 18),
-                    label: const Text('Очистить'),
+                    label: Text(AppLocalizations.of(context).clearFilters),
                     onPressed: () {
                       runtime.dispatch(ClearTagFilters());
                     },
@@ -176,7 +177,7 @@ class _CollagesScreenState extends ConsumerState<CollagesScreen> {
     if (model.errorMessage != null) {
       return Center(
         child: Text(
-          "Что-то пошло не так: ${model.errorMessage}",
+          AppLocalizations.of(context).error(model.errorMessage!),
           style: AppTextStyles.emptyText,
         ),
       );
@@ -195,9 +196,9 @@ class EmptyCollagesMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Text(
-        "У вас пока нет коллажей...",
+        AppLocalizations.of(context).emptyCollages,
         style: AppTextStyles.emptyText,
       ),
     );

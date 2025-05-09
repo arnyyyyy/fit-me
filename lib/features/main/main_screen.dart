@@ -1,5 +1,6 @@
 import 'package:fit_me/features/collage_constructor/view/collage_constructor_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_text_styles.dart';
 import '../wardrobe/view/main_wardrobe_screen.dart';
@@ -65,22 +66,22 @@ class _MainScreenState extends State<MainScreen>
           unselectedLabelStyle: AppTextStyles.navLabel,
           type: BottomNavigationBarType.fixed,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.add_photo_alternate_outlined,
+              icon: const Icon(Icons.add_photo_alternate_outlined,
                   color: AppColors.tagText),
-              label: 'Добавить',
+              label: AppLocalizations.of(context).addTabLabel,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.image_outlined, color: AppColors.tagText),
-              label: 'Коллажи',
+              icon: const Icon(Icons.image_outlined, color: AppColors.tagText),
+              label: AppLocalizations.of(context).collagesTabLabel,
             ),
             BottomNavigationBarItem(
-              icon: Icon(
+              icon: const Icon(
                 Icons.checkroom_outlined,
                 color: AppColors.tagText,
               ),
-              label: 'Гардероб',
+              label: AppLocalizations.of(context).wardrobeTabLabel,
             ),
           ],
         ),

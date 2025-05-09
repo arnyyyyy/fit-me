@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text_styles.dart';
@@ -35,14 +36,14 @@ class SelectImageScreen extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text("Добавить изображение", style: AppTextStyles.appBarTitle),
+        title: Text(AppLocalizations.of(context).addImage, style: AppTextStyles.appBarTitle),
       ),
       body: Center(
         child: ElevatedButton.icon(
           onPressed: () => _pickImage(context),
           icon: const Icon(Icons.photo_library, color: Colors.white),
-          label: const Text(
-            'Открыть галерею',
+          label: Text(
+            AppLocalizations.of(context).openGallery,
             style: AppTextStyles.buttonWhite,
           ),
           style: ElevatedButton.styleFrom(

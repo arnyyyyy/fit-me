@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../widgets/positioned_draggable_image.dart';
 import '../../../widgets/checkerboard_painter.dart';
@@ -38,7 +39,7 @@ class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> 
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('collage studio', style: AppTextStyles.appBarTitle),
+        title: Text(AppLocalizations.of(context).collageStudio, style: AppTextStyles.appBarTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.save_alt),
@@ -49,18 +50,18 @@ class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> 
             onSelected: (value) {
               runtime.dispatch(ChangeCollageBackground(value));
             },
-            itemBuilder: (context) => const [
+            itemBuilder: (context) => [
               PopupMenuItem(
                 value: CollageBackground.transparent,
-                child: Text("прозрачный фон"),
+                child: Text(AppLocalizations.of(context).transparentBackground),
               ),
               PopupMenuItem(
                 value: CollageBackground.white,
-                child: Text("белый фон"),
+                child: Text(AppLocalizations.of(context).whiteBackground),
               ),
               PopupMenuItem(
                 value: CollageBackground.black,
-                child: Text("чёрный фон"),
+                child: Text(AppLocalizations.of(context).blackBackground),
               ),
             ],
           ),
@@ -129,8 +130,7 @@ class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> 
         },
         icon: const Icon(Icons.add_photo_alternate_outlined,
             color: AppColors.tagText),
-        label:
-            const Text("добавить", style: TextStyle(color: AppColors.tagText)),
+        label: Text(AppLocalizations.of(context).add, style: const TextStyle(color: AppColors.tagText)),
         backgroundColor: AppColors.background,
       ),
     );

@@ -48,6 +48,10 @@ class CollagesRuntime {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(effect.message)),
       );
+    } else if (effect is LocalizableSnackBarEffect) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(effect.getLocalizedMessage(context))),
+      );
     }
   }
 

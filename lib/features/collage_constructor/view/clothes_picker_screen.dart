@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text_styles.dart';
@@ -23,7 +24,7 @@ class _ClothesPickerScreenState extends State<ClothesPickerScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text("выберите фото", style: AppTextStyles.appBarTitle),
+        title: Text(AppLocalizations.of(context).selectPhotos, style: AppTextStyles.appBarTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.check_rounded),

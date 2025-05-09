@@ -2,6 +2,7 @@ import 'dart:ui' as ui;
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text_styles.dart';
@@ -90,7 +91,7 @@ class _ImageEditorScreenState extends ConsumerState<ImageEditorScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Редактор", style: AppTextStyles.title),
+        title: Text(AppLocalizations.of(context).editor, style: AppTextStyles.title),
         backgroundColor: AppColors.background,
         iconTheme: const IconThemeData(color: AppColors.text),
         actions: [
@@ -125,8 +126,8 @@ class _ImageEditorScreenState extends ConsumerState<ImageEditorScreen> {
                   const Icon(Icons.error_outline,
                       color: AppColors.primary, size: 48),
                   const SizedBox(height: 16),
-                  const Text(
-                    "Ошибка загрузки изображения",
+                  Text(
+                    AppLocalizations.of(context).imageLoadError,
                     style: AppTextStyles.subtitle,
                   ),
                   const SizedBox(height: 8),
@@ -138,7 +139,7 @@ class _ImageEditorScreenState extends ConsumerState<ImageEditorScreen> {
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: _retryLoading,
-                    child: const Text("Повторить"),
+                    child: Text(AppLocalizations.of(context).retryButton),
                   ),
                 ],
               ),
@@ -150,20 +151,20 @@ class _ImageEditorScreenState extends ConsumerState<ImageEditorScreen> {
                 children: [
                   const CircularProgressIndicator(),
                   const SizedBox(height: 24),
-                  const Text(
-                    "Загрузка занимает больше времени, чем обычно...",
+                  Text(
+                    AppLocalizations.of(context).loadingTakesLonger,
                     style: AppTextStyles.body,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _retryLoading,
-                    child: const Text("Повторить"),
+                    child: Text(AppLocalizations.of(context).retryButton),
                   ),
                   const SizedBox(height: 8),
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text("Отмена"),
+                    child: Text(AppLocalizations.of(context).cancelButton),
                   ),
                 ],
               ),
@@ -235,7 +236,7 @@ class _ImageEditorScreenState extends ConsumerState<ImageEditorScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Размер кисти",
+                    AppLocalizations.of(context).brushSize,
                     style: AppTextStyles.subtitle.copyWith(
                       fontWeight: FontWeight.w500,
                       color: AppColors.text,
