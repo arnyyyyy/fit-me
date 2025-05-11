@@ -211,5 +211,49 @@
         "type": "String"
       }
     }
+  },
+  "editItem": "Edit item",
+  "@editItem": {
+    "description": "Title of the edit item screen"
+  },
+  "editCollage": "Edit collage",
+  "@editCollage": {
+    "description": "Title of the edit collage screen"
+  },
+  "deleteItem": "Delete item",
+  "@deleteItem": {
+    "description": "Title of the delete item dialog"
+  },
+  "deleteCollage": "Delete collage",
+  "@deleteCollage": {
+    "description": "Title of the delete collage dialog"
+  },
+  "deleteItemConfirmation": "Are you sure you want to delete this item?",
+  "@deleteItemConfirmation": {
+    "description": "Confirmation message for deleting an item"
+  },
+  "deleteCollageConfirmation": "Are you sure you want to delete this collage?",
+  "@deleteCollageConfirmation": {
+    "description": "Confirmation message for deleting a collage"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  "itemNameLabel": "Item name",
+  "@itemNameLabel": {
+    "description": "Label for item name input field"
+  },
+  "collageNameLabel": "Collage name",
+  "@collageNameLabel": {
+    "description": "Label for collage name input field"
+  },
+  "tagsLabel": "Tags",
+  "@tagsLabel": {
+    "description": "Label for tags section"
   }
 }

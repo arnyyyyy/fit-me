@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text_styles.dart';
@@ -6,11 +6,13 @@ import '../../../utils/app_text_styles.dart';
 class TagChip extends StatelessWidget {
   final String label;
   final bool isMoreTag;
+  final VoidCallback? onDeleted;
 
   const TagChip({
     super.key,
     required this.label,
     this.isMoreTag = false,
+    this.onDeleted,
   });
 
   @override
@@ -22,9 +24,33 @@ class TagChip extends StatelessWidget {
             isMoreTag ? AppColors.moreTagBackground : AppColors.cardBackground,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Text(
-        label,
-        style: AppTextStyles.tagText,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            label,
+            style: AppTextStyles.tagText,
+          ),
+          if (onDeleted != null) ...[
+            const SizedBox(width: 4),
+            InkWell(
+              onTap: onDeleted,
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                padding: const EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                  color: AppColors.tagText.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.close,
+                  size: 12,
+                  color: AppTextStyles.tagText.color,
+                ),
+              ),
+            ),
+          ],
+        ],
       ),
     );
   }

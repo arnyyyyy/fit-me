@@ -34,6 +34,12 @@ class AddImage extends Message {
   AddImage(this.image);
 }
 
+class RemoveImage extends Message {
+  final SavedImage image;
+
+  RemoveImage(this.image);
+}
+
 class NavigateToAddImage extends Message {}
 
 class ToggleTagFilter extends Message {
@@ -58,3 +64,15 @@ class TagSelected extends Message {
 }
 
 class ClearTagFilters extends Message {}
+
+class EditImage extends Message {
+  final SavedImage image;
+
+  EditImage(this.image);
+}
+
+class ShowDeleteConfirmation extends Message {
+  final SavedImage image;
+
+  ShowDeleteConfirmation(this.image);
+}

@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../model/saved_image.dart';
+import '../message/message.dart';
 import 'clothes_card.dart';
 
 class WardrobeGrid extends ConsumerWidget {
   final List<SavedImage> images;
+  final Function(Message) onMessage;
 
-  const WardrobeGrid({super.key, required this.images});
+  const WardrobeGrid({
+    super.key, 
+    required this.images,
+    required this.onMessage,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +27,10 @@ class WardrobeGrid extends ConsumerWidget {
       ),
       itemCount: images.length,
       itemBuilder: (context, index) {
-        return ClothesCard(savedImage: images[index]);
+        return ClothesCard(
+          savedImage: images[index],
+          onMessage: onMessage,
+        );
       },
     );
   }

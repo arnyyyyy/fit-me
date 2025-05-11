@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../model/saved_collage.dart';
+import '../message/message.dart';
 import 'collage_card.dart';
 
 class CollagesGrid extends ConsumerWidget {
   final List<SavedCollage> collages;
+  final Function(Message) onMessage;
 
-  const CollagesGrid({super.key, required this.collages});
+  const CollagesGrid({
+    super.key, 
+    required this.collages,
+    required this.onMessage,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +27,10 @@ class CollagesGrid extends ConsumerWidget {
       ),
       itemCount: collages.length,
       itemBuilder: (context, index) {
-        return CollageCard(savedCollage: collages[index]);
+        return CollageCard(
+          savedCollage: collages[index],
+          onMessage: onMessage,
+        );
       },
     );
   }

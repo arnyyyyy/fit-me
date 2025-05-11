@@ -34,6 +34,12 @@ class AddCollage extends Message {
   AddCollage(this.collage);
 }
 
+class RemoveCollage extends Message {
+  final SavedCollage collage;
+
+  RemoveCollage(this.collage);
+}
+
 class NavigateToCreateCollage extends Message {}
 
 class ToggleTagFilter extends Message {
@@ -58,3 +64,15 @@ class TagSelected extends Message {
 }
 
 class ClearTagFilters extends Message {}
+
+class EditCollage extends Message {
+  final SavedCollage collage;
+
+  EditCollage(this.collage);
+}
+
+class ShowDeleteConfirmation extends Message {
+  final SavedCollage collage;
+
+  ShowDeleteConfirmation(this.collage);
+}

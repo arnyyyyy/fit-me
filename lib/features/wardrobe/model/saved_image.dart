@@ -5,13 +5,13 @@ part 'saved_image.g.dart';
 @HiveType(typeId: 0)
 class SavedImage extends HiveObject {
   @HiveField(0)
-  String name;
+  final String name;
 
   @HiveField(1)
-  String imagePath;
+  final String imagePath;
 
   @HiveField(2)
-  List<String> tags;
+  final List<String> tags;
 
   SavedImage({
     required this.name,

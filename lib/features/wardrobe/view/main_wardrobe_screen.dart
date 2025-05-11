@@ -27,11 +27,14 @@ class WardrobeScreen extends ConsumerStatefulWidget {
 }
 
 class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
+  late Runtime runtime;
+
   @override
   void initState() {
     super.initState();
+    runtime = Runtime(context, ref);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final runtime = Runtime(context, ref);
       runtime.loadImages();
     });
   }
@@ -39,13 +42,11 @@ class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
   @override
   Widget build(BuildContext context) {
     final model = ref.watch(modelProvider);
+    final controller = ref.watch(searchControllerProvider);
 
     for (var cloth in model.filteredClothes) {
       precacheImage(FileImage(File(cloth.imagePath)), context);
     }
-
-    final runtime = Runtime(context, ref);
-    final controller = ref.watch(searchControllerProvider);
 
     return Scaffold(
       backgroundColor: AppColors.wardrobeBackground,
@@ -69,18 +70,16 @@ class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
       body: Column(
         children: [
           if (model.isTagFilterVisible && model.availableTags.isNotEmpty)
-            _buildTagFilterBar(model),
+            _buildTagFilterBar(model, runtime),
           Expanded(
-            child: _buildBody(model),
+            child: _buildBody(model, runtime),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildTagFilterBar(ClothesModel model) {
-    final runtime = Runtime(context, ref);
-
+  Widget _buildTagFilterBar(ClothesModel model, Runtime runtime) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(
@@ -104,7 +103,8 @@ class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    AppLocalizations.of(context).activeFilters(model.selectedTags.length),
+                    AppLocalizations.of(context)
+                        .activeFilters(model.selectedTags.length),
                     style: AppTextStyles.subtitle.copyWith(
                       color: AppColors.tagText,
                       fontWeight: FontWeight.w500,
@@ -170,7 +170,7 @@ class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
     );
   }
 
-  Widget _buildBody(ClothesModel model) {
+  Widget _buildBody(ClothesModel model, Runtime runtime) {
     if (model.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -188,7 +188,10 @@ class _WardrobeScreen extends ConsumerState<WardrobeScreen> {
       return const EmptyWardrobeMessage();
     }
 
-    return WardrobeGrid(images: model.filteredClothes);
+    return WardrobeGrid(
+      images: model.filteredClothes,
+      onMessage: (message) => runtime.dispatch(message),
+    );
   }
 }
 

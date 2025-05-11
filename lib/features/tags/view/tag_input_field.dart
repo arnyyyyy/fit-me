@@ -3,15 +3,36 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text_styles.dart';
 
-class TagInputField extends StatelessWidget {
-  final TextEditingController controller;
+class TagInputField extends StatefulWidget {
+  final TextEditingController? controller;
   final ValueChanged<String> onTagAdded;
 
   const TagInputField({
     super.key,
-    required this.controller,
+    this.controller,
     required this.onTagAdded,
   });
+
+  @override
+  State<TagInputField> createState() => _TagInputFieldState();
+}
+
+class _TagInputFieldState extends State<TagInputField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller ?? TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    if (widget.controller == null) {
+      _controller.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +40,7 @@ class TagInputField extends StatelessWidget {
       children: [
         Expanded(
           child: TextField(
-            controller: controller,
+            controller: _controller,
             decoration: InputDecoration(
               hintText: AppLocalizations.of(context).enterNewTag,
               hintStyle: AppTextStyles.subtitle.copyWith(
@@ -53,7 +74,8 @@ class TagInputField extends StatelessWidget {
             ),
             onSubmitted: (value) {
               if (value.trim().isNotEmpty) {
-                onTagAdded(value.trim());
+                widget.onTagAdded(value.trim());
+                _controller.clear();
               }
             },
             style: AppTextStyles.body,
@@ -93,10 +115,10 @@ class TagInputField extends StatelessWidget {
   }
 
   void _addTag() {
-    final text = controller.text.trim();
+    final text = _controller.text.trim();
     if (text.isNotEmpty) {
-      onTagAdded(text);
-      controller.clear();
+      widget.onTagAdded(text);
+      _controller.clear();
     }
   }
 }

@@ -27,11 +27,14 @@ class CollagesScreen extends ConsumerStatefulWidget {
 }
 
 class _CollagesScreenState extends ConsumerState<CollagesScreen> {
+  late Runtime runtime;
+
   @override
   void initState() {
     super.initState();
+    runtime = Runtime(context, ref);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final runtime = Runtime(context, ref);
       runtime.loadCollages();
     });
   }
@@ -39,7 +42,6 @@ class _CollagesScreenState extends ConsumerState<CollagesScreen> {
   @override
   Widget build(BuildContext context) {
     final model = ref.watch(collagesModelProvider);
-    final runtime = Runtime(context, ref);
     final controller = ref.watch(searchControllerProvider);
 
     for (var collage in model.filteredCollages) {
@@ -68,18 +70,16 @@ class _CollagesScreenState extends ConsumerState<CollagesScreen> {
       body: Column(
         children: [
           if (model.isTagFilterVisible && model.availableTags.isNotEmpty)
-            _buildTagFilterBar(model),
+            _buildTagFilterBar(model, runtime),
           Expanded(
-            child: _buildBody(model),
+            child: _buildBody(model, runtime),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildTagFilterBar(CollagesModel model) {
-    final runtime = Runtime(context, ref);
-
+  Widget _buildTagFilterBar(CollagesModel model, Runtime runtime) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(
@@ -103,7 +103,8 @@ class _CollagesScreenState extends ConsumerState<CollagesScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    AppLocalizations.of(context).activeFilters(model.selectedTags.length),
+                    AppLocalizations.of(context)
+                        .activeFilters(model.selectedTags.length),
                     style: AppTextStyles.subtitle.copyWith(
                       color: AppColors.tagText,
                       fontWeight: FontWeight.w500,
@@ -169,7 +170,7 @@ class _CollagesScreenState extends ConsumerState<CollagesScreen> {
     );
   }
 
-  Widget _buildBody(CollagesModel model) {
+  Widget _buildBody(CollagesModel model, Runtime runtime) {
     if (model.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -187,7 +188,10 @@ class _CollagesScreenState extends ConsumerState<CollagesScreen> {
       return const EmptyCollagesMessage();
     }
 
-    return CollagesGrid(collages: model.filteredCollages);
+    return CollagesGrid(
+      collages: model.filteredCollages,
+      onMessage: (message) => runtime.dispatch(message),
+    );
   }
 }
 
