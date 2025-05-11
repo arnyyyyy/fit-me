@@ -1,3 +1,4 @@
+import 'package:fit_me/core/common/base_runtime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
@@ -13,12 +14,13 @@ final collagesModelProvider =
 
 typedef EffectHandler = void Function(Effect effect);
 
-class Runtime {
+class Runtime extends BaseRuntime<Message> {
   final WidgetRef ref;
   final BuildContext context;
 
   Runtime(this.context, this.ref);
 
+  @override
   void dispatch(Message message) {
     final currentModel = ref.read(collagesModelProvider);
     final result = update(currentModel, message);

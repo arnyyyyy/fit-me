@@ -71,7 +71,7 @@ class _CollagesScreenState extends ConsumerState<CollagesScreen> {
       body: Column(
         children: [
           if (model.isTagFilterVisible && model.availableTags.isNotEmpty)
-            const TagFilterBar(),
+            const TgFilterBar(),
           Expanded(
             child: _buildBody(model, runtime),
           ),

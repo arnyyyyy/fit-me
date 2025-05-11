@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../core/common/base_runtime.dart';
 import '../model/model.dart';
 import '../message/message.dart';
 import '../update/update.dart';
@@ -13,7 +14,7 @@ final modelProvider =
 
 typedef EffectHandler = void Function(Effect effect);
 
-class Runtime {
+class Runtime extends BaseRuntime<Message> {
   final WidgetRef ref;
   final BuildContext context;
 

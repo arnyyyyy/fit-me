@@ -1,6 +1,8 @@
+import 'package:fit_me/core/common/base_message.dart';
+
 import '../model/saved_image.dart';
 
-abstract class Message {}
+abstract class Message extends BaseMessage{}
 
 class LoadImages extends Message {}
 
