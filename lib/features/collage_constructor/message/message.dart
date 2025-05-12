@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:fit_me/core/common/base_message.dart';
+
 import '../../collages/model/saved_collage.dart';
 import '../model/model.dart';
 
-abstract class CollagesMessage {}
+abstract class CollagesMessage extends BaseMessage {}
 
 class InitCollageScreen extends CollagesMessage {}
 
@@ -19,6 +21,35 @@ class ImagesLoadError extends CollagesMessage {
 
   ImagesLoadError(this.message);
 }
+
+class ToggleSearch extends CollagesMessage {
+  final bool isSearching;
+
+  ToggleSearch(this.isSearching);
+}
+
+class SearchQueryChanged extends CollagesMessage {
+  final String query;
+
+  SearchQueryChanged(this.query);
+}
+
+class LoadAvailableTags extends CollagesMessage {}
+
+class TagsLoaded extends CollagesMessage {
+  final List<String> tags;
+
+  TagsLoaded(this.tags);
+}
+
+class TagSelected extends CollagesMessage {
+  final String tag;
+  final bool isSelected;
+
+  TagSelected(this.tag, this.isSelected);
+}
+
+class ClearTagFilters extends CollagesMessage {}
 
 class AddImagesToCollage extends CollagesMessage {
   final List<File> images;
@@ -65,12 +96,6 @@ class InitMetaScreen extends CollagesMessage {
 }
 
 class LoadTags extends CollagesMessage {}
-
-class TagsLoaded extends CollagesMessage {
-  final List<String> tags;
-
-  TagsLoaded(this.tags);
-}
 
 class TagsLoadError extends CollagesMessage {
   final String message;

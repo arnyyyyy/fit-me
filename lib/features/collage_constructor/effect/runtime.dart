@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../core/common/base_runtime.dart';
 import '../../main/main_screen.dart';
 import '../../wardrobe/model/saved_image.dart';
 import '../model/model.dart';
@@ -18,12 +19,13 @@ import '../../collages/model/saved_collage.dart';
 final collagesModelProvider =
     StateProvider<CollagesModel>((ref) => const CollagesModel());
 
-class CollagesRuntime {
+class CollagesRuntime extends BaseRuntime<CollagesMessage> {
   final WidgetRef ref;
   final BuildContext context;
 
   CollagesRuntime(this.context, this.ref);
 
+  @override
   void dispatch(CollagesMessage message) {
     final currentModel = ref.read(collagesModelProvider);
     final result = update(currentModel, message);
