@@ -88,7 +88,7 @@ class _ImageMetaScreenState extends ConsumerState<ImageMetaScreen> {
             TextField(
               controller: _nameController,
               style: AppTextStyles.body,
-              maxLength: 20,
+              maxLength: 12,
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context).name,
                 labelStyle: AppTextStyles.body
