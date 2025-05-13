@@ -83,6 +83,7 @@ class _CollageMetaScreenState extends ConsumerState<CollageMetaScreen> {
               controller: _nameController,
               cursorColor: AppColors.icon,
               style: AppTextStyles.imageTitle,
+              maxLength: 20,
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context).collageName,
                 hintStyle: AppTextStyles.emptyText,
