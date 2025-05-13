@@ -47,8 +47,22 @@ class _CollageMetaScreenState extends ConsumerState<CollageMetaScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text(AppLocalizations.of(context).saveCollage, style: AppTextStyles.appBarTitle),
+        title: Text(AppLocalizations.of(context).saveCollage,
+            style: AppTextStyles.appBarTitle),
         iconTheme: const IconThemeData(color: AppColors.icon),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save, color: AppColors.primary),
+            onPressed: () {
+              final name = _nameController.text.trim();
+              if (name.isEmpty) return;
+
+              runtime.saveCollageWithMetadata(
+                  name, model.selectedTags, widget.collageBytes);
+            },
+          ),
+          const SizedBox(width: 10)
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
@@ -88,7 +102,8 @@ class _CollageMetaScreenState extends ConsumerState<CollageMetaScreen> {
               },
             ),
             const SizedBox(height: 20),
-            Text(AppLocalizations.of(context).tags, style: AppTextStyles.imageTitle),
+            Text(AppLocalizations.of(context).tags,
+                style: AppTextStyles.imageTitle),
             const SizedBox(height: 8),
             model.isTagsLoading
                 ? const Center(child: CircularProgressIndicator())
@@ -102,41 +117,9 @@ class _CollageMetaScreenState extends ConsumerState<CollageMetaScreen> {
             const SizedBox(height: 28),
             if (model.isProcessing)
               const Center(child: CircularProgressIndicator())
-            else
-              Center(
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.icon,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 14),
-                    elevation: 2,
-                  ),
-                  icon: const Icon(Icons.save, color: Colors.white),
-                  label: Text(
-                    AppLocalizations.of(context).saveCollage,
-                    style: const TextStyle(
-                      fontFamily: 'Futura',
-                      color: Colors.white,
-                      fontSize: 16,
-                      letterSpacing: 1.1,
-                    ),
-                  ),
-                  onPressed: () {
-                    final name = _nameController.text.trim();
-                    if (name.isEmpty) return;
-
-                    runtime.saveCollageWithMetadata(
-                        name, model.selectedTags, widget.collageBytes);
-                  },
-                ),
-              ),
           ],
         ),
       ),
     );
   }
 }
-

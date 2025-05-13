@@ -31,7 +31,7 @@ class AvailableTagsSection extends StatelessWidget {
       children: [
         Text(
           AppLocalizations.of(context).availableTags,
-          style: AppTextStyles.subtitle,
+          style: AppTextStyles.subtitle.copyWith(color: Colors.black),
         ),
         const SizedBox(height: 8),
         Wrap(

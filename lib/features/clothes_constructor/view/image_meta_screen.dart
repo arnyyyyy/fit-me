@@ -52,6 +52,23 @@ class _ImageMetaScreenState extends ConsumerState<ImageMetaScreen> {
           style: AppTextStyles.title,
         ),
         iconTheme: const IconThemeData(color: AppColors.text),
+        actions: [
+          IconButton(
+              icon: const Icon(Icons.save, color: AppColors.primary),
+              onPressed: model.isSaving
+                  ? null
+                  : () {
+                      final name = _nameController.text.trim();
+                      if (name.isEmpty) return;
+
+                      runtime.saveImageWithMeta(
+                        name,
+                        model.selectedTags,
+                        widget.imageBytes,
+                      );
+                    }),
+          const SizedBox(width: 10)
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
@@ -74,7 +91,7 @@ class _ImageMetaScreenState extends ConsumerState<ImageMetaScreen> {
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context).name,
                 labelStyle: AppTextStyles.body
-                    .copyWith(color: AppColors.text.withOpacity(0.6)),
+                    .copyWith(color: AppColors.text.withValues(alpha: 0.6)),
                 filled: true,
                 fillColor: AppColors.inputBackground,
                 border:
@@ -85,7 +102,8 @@ class _ImageMetaScreenState extends ConsumerState<ImageMetaScreen> {
               },
             ),
             const SizedBox(height: 20),
-            Text(AppLocalizations.of(context).tags, style: AppTextStyles.subtitle),
+            Text(AppLocalizations.of(context).tags,
+                style: AppTextStyles.subtitle),
             const SizedBox(height: 8),
             model.isTagsLoading
                 ? const Center(child: CircularProgressIndicator())
@@ -97,32 +115,32 @@ class _ImageMetaScreenState extends ConsumerState<ImageMetaScreen> {
                     },
                   ),
             const SizedBox(height: 30),
-            Center(
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16)),
-                ),
-                icon: const Icon(Icons.save, color: Colors.white),
-                label:
-                    Text(AppLocalizations.of(context).saveButton, style: AppTextStyles.buttonWhite),
-                onPressed: model.isSaving
-                    ? null
-                    : () {
-                        final name = _nameController.text.trim();
-                        if (name.isEmpty) return;
-
-                        runtime.saveImageWithMeta(
-                          name,
-                          model.selectedTags,
-                          widget.imageBytes,
-                        );
-                      },
-              ),
-            ),
+            // Center(
+            //   child: ElevatedButton.icon(
+            //     style: ElevatedButton.styleFrom(
+            //       backgroundColor: AppColors.primary,
+            //       padding:
+            //           const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+            //       shape: RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(16)),
+            //     ),
+            //     icon: const Icon(Icons.save, color: Colors.white),
+            //     label:
+            //         Text(AppLocalizations.of(context).saveButton, style: AppTextStyles.buttonWhite),
+            //     onPressed: model.isSaving
+            //         ? null
+            //         : () {
+            //             final name = _nameController.text.trim();
+            //             if (name.isEmpty) return;
+            //
+            //             runtime.saveImageWithMeta(
+            //               name,
+            //               model.selectedTags,
+            //               widget.imageBytes,
+            //             );
+            //           },
+            //   ),
+            // ),
           ],
         ),
       ),

@@ -163,7 +163,7 @@ UpdateResult update(CollagesModel model, CollagesMessage message) {
         model.copyWith(isProcessing: false),
         {
           LocalizableSnackBarEffect('imageSaved'),
-          NavigateToMainScreenEffect(1),
+          NavigateToMainScreenEffect(0),
         },
       );
   }

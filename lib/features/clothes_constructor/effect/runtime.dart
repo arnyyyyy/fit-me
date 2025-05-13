@@ -137,7 +137,7 @@ class ImageConstructorRuntime {
   Future<Uint8List> generateEditedImageBytes() async {
     final model = ref.read(imageConstructorModelProvider);
     if (model.originalImage == null) {
-      throw Exception("Изображение не загружено");
+      throw Exception("Image is not loaded");
     }
 
     final recorder = ui.PictureRecorder();
@@ -209,7 +209,7 @@ class ImageConstructorRuntime {
   Future<void> saveImageWithMeta(
       String name, List<String> tags, Uint8List imageBytes) async {
     if (name.trim().isEmpty) {
-      dispatch(ImageWithMetaSaveError("Название не может быть пустым"));
+      dispatch(ImageWithMetaSaveError("Name cannot be empty"));
       return;
     }
 

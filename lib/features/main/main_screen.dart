@@ -9,7 +9,7 @@ import '../collages/view/main_collages_screen.dart';
 class MainScreen extends StatefulWidget {
   final int initialTabIndex;
 
-  const MainScreen({super.key, this.initialTabIndex = 1});
+  const MainScreen({super.key, this.initialTabIndex = 0});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -79,7 +79,7 @@ class _MainScreenState extends State<MainScreen>
             ),
             BottomNavigationBarItem(
               icon: const Icon(
-                Icons.door_sliding,
+                Icons.door_sliding_outlined,
                 color: AppColors.tagText,
               ),
               label: AppLocalizations.of(context).wardrobeTabLabel,

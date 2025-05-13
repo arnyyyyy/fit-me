@@ -52,7 +52,6 @@ class AppTextStyles {
 
   );
 
-// Подписи под фото, описание
   static const TextStyle subtitle = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,
