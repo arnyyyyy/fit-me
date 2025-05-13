@@ -26,8 +26,8 @@ class _MainScreenState extends State<MainScreen>
   }
 
   final List<Widget> _screens = const [
-    CollageConstructorScreen(),
     CollagesScreen(),
+    CollageConstructorScreen(),
     WardrobeScreen(),
   ];
 
@@ -68,17 +68,18 @@ class _MainScreenState extends State<MainScreen>
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
           items: [
             BottomNavigationBarItem(
+              icon: const Icon(Icons.checkroom_outlined,
+                  color: AppColors.tagText),
+              label: AppLocalizations.of(context).collagesTabLabel,
+            ),
+            BottomNavigationBarItem(
               icon: const Icon(Icons.add_photo_alternate_outlined,
                   color: AppColors.tagText),
               label: AppLocalizations.of(context).addTabLabel,
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.image_outlined, color: AppColors.tagText),
-              label: AppLocalizations.of(context).collagesTabLabel,
-            ),
-            BottomNavigationBarItem(
               icon: const Icon(
-                Icons.checkroom_outlined,
+                Icons.door_sliding,
                 color: AppColors.tagText,
               ),
               label: AppLocalizations.of(context).wardrobeTabLabel,

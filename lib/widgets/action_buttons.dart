@@ -22,25 +22,25 @@ class ActionButton extends StatelessWidget {
     switch (actionType) {
       case ActionType.edit:
         icon = Icons.edit_outlined;
-        label = 'Редактировать';
+        label = 'Edit';
         isDestructive = false;
         break;
       case ActionType.delete:
         icon = Icons.delete_outline;
-        label = 'Удалить';
+        label = 'Delete';
         isDestructive = true;
         break;
     }
 
     final textColor = isDestructive ? Colors.red : AppColors.text;
     const backgroundColor = AppColors.cardBackground;
-    
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         child: Container(
-          width: 180,
+          width: 150,
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           decoration: BoxDecoration(
             color: backgroundColor,
