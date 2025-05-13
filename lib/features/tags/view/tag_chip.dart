@@ -20,16 +20,19 @@ class TagChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color:
-            isMoreTag ? AppColors.moreTagBackground : AppColors.cardBackground,
+        color: AppColors.cardBackground,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 4,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Text(
             label,
-            style: AppTextStyles.tagText,
+            style: isMoreTag
+                ? AppTextStyles.tagText.copyWith(fontWeight: FontWeight.w900)
+                : AppTextStyles.tagText,
           ),
           if (onDeleted != null) ...[
             const SizedBox(width: 4),
