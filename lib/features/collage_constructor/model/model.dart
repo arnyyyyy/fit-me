@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
 
 class CollagesModel {
   final bool isProcessing;
   final List<File> images;
   final CollageBackground selectedBackground;
+  final Color customBackgroundColor;
 
   final String collageName;
   final List<String> selectedTags;
@@ -17,6 +19,7 @@ class CollagesModel {
     this.isProcessing = false,
     this.images = const [],
     this.selectedBackground = CollageBackground.transparent,
+    this.customBackgroundColor = const Color(0xFF613E3E),
     this.collageName = '',
     this.selectedTags = const [],
     this.collageBytes,
@@ -29,6 +32,7 @@ class CollagesModel {
     bool? isProcessing,
     List<File>? images,
     CollageBackground? selectedBackground,
+    Color? customBackgroundColor,
     String? collageName,
     List<String>? selectedTags,
     Uint8List? collageBytes,
@@ -40,6 +44,7 @@ class CollagesModel {
       isProcessing: isProcessing ?? this.isProcessing,
       images: images ?? this.images,
       selectedBackground: selectedBackground ?? this.selectedBackground,
+      customBackgroundColor: customBackgroundColor ?? this.customBackgroundColor,
       collageName: collageName ?? this.collageName,
       selectedTags: selectedTags ?? this.selectedTags,
       collageBytes: collageBytes ?? this.collageBytes,
@@ -54,4 +59,5 @@ enum CollageBackground {
   transparent,
   white,
   black,
+  custom,
 }

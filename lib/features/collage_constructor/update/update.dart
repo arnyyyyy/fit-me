@@ -97,6 +97,12 @@ UpdateResult update(CollagesModel model, CollagesMessage message) {
 
     case ChangeCollageBackground(:final background):
       return UpdateResult(model.copyWith(selectedBackground: background));
+      
+    case ChangeCustomBackgroundColor(:final color):
+      return UpdateResult(model.copyWith(
+        customBackgroundColor: color,
+        selectedBackground: CollageBackground.custom,
+      ));
 
     case StartSavingCollage():
     case SaveCollageWithMetadata():

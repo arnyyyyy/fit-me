@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import '../../../widgets/positioned_draggable_image.dart';
 import '../../../widgets/checkerboard_painter.dart';
@@ -21,6 +22,49 @@ class CollageConstructorScreen extends ConsumerStatefulWidget {
 
 class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> {
   final GlobalKey _stackKey = GlobalKey();
+
+  void _showColorPicker(BuildContext context, CollagesRuntime runtime, Color initialColor) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        Color selectedColor = initialColor;
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context).chooseBackgroundColor, style: AppTextStyles.appBarTitle),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ColorPicker(
+                  pickerColor: selectedColor,
+                  onColorChanged: (Color color) {
+                    selectedColor = color;
+                  },
+                  pickerAreaHeightPercent: 0.8,
+                  enableAlpha: true,
+                  displayThumbColor: true,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(AppLocalizations.of(context).cancel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(AppLocalizations.of(context).apply),
+              onPressed: () {
+                runtime.dispatch(ChangeCustomBackgroundColor(selectedColor));
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -48,7 +92,11 @@ class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> 
           PopupMenuButton<CollageBackground>(
             icon: const Icon(Icons.layers),
             onSelected: (value) {
-              runtime.dispatch(ChangeCollageBackground(value));
+              if (value == CollageBackground.custom) {
+                _showColorPicker(context, runtime, model.customBackgroundColor);
+              } else {
+                runtime.dispatch(ChangeCollageBackground(value));
+              }
             },
             itemBuilder: (context) => [
               PopupMenuItem(
@@ -62,6 +110,24 @@ class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> 
               PopupMenuItem(
                 value: CollageBackground.black,
                 child: Text(AppLocalizations.of(context).blackBackground),
+              ),
+              PopupMenuItem(
+                value: CollageBackground.custom,
+                child: Row(
+                  children: [
+                    Container(
+                      width: 16,
+                      height: 16,
+                      margin: const EdgeInsets.only(right: 8),
+                      decoration: BoxDecoration(
+                        color: model.customBackgroundColor,
+                        border: Border.all(color: Colors.grey, width: 1),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    Text(AppLocalizations.of(context).customBackground),
+                  ],
+                ),
               ),
             ],
           ),
@@ -79,7 +145,9 @@ class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> 
                     ? null
                     : (model.selectedBackground == CollageBackground.white
                         ? Colors.white
-                        : Colors.black),
+                        : model.selectedBackground == CollageBackground.black
+                            ? Colors.black
+                            : model.customBackgroundColor),
               ),
               child: Stack(
                 children: [

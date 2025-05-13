@@ -94,6 +94,22 @@
   "@blackBackground": {
     "description": "Black background option"
   },
+  "customBackground": "custom color",
+  "@customBackground": {
+    "description": "Custom color background option"
+  },
+  "chooseBackgroundColor": "Choose background color",
+  "@chooseBackgroundColor": {
+    "description": "Title for the color picker dialog"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "apply": "Apply", 
+  "@apply": {
+    "description": "Apply button text"
+  },
   "selectPhotos": "select photos",
   "@selectPhotos": {
     "description": "Title of the photo selection screen"

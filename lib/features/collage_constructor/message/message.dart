@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
 
 import 'package:fit_me/core/common/base_message.dart';
 
@@ -73,6 +74,12 @@ class ChangeCollageBackground extends CollagesMessage {
   final CollageBackground background;
 
   ChangeCollageBackground(this.background);
+}
+
+class ChangeCustomBackgroundColor extends CollagesMessage {
+  final Color color;
+
+  ChangeCustomBackgroundColor(this.color);
 }
 
 class StartSavingCollage extends CollagesMessage {}
