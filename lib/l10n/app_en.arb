@@ -150,6 +150,82 @@
   "@addTabLabel": {
     "description": "Add tab label"
   },
+  "calendar": "Calendar",
+  "@calendar": {
+    "description": "Calendar screen title"
+  },
+  "eventAdded": "Event added",
+  "@eventAdded": {
+    "description": "Message when an event is added"
+  },
+  "eventRemoved": "Event removed",
+  "@eventRemoved": {
+    "description": "Message when an event is removed"
+  },
+  "eventScheduled": "Event scheduled",
+  "@eventScheduled": {
+    "description": "Status when a date has an event"
+  },
+  "noEvent": "No events",
+  "@noEvent": {
+    "description": "Status when a date has no events"
+  },
+  "addEvent": "Add event",
+  "@addEvent": {
+    "description": "Button to add an event"
+  },
+  "removeEvent": "Remove event",
+  "@removeEvent": {
+    "description": "Button to remove an event"
+  },
+  "january": "January",
+  "@january": {
+    "description": "Month name"
+  },
+  "february": "February",
+  "@february": {
+    "description": "Month name"
+  },
+  "march": "March",
+  "@march": {
+    "description": "Month name"
+  },
+  "april": "April",
+  "@april": {
+    "description": "Month name"
+  },
+  "may": "May",
+  "@may": {
+    "description": "Month name"
+  },
+  "june": "June",
+  "@june": {
+    "description": "Month name"
+  },
+  "july": "July",
+  "@july": {
+    "description": "Month name"
+  },
+  "august": "August",
+  "@august": {
+    "description": "Month name"
+  },
+  "september": "September",
+  "@september": {
+    "description": "Month name"
+  },
+  "october": "October",
+  "@october": {
+    "description": "Month name"
+  },
+  "november": "November",
+  "@november": {
+    "description": "Month name"
+  },
+  "december": "December",
+  "@december": {
+    "description": "Month name"
+  },
   "saveButton": "Save",
   "@saveButton": {
     "description": "Save button text"

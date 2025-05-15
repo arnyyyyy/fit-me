@@ -1,4 +1,4 @@
-import 'package:fit_me/features/collage_constructor/view/collage_constructor_screen.dart';
+import 'package:fit_me/features/calendar/view/calendar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../utils/app_colors.dart';
@@ -27,7 +27,7 @@ class _MainScreenState extends State<MainScreen>
 
   final List<Widget> _screens = const [
     CollagesScreen(),
-    CollageConstructorScreen(),
+    CalendarScreen(),
     WardrobeScreen(),
   ];
 
@@ -68,20 +68,18 @@ class _MainScreenState extends State<MainScreen>
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
           items: [
             BottomNavigationBarItem(
-              icon: const Icon(Icons.checkroom_outlined,
-                  color: AppColors.tagText),
+              icon: const Icon(Icons.checkroom_outlined),
+              activeIcon: const Icon(Icons.checkroom, color: AppColors.primary),
               label: AppLocalizations.of(context).collagesTabLabel,
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.add_photo_alternate_outlined,
-                  color: AppColors.tagText),
-              label: AppLocalizations.of(context).addTabLabel,
+              icon: const Icon(Icons.calendar_month),
+              activeIcon: const Icon(Icons.calendar_month, color: AppColors.primary),
+              label: AppLocalizations.of(context).calendar,
             ),
             BottomNavigationBarItem(
-              icon: const Icon(
-                Icons.door_sliding_outlined,
-                color: AppColors.tagText,
-              ),
+              icon: const Icon(Icons.door_sliding_outlined),
+              activeIcon: const Icon(Icons.door_sliding, color: AppColors.primary),
               label: AppLocalizations.of(context).wardrobeTabLabel,
             ),
           ],
