@@ -12,7 +12,7 @@ class SearchAppBar<TModel> extends StatelessWidget
   final void Function() onToggleSearch;
   final void Function() onToggleFilter;
   final void Function() onLoadTags;
-  final void Function() onAdd;
+  final void Function()? onAdd;
 
   const SearchAppBar({
     super.key,
@@ -24,7 +24,7 @@ class SearchAppBar<TModel> extends StatelessWidget
     required this.onToggleSearch,
     required this.onToggleFilter,
     required this.onLoadTags,
-    required this.onAdd,
+    this.onAdd,
   });
 
   @override
@@ -68,11 +68,12 @@ class SearchAppBar<TModel> extends StatelessWidget
             }
           },
         ),
-        IconButton(
-          icon: const Icon(Icons.add),
-          color: AppColors.icon,
-          onPressed: onAdd,
-        ),
+        if (onAdd != null)
+          IconButton(
+            icon: const Icon(Icons.add),
+            color: AppColors.icon,
+            onPressed: onAdd,
+          ),
       ],
     );
   }

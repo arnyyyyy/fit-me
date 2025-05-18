@@ -21,7 +21,14 @@ final searchControllerProvider =
 });
 
 class CollagesScreen extends ConsumerStatefulWidget {
-  const CollagesScreen({super.key});
+  final bool selectionMode;
+  final String? customTitle;
+  
+  const CollagesScreen({
+    super.key, 
+    this.selectionMode = false,
+    this.customTitle,
+  });
 
   @override
   ConsumerState<CollagesScreen> createState() => _CollagesScreenState();
@@ -44,7 +51,8 @@ class _CollagesScreenState extends ConsumerState<CollagesScreen> {
   Widget build(BuildContext context) {
     final model = ref.watch(collagesModelProvider);
     final controller = ref.watch(searchControllerProvider);
-
+    final isSelectionMode = widget.selectionMode;
+    
     for (var collage in model.filteredCollages) {
       precacheImage(FileImage(File(collage.imagePath)), context);
     }
@@ -52,7 +60,7 @@ class _CollagesScreenState extends ConsumerState<CollagesScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: SearchAppBar(
-        title: AppLocalizations.of(context).myCollages,
+        title: widget.customTitle ?? AppLocalizations.of(context).myCollages,
         hintText: AppLocalizations.of(context).searchNameOrTags,
         model: model,
         controller: controller,
@@ -66,7 +74,7 @@ class _CollagesScreenState extends ConsumerState<CollagesScreen> {
           }
         },
         onLoadTags: () => runtime.dispatch(LoadAvailableTags()),
-        onAdd: () => runtime.dispatch(NavigateToCreateCollage()),
+        onAdd: isSelectionMode ? null : () => runtime.dispatch(NavigateToCreateCollage()),
       ),
       body: Column(
         children: [
@@ -101,6 +109,10 @@ class _CollagesScreenState extends ConsumerState<CollagesScreen> {
     return CollagesGrid(
       collages: model.filteredCollages,
       onMessage: (message) => runtime.dispatch(message),
+      selectionMode: widget.selectionMode,
+      onCollageSelected: widget.selectionMode 
+          ? (collage) => Navigator.of(context).pop(collage) 
+          : null,
     );
   }
 }

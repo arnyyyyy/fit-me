@@ -178,6 +178,46 @@
   "@removeEvent": {
     "description": "Button to remove an event"
   },
+  "selectCollage": "Select a collage",
+  "@selectCollage": {
+    "description": "Title of the collage selection screen"
+  },
+  "selectCollageHint": "Choose a collage to add to this date",
+  "@selectCollageHint": {
+    "description": "Hint text for the collage selection screen"
+  },
+  "addCollage": "Add collage",
+  "@addCollage": {
+    "description": "Button to add a collage to an event"
+  },
+  "noCollages": "You don't have any collages yet",
+  "@noCollages": {
+    "description": "Message when there are no collages to select"
+  },
+  "collages": "Collages",
+  "@collages": {
+    "description": "Title for the collages section in an event"
+  },
+  "collageAddedToEvent": "Collage added to event",
+  "@collageAddedToEvent": {
+    "description": "Message when a collage is added to an event"
+  },
+  "collageRemovedFromEvent": "Collage removed from event",
+  "@collageRemovedFromEvent": {
+    "description": "Message when a collage is removed from an event"
+  },
+  "deleteEvent": "Delete event",
+  "@deleteEvent": {
+    "description": "Title of the event deletion confirmation dialog"
+  },
+  "deleteEventConfirmation": "Are you sure you want to remove all collages from this date?",
+  "@deleteEventConfirmation": {
+    "description": "Confirmation message for event deletion"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button text"
+  },
   "january": "January",
   "@january": {
     "description": "Month name"

@@ -8,11 +8,15 @@ import 'collage_card.dart';
 class CollagesGrid extends ConsumerWidget {
   final List<SavedCollage> collages;
   final Function(Message) onMessage;
+  final bool selectionMode;
+  final Function(SavedCollage)? onCollageSelected;
 
   const CollagesGrid({
     super.key, 
     required this.collages,
     required this.onMessage,
+    this.selectionMode = false,
+    this.onCollageSelected,
   });
 
   @override
@@ -27,8 +31,21 @@ class CollagesGrid extends ConsumerWidget {
       ),
       itemCount: collages.length,
       itemBuilder: (context, index) {
+        final savedCollage = collages[index];
+        
+        if (selectionMode) {
+          return GestureDetector(
+            onTap: () => onCollageSelected?.call(savedCollage),
+            child: CollageCard(
+              savedCollage: savedCollage,
+              onMessage: onMessage,
+              disableActions: true,
+            ),
+          );
+        }
+        
         return CollageCard(
-          savedCollage: collages[index],
+          savedCollage: savedCollage,
           onMessage: onMessage,
         );
       },

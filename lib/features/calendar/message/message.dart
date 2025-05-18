@@ -1,4 +1,5 @@
 import 'package:fit_me/core/common/base_message.dart';
+import 'package:fit_me/features/collages/model/saved_collage.dart';
 
 import '../model/model.dart';
 
@@ -48,4 +49,32 @@ class RemoveCalendarEvent extends CalendarMessage {
   final DateTime date;
 
   RemoveCalendarEvent(this.date);
+}
+
+class LoadAvailableCollages extends CalendarMessage {}
+
+class AvailableCollagesLoaded extends CalendarMessage {
+  final List<SavedCollage> collages;
+
+  AvailableCollagesLoaded(this.collages);
+}
+
+class ToggleCollageSelection extends CalendarMessage {
+  final bool isSelecting;
+
+  ToggleCollageSelection(this.isSelecting);
+}
+
+class AddCollageToDate extends CalendarMessage {
+  final DateTime date;
+  final SavedCollage collage;
+
+  AddCollageToDate(this.date, this.collage);
+}
+
+class RemoveCollageFromDate extends CalendarMessage {
+  final DateTime date;
+  final int collageIndex;
+
+  RemoveCollageFromDate(this.date, this.collageIndex);
 }

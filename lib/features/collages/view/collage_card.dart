@@ -12,11 +12,13 @@ import '../../../utils/app_text_styles.dart';
 class CollageCard extends StatefulWidget {
   final SavedCollage savedCollage;
   final Function(Message) onMessage;
+  final bool disableActions;
 
   const CollageCard({
     super.key,
     required this.savedCollage,
     required this.onMessage,
+    this.disableActions = false,
   });
 
   @override
@@ -33,7 +35,7 @@ class _CollageCardState extends State<CollageCard> {
     final hiddenCount = tags.length - visibleTags.length;
 
     return GestureDetector(
-      onLongPress: () {
+      onLongPress: widget.disableActions ? null : () {
         setState(() {
           _showActions = true;
         });
@@ -93,7 +95,7 @@ class _CollageCardState extends State<CollageCard> {
                 ),
               ],
             ),
-            if (_showActions)
+            if (_showActions && !widget.disableActions)
               ActionsPanel(
                 onDismiss: () => setState(() => _showActions = false),
                 onEdit: () {
