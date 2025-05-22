@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text_styles.dart';
@@ -46,7 +47,7 @@ class ViewCollageScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               Text(
-                'Название',
+                AppLocalizations.of(context).name,
                 style: AppTextStyles.subtitle,
               ),
               const SizedBox(height: 8),
@@ -73,7 +74,7 @@ class ViewCollageScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               Text(
-                'Теги',
+                AppLocalizations.of(context).tagsLabel,
                 style: AppTextStyles.subtitle,
               ),
               const SizedBox(height: 8),
@@ -102,7 +103,7 @@ class ViewCollageScreen extends StatelessWidget {
                               color: Colors.grey),
                           const SizedBox(width: 12),
                           Text(
-                            'Нет тегов',
+                            AppLocalizations.of(context).noTags,
                             style: AppTextStyles.body.copyWith(
                               color: Colors.grey,
                             ),

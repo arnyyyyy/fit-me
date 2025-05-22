@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/common/base_runtime.dart';
 import '../../../core/repositories/hive_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import '../../collages/model/saved_collage.dart';
 import '../../collages/view/main_collages_screen.dart';
 import '../../collages/view/view_collage_screen.dart';
@@ -70,7 +72,7 @@ class CalendarRuntime extends BaseRuntime<CalendarMessage> {
     try {
       return await _repository.getAllCalendarEvents();
     } catch (e) {
-      throw Exception('Ошибка загрузки событий: $e');
+      throw Exception('Error loading events: $e');
     }
   }
 
@@ -78,7 +80,7 @@ class CalendarRuntime extends BaseRuntime<CalendarMessage> {
     try {
       await _saveEventsToStorage(events);
     } catch (e) {
-      dispatch(CalendarEventsLoadError('Ошибка сохранения событий: $e'));
+      dispatch(CalendarEventsLoadError('Error saving events: $e'));
     }
   }
 
@@ -86,7 +88,7 @@ class CalendarRuntime extends BaseRuntime<CalendarMessage> {
     try {
       await _repository.updateCalendarEvents(events);
     } catch (e) {
-      throw Exception('Ошибка сохранения событий: $e');
+      throw Exception('Error saving events: $e');
     }
   }
 
@@ -110,7 +112,7 @@ class CalendarRuntime extends BaseRuntime<CalendarMessage> {
       final collages = await _repository.getAllCollages();
       dispatch(AvailableCollagesLoaded(collages));
     } catch (e) {
-      dispatch(CalendarEventsLoadError('Ошибка загрузки коллажей: $e'));
+      dispatch(CalendarEventsLoadError('Error loading collages: $e'));
     }
   }
 
@@ -128,9 +130,9 @@ class CalendarRuntime extends BaseRuntime<CalendarMessage> {
     final result = await Navigator.push<SavedCollage>(
       context,
       MaterialPageRoute(
-        builder: (context) => const CollagesScreen(
+        builder: (context) => CollagesScreen(
           selectionMode: true,
-          customTitle: 'Выберите коллаж',
+          customTitle: AppLocalizations.of(context).selectCollage,
         ),
       ),
     );

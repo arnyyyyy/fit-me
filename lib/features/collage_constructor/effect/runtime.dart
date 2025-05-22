@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -118,7 +119,7 @@ class CollagesRuntime extends BaseRuntime<CollagesMessage> {
       String name, List<String> tags, Uint8List collageBytes) async {
     if (name.trim().isEmpty) {
       dispatch(
-          CollageWithMetadataSaveError("Имя коллажа не может быть пустым"));
+          CollageWithMetadataSaveError(AppLocalizations.of(context).collageNameEmpty));
       return;
     }
 

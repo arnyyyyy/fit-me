@@ -1,0 +1,12 @@
+# flutter_native_splash.yaml
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/icon/fit_me_logo.png
+  android_gravity: center
+  ios_content_mode: center
+  android_screen_orientation: portrait
+  fullscreen: false
+  android_12:
+    image: assets/icon/fit_me_logo.png
+    color: "#ffffff"
+    icon_background_color: "#ffffff"

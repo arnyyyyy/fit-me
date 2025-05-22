@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:image/image.dart' as img;
-import 'package:flutter/material.dart';
 
 class ImageService {
 
@@ -41,7 +40,7 @@ class ImageService {
       numChannels: 4,
     );
 
-    const threshold = 40;
+    const threshold = 95;
 
     for (int y = 0; y < rgbImage.height; y++) {
       for (int x = 0; x < rgbImage.width; x++) {
@@ -76,8 +75,6 @@ class ImageService {
     final outputPath = '${processedDir.path}/${originalName}_nobg_$timestamp.png';
 
     await File(outputPath).writeAsBytes(pngBytes);
-
-    debugPrint('Фон удалён! Сохранено: $outputPath');
 
     return outputPath;
   }

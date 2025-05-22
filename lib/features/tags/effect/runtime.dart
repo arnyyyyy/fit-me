@@ -76,7 +76,7 @@ class TagsRuntime {
         await repository.saveTag(tag);
       }
     } catch (e) {
-      dispatch(TagsLoadError("Ошибка при сохранении тегов: ${e.toString()}"));
+      dispatch(TagsLoadError("Error saving tags: ${e.toString()}"));
     }
   }
 

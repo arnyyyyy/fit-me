@@ -34,7 +34,7 @@ class CalendarEventDay extends HiveObject {
 
     if (collages.isEmpty) {
       updatedCollages = List<SavedCollage?>.filled(maxCollages, null);
-      updatedCollages[0] = collage; // Добавляем новый коллаж в первую позицию
+      updatedCollages[0] = collage;
     } else if (collages.length < maxCollages) {
       updatedCollages = List<SavedCollage?>.filled(maxCollages, null);
       for (int i = 0; i < collages.length; i++) {

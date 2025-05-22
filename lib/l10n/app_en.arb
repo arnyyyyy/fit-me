@@ -387,5 +387,61 @@
   "tagsLabel": "Tags",
   "@tagsLabel": {
     "description": "Label for tags section"
+  },
+  "name": "Name",
+  "@name": {
+    "description": "Label for name field"
+  },
+  "noTags": "No tags",
+  "@noTags": {
+    "description": "Message when no tags are available"
+  },
+  "loadingEventsError": "Error loading events: {error}",
+  "@loadingEventsError": {
+    "description": "Error message when loading events fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "savingEventsError": "Error saving events: {error}",
+  "@savingEventsError": {
+    "description": "Error message when saving events fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "loadingCollagesError": "Error loading collages: {error}",
+  "@loadingCollagesError": {
+    "description": "Error message when loading collages fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "savingTagsError": "Error saving tags: {error}",
+  "@savingTagsError": {
+    "description": "Error message when saving tags fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "selectCollage": "Select a collage",
+  "@selectCollage": {
+    "description": "Title for collage selection screen"
+  },
+  "collageNameEmpty": "Collage name cannot be empty",
+  "@collageNameEmpty": {
+    "description": "Error message when collage name is empty"
+  },
+  "month": "Month",
+  "@month": {
+    "description": "Calendar format label"
   }
 }

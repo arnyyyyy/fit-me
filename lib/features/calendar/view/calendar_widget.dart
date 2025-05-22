@@ -32,8 +32,8 @@ class CalendarWidget extends StatelessWidget {
         return isSameDay(model.selectedDate, day);
       },
       calendarFormat: CalendarFormat.month,
-      availableCalendarFormats: const {
-        CalendarFormat.month: 'Месяц',
+      availableCalendarFormats: {
+        CalendarFormat.month: AppLocalizations.of(context).month,
       },
       onDaySelected: (selectedDay, focusedDay) {
         onDaySelected(selectedDay);
