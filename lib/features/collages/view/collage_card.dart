@@ -35,11 +35,13 @@ class _CollageCardState extends State<CollageCard> {
     final hiddenCount = tags.length - visibleTags.length;
 
     return GestureDetector(
-      onLongPress: widget.disableActions ? null : () {
-        setState(() {
-          _showActions = true;
-        });
-      },
+      onLongPress: widget.disableActions
+          ? null
+          : () {
+              setState(() {
+                _showActions = true;
+              });
+            },
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.clothesCardBackground,
@@ -56,6 +58,7 @@ class _CollageCardState extends State<CollageCard> {
         child: Stack(
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
                   borderRadius:
@@ -63,26 +66,27 @@ class _CollageCardState extends State<CollageCard> {
                   child: Image.file(
                     File(widget.savedCollage.imagePath),
                     width: double.infinity,
-                    height: 170,
+                    height: 205,
                     fit: BoxFit.cover,
                   ),
                 ),
                 Expanded(
                   child: Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.savedCollage.name.toLowerCase(),
-                          style: AppTextStyles.imageTitle,
-                          overflow: TextOverflow.ellipsis,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6),
+                          child: Text(
+                            widget.savedCollage.name.toLowerCase(),
+                            style: AppTextStyles.imageTitle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                        const SizedBox(height: 6),
                         Wrap(
-                          spacing: 6,
-                          runSpacing: -4,
+                          spacing: -7,
                           children: [
                             for (var tag in visibleTags) TagChip(label: tag),
                             if (hiddenCount > 0)
