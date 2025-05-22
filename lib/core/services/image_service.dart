@@ -40,7 +40,7 @@ class ImageService {
       numChannels: 4,
     );
 
-    const threshold = 95;
+    const threshold = 70;
 
     for (int y = 0; y < rgbImage.height; y++) {
       for (int x = 0; x < rgbImage.width; x++) {
