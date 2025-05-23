@@ -53,6 +53,7 @@ class _ClothesCardState extends State<ClothesCard> {
         child: Stack(
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
                   borderRadius:
@@ -60,23 +61,25 @@ class _ClothesCardState extends State<ClothesCard> {
                   child: Image.file(
                     File(widget.savedImage.imagePath),
                     width: double.infinity,
-                    height: 170,
+                    height: 190,
                     fit: BoxFit.cover,
                   ),
                 ),
                 Expanded(
                   child: Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.savedImage.name.toLowerCase(),
-                          style: AppTextStyles.imageTitle,
-                          overflow: TextOverflow.ellipsis,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6),
+                          child: Text(
+                            widget.savedImage.name.toLowerCase(),
+                            style: AppTextStyles.imageTitle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                        const SizedBox(height: 6),
                         Wrap(
                           spacing: 6,
                           runSpacing: -4,
