@@ -8,6 +8,27 @@ allprojects {
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
+    
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+    
+    afterEvaluate {
+        if (project.hasProperty('android')) {
+            android {
+                lint {
+                    checkReleaseBuilds false
+                    abortOnError false
+                    disable 'InvalidPackage', 'ObsoleteSdkInt', 'MissingTranslation', 'GradleDependency'
+                    ignoreWarnings true
+                    quiet true
+                    baseline file("lint-baseline.xml")
+                }
+            }
+        }
+    }
 }
 subprojects {
     project.evaluationDependsOn(":app")

@@ -90,3 +90,6 @@ flutter:
   assets:
     - assets/
     - assets/transparency_grid.png
+
+flutter_gen:
+  synthetic-package: false
