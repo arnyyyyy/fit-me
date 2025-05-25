@@ -128,7 +128,7 @@ class _ViewClothesScreenState extends State<ViewClothesScreen> {
                       const SizedBox(height: 24),
                       Text(
                         AppLocalizations.of(context).name,
-                        style: AppTextStyles.subtitle,
+                        style: AppTextStyles.imageTitle,
                       ),
                       const SizedBox(height: 8),
                       Container(
@@ -155,7 +155,7 @@ class _ViewClothesScreenState extends State<ViewClothesScreen> {
                       const SizedBox(height: 24),
                       Text(
                         AppLocalizations.of(context).tagsLabel,
-                        style: AppTextStyles.subtitle,
+                        style: AppTextStyles.imageTitle,
                       ),
                       const SizedBox(height: 8),
                       item.tags.isNotEmpty
@@ -184,9 +184,7 @@ class _ViewClothesScreenState extends State<ViewClothesScreen> {
                                   const SizedBox(width: 12),
                                   Text(
                                     AppLocalizations.of(context).noTags,
-                                    style: AppTextStyles.body.copyWith(
-                                      color: Colors.grey,
-                                    ),
+                                    style: AppTextStyles.body
                                   ),
                                 ],
                               ),
