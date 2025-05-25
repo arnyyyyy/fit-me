@@ -78,3 +78,15 @@ class ShowDeleteConfirmation extends Message {
 
   ShowDeleteConfirmation(this.collage);
 }
+
+class ViewCollage extends Message {
+  final SavedCollage collage;
+
+  ViewCollage(this.collage);
+}
+
+class ViewCollageWithSwipe extends Message {
+  final SavedCollage collage;
+
+  ViewCollageWithSwipe(this.collage);
+}

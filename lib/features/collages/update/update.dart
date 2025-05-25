@@ -4,6 +4,8 @@ import '../../edit_collage/view/edit_collage_screen.dart';
 import '../model/model.dart';
 import '../message/message.dart';
 import '../model/saved_collage.dart';
+import '../view/view_collage_screen.dart';
+import '../view/view_collages_screen.dart';
 
 abstract class Effect {}
 
@@ -140,6 +142,18 @@ UpdateResult update(CollagesModel model, Message message) {
 
     case ShowDeleteConfirmation(:final collage):
       return UpdateResult(model, {ConfirmDeleteEffect(collage)});
+      
+    case ViewCollage(:final collage):
+      return UpdateResult(
+          model, {NavigationEffect(ViewCollageScreen(collage: collage))});
+          
+    case ViewCollageWithSwipe(:final collage):
+      final collageIndex = model.filteredCollages.indexWhere((item) => item.key == collage.key);
+      return UpdateResult(
+          model, {NavigationEffect(ViewCollagesScreen(
+            collagesList: model.filteredCollages, 
+            initialIndex: collageIndex >= 0 ? collageIndex : 0
+          ))});
   }
 
   return UpdateResult(model);

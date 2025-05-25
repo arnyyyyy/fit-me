@@ -35,6 +35,9 @@ class _CollageCardState extends State<CollageCard> {
     final hiddenCount = tags.length - visibleTags.length;
 
     return GestureDetector(
+      onTap: () {
+        widget.onMessage(ViewCollageWithSwipe(widget.savedCollage));
+      },
       onLongPress: widget.disableActions
           ? null
           : () {
@@ -63,11 +66,14 @@ class _CollageCardState extends State<CollageCard> {
                 ClipRRect(
                   borderRadius:
                       const BorderRadius.vertical(top: Radius.circular(16)),
-                  child: Image.file(
-                    File(widget.savedCollage.imagePath),
-                    width: double.infinity,
-                    height: 205,
-                    fit: BoxFit.cover,
+                  child: Hero(
+                    tag: 'collage_image_${widget.savedCollage.imagePath}',
+                    child: Image.file(
+                      File(widget.savedCollage.imagePath),
+                      width: double.infinity,
+                      height: 205,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 Expanded(
