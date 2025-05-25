@@ -32,6 +32,9 @@ class _ClothesCardState extends State<ClothesCard> {
     final hiddenCount = tags.length - visibleTags.length;
 
     return GestureDetector(
+      onTap: () {
+        widget.onMessage(ViewClothesItem(widget.savedImage));
+      },
       onLongPress: () {
         setState(() {
           _showActions = true;
@@ -58,11 +61,14 @@ class _ClothesCardState extends State<ClothesCard> {
                 ClipRRect(
                   borderRadius:
                       const BorderRadius.vertical(top: Radius.circular(16)),
-                  child: Image.file(
-                    File(widget.savedImage.imagePath),
-                    width: double.infinity,
-                    height: 190,
-                    fit: BoxFit.cover,
+                  child: Hero(
+                    tag: 'clothes_image_${widget.savedImage.imagePath}',
+                    child: Image.file(
+                      File(widget.savedImage.imagePath),
+                      width: double.infinity,
+                      height: 190,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 Expanded(

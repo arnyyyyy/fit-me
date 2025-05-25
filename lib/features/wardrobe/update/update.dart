@@ -4,6 +4,7 @@ import '../../edit_clothes/view/edit_clothes_screen.dart';
 import '../model/model.dart';
 import '../message/message.dart';
 import '../model/saved_image.dart';
+import '../view/view_clothes_screen.dart';
 
 abstract class Effect {}
 
@@ -138,6 +139,14 @@ UpdateResult update(ClothesModel model, Message message) {
 
     case ShowDeleteConfirmation(:final image):
       return UpdateResult(model, {ConfirmDeleteEffect(image)});
+    
+    case ViewClothesItem(:final image):
+      final itemIndex = model.filteredClothes.indexWhere((item) => item.key == image.key);
+      return UpdateResult(
+          model, {NavigationEffect(ViewClothesScreen(
+            clothesList: model.filteredClothes, 
+            initialIndex: itemIndex >= 0 ? itemIndex : 0
+          ))});
   }
 
   return UpdateResult(model);

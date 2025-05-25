@@ -78,3 +78,9 @@ class ShowDeleteConfirmation extends Message {
 
   ShowDeleteConfirmation(this.image);
 }
+
+class ViewClothesItem extends Message {
+  final SavedImage image;
+
+  ViewClothesItem(this.image);
+}
