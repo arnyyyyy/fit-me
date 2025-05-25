@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
+import 'dart:async';
 import '../utils/app_colors.dart';
 import 'erasable_image.dart';
 
@@ -34,8 +35,10 @@ class PositionedDraggableImageState extends State<PositionedDraggableImage> {
   String _currentImagePath = '';
   ui.Image? _image;
   ErasableMask? _mask;
+  ImageBounds? _imageBounds;
   bool _isLoading = true;
   bool _isErasing = false;
+  bool _isComputingBounds = false;
   final GlobalKey _imageKey = GlobalKey();
   
   final double _baseSize = 150.0;
@@ -55,6 +58,10 @@ class PositionedDraggableImageState extends State<PositionedDraggableImage> {
       _mask = null;
       _loadImage();
     }
+    
+    if (widget.isEraseMode && !oldWidget.isEraseMode) {
+      _computeImageBounds();
+    }
   }
   
   Future<void> _loadImage() async {
@@ -71,12 +78,41 @@ class PositionedDraggableImageState extends State<PositionedDraggableImage> {
               imageSize: Size(image.width.toDouble(), image.height.toDouble()),
             );
           _isLoading = false;
+          
+          _computeImageBounds();
         });
       }
     } catch (e) {
       if (mounted) {
         setState(() {
           _isLoading = false;
+        });
+      }
+    }
+  }
+  
+  Future<void> _computeImageBounds() async {
+    if (_image == null) return;
+    
+    setState(() {
+      _isComputingBounds = true;
+    });
+    
+    try {
+      _imageBounds = await getImageBounds(_image!, _mask);
+      
+      if (mounted) {
+        setState(() {
+          _isComputingBounds = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isComputingBounds = false;
+          _imageBounds = ImageBounds.fromSize(
+            Size(_image!.width.toDouble(), _image!.height.toDouble())
+          );
         });
       }
     }
@@ -122,27 +158,39 @@ class PositionedDraggableImageState extends State<PositionedDraggableImage> {
     double height = _baseSize;
     
     if (_image != null) {
-      final imageAspectRatio = _image!.width / _image!.height;
-      
-      if (imageAspectRatio > 1) {
-        height = width / imageAspectRatio;
+      if (_imageBounds != null && !_imageBounds!.isEmpty) {
+        final boundsAspectRatio = _imageBounds!.width / _imageBounds!.height;
+        
+        if (boundsAspectRatio > 1) {
+          height = width / boundsAspectRatio;
+        } else {
+          width = height * boundsAspectRatio;
+        }
       } else {
-        width = height * imageAspectRatio;
+        final imageAspectRatio = _image!.width / _image!.height;
+        
+        if (imageAspectRatio > 1) {
+          height = width / imageAspectRatio;
+        } else {
+          width = height * imageAspectRatio;
+        }
       }
     }
     
     final scaledWidth = width * _scale;
     final scaledHeight = height * _scale;
 
-    if (_isLoading || _image == null) {
+    if (_isLoading || _image == null || _isComputingBounds) {
       return Positioned(
         left: _offset.dx,
         top: _offset.dy,
         child: SizedBox(
           width: _baseSize,
           height: _baseSize,
-          child: const Center(
-            child: CircularProgressIndicator(),
+          child: Center(
+            child: CircularProgressIndicator(
+              color: _isComputingBounds ? Colors.orange : Colors.blue,
+            ),
           ),
         ),
       );
@@ -155,6 +203,7 @@ class PositionedDraggableImageState extends State<PositionedDraggableImage> {
           image: _image!,
           mask: _mask,
           imageScale: 1.0,
+          cachedBounds: _imageBounds,
         ),
         size: Size(scaledWidth, scaledHeight),
       ),

@@ -89,7 +89,7 @@ class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> 
               Icons.auto_fix_normal,
               color: model.isEraserMode ? AppColors.primary : null,
             ),
-            tooltip: 'Ластик',
+            tooltip: "Eraser",
             onPressed: () {
               runtime.dispatch(ToggleEraserMode(!model.isEraserMode));
             },
@@ -144,43 +144,6 @@ class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> 
       ),
       body: Stack(
         children: [
-          if (model.isEraserMode)
-            Positioned(
-              top: 8,
-              left: 8,
-              right: 8,
-              child: Card(
-                color: Colors.white.withValues(alpha: 0.8),
-                elevation: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Eraser size:'),
-                      Row(
-                        children: [
-                          const Text('5', style: TextStyle(fontSize: 12)),
-                          Expanded(
-                            child: Slider(
-                              value: model.eraserSize,
-                              min: 5.0,
-                              max: 50.0,
-                              divisions: 9,
-                              label: model.eraserSize.round().toString(),
-                              onChanged: (double value) {
-                                runtime.dispatch(SetEraserSize(value));
-                              },
-                            ),
-                          ),
-                          const Text('50', style: TextStyle(fontSize: 12)),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
           RepaintBoundary(
             key: _stackKey,
             child: Container(
@@ -223,9 +186,50 @@ class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> 
               ),
             ),
           ),
+          if (model.isEraserMode)
+            Positioned(
+              bottom: 16,
+              left: 24,
+              right: 24,
+              child: Card(
+                color: AppColors.cardBackground,
+                elevation: 8,
+                shadowColor: Colors.black26,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: BorderSide(
+                    color: AppColors.primary.withValues(alpha: 77), 
+                    width: 1
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                  child: SliderTheme(
+                    data: SliderThemeData(
+                      activeTrackColor: AppColors.primary,
+                      inactiveTrackColor: AppColors.primary.withValues(alpha: 51),
+                      thumbColor: Colors.white,
+                      overlayColor: AppColors.primary.withValues(alpha: 26),
+                      trackHeight: 10,
+                      thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 14),
+                      overlayShape: const RoundSliderOverlayShape(overlayRadius: 24),
+                    ),
+                    child: Slider(
+                      value: model.eraserSize,
+                      min: 5.0,
+                      max: 100.0,
+                      divisions: 19,
+                      onChanged: (double value) {
+                        runtime.dispatch(SetEraserSize(value));
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
           if (model.isProcessing)
             Container(
-              color: Colors.black.withAlpha(128),
+              color: Colors.black.withValues(alpha: 128),
               child: const Center(child: CircularProgressIndicator()),
             ),
         ],
@@ -237,20 +241,15 @@ class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> 
           if (context.mounted) {
             final selectedImages = await Navigator.push<List<File>>(
               context,
-              MaterialPageRoute(
-                builder: (_) => ClothesPickerScreen(images: images),
-              ),
+              MaterialPageRoute(builder: (context) => ClothesPickerScreen(images: images)),
             );
-
-            if (selectedImages != null && selectedImages.isNotEmpty) {
+            if (selectedImages != null && selectedImages.isNotEmpty && context.mounted) {
               runtime.dispatch(AddImagesToCollage(selectedImages));
             }
           }
         },
-        icon: const Icon(Icons.add_photo_alternate_outlined,
-            color: AppColors.tagText),
-        label: Text(AppLocalizations.of(context).add, style: const TextStyle(color: AppColors.tagText)),
-        backgroundColor: AppColors.background,
+        icon: const Icon(Icons.add),
+        label: Text(AppLocalizations.of(context).add),
       ),
     );
   }

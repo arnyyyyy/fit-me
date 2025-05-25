@@ -100,7 +100,15 @@
   },
   "chooseBackgroundColor": "Choose background color",
   "@chooseBackgroundColor": {
-    "description": "Title for the color picker dialog"
+    "description": "Title for background color picker dialog"
+  },
+  "eraserSize": "Eraser size",
+  "@eraserSize": {
+    "description": "Label for eraser size control"
+  },
+  "eraser": "Eraser",
+  "@eraser": {
+    "description": "Label for the eraser tool"
   },
   "cancel": "Cancel",
   "@cancel": {
