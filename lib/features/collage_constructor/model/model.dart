@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
+import '../../../widgets/erasable_image.dart';
+
 class CollagesModel {
   final bool isProcessing;
   final List<File> images;
@@ -14,6 +16,10 @@ class CollagesModel {
   final List<String> availableTags;
   final bool isTagsLoading;
   final String? error;
+  
+  final bool isEraserMode;
+  final double eraserSize;
+  final Map<String, ErasableMask> eraseMasks;
 
   const CollagesModel({
     this.isProcessing = false,
@@ -26,6 +32,9 @@ class CollagesModel {
     this.availableTags = const [],
     this.isTagsLoading = false,
     this.error,
+    this.isEraserMode = false,
+    this.eraserSize = 20.0,
+    this.eraseMasks = const {},
   });
 
   CollagesModel copyWith({
@@ -39,6 +48,9 @@ class CollagesModel {
     List<String>? availableTags,
     bool? isTagsLoading,
     String? error,
+    bool? isEraserMode,
+    double? eraserSize,
+    Map<String, ErasableMask>? eraseMasks,
   }) {
     return CollagesModel(
       isProcessing: isProcessing ?? this.isProcessing,
@@ -51,7 +63,16 @@ class CollagesModel {
       availableTags: availableTags ?? this.availableTags,
       isTagsLoading: isTagsLoading ?? this.isTagsLoading,
       error: error ?? this.error,
+      isEraserMode: isEraserMode ?? this.isEraserMode,
+      eraserSize: eraserSize ?? this.eraserSize,
+      eraseMasks: eraseMasks ?? this.eraseMasks,
     );
+  }
+  
+  CollagesModel updateImageMask(String imagePath, ErasableMask mask) {
+    final newMasks = Map<String, ErasableMask>.from(eraseMasks);
+    newMasks[imagePath] = mask;
+    return copyWith(eraseMasks: newMasks);
   }
 }
 

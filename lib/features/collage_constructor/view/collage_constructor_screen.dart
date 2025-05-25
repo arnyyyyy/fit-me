@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-
 import '../../../widgets/positioned_draggable_image.dart';
 import '../../../widgets/checkerboard_painter.dart';
 import '../../../utils/app_colors.dart';
@@ -86,6 +85,16 @@ class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> 
         title: Text(AppLocalizations.of(context).collageStudio, style: AppTextStyles.appBarTitle),
         actions: [
           IconButton(
+            icon: Icon(
+              Icons.auto_fix_normal,
+              color: model.isEraserMode ? AppColors.primary : null,
+            ),
+            tooltip: 'Ластик',
+            onPressed: () {
+              runtime.dispatch(ToggleEraserMode(!model.isEraserMode));
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.save_alt),
             onPressed: () => runtime.captureCollageImage(_stackKey),
           ),
@@ -135,6 +144,43 @@ class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> 
       ),
       body: Stack(
         children: [
+          if (model.isEraserMode)
+            Positioned(
+              top: 8,
+              left: 8,
+              right: 8,
+              child: Card(
+                color: Colors.white.withValues(alpha: 0.8),
+                elevation: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Eraser size:'),
+                      Row(
+                        children: [
+                          const Text('5', style: TextStyle(fontSize: 12)),
+                          Expanded(
+                            child: Slider(
+                              value: model.eraserSize,
+                              min: 5.0,
+                              max: 50.0,
+                              divisions: 9,
+                              label: model.eraserSize.round().toString(),
+                              onChanged: (double value) {
+                                runtime.dispatch(SetEraserSize(value));
+                              },
+                            ),
+                          ),
+                          const Text('50', style: TextStyle(fontSize: 12)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           RepaintBoundary(
             key: _stackKey,
             child: Container(
@@ -162,10 +208,15 @@ class _CollageConstructorScreen extends ConsumerState<CollageConstructorScreen> 
                     return PositionedDraggableImage(
                       key: ValueKey(image.path + image.hashCode.toString()),
                       image: image,
+                      isEraseMode: model.isEraserMode,
+                      eraserSize: model.eraserSize,
                       onDelete: () {
                         runtime.dispatch(RemoveImageFromCollage(index));
                       },
                       onTap: () => runtime.dispatch(BringImageToFront(index)),
+                      onMaskUpdated: (imagePath, mask) {
+                        runtime.dispatch(UpdateImageMask(imagePath, mask));
+                      },
                     );
                   }),
                 ],

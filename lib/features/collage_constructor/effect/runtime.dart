@@ -8,7 +8,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-
 import '../../../core/common/base_runtime.dart';
 import '../../main/main_screen.dart';
 import '../../wardrobe/model/saved_image.dart';
@@ -104,9 +103,11 @@ class CollagesRuntime extends BaseRuntime<CollagesMessage> {
     try {
       RenderRepaintBoundary boundary =
           stackKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-      ui.Image image = await boundary.toImage();
+      
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
       ByteData? byteData =
           await image.toByteData(format: ui.ImageByteFormat.png);
+          
       Uint8List pngBytes = byteData!.buffer.asUint8List();
 
       dispatch(CollageImageSaved(pngBytes));

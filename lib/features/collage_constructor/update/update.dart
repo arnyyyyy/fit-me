@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../widgets/erasable_image.dart';
 import '../model/model.dart';
 import '../message/message.dart';
 import '../view/collage_saving_screen.dart';
@@ -172,6 +173,22 @@ UpdateResult update(CollagesModel model, CollagesMessage message) {
           NavigateToMainScreenEffect(0),
         },
       );
+
+    case ToggleEraserMode(:final isEnabled):
+      return UpdateResult(model.copyWith(
+        isEraserMode: isEnabled,
+      ));
+
+    case SetEraserSize(:final size):
+      final validSize = size.clamp(5.0, 50.0);
+      return UpdateResult(model.copyWith(
+        eraserSize: validSize,
+      ));
+
+    case UpdateImageMask(:final imagePath, :final mask):
+      final updatedMasks = Map<String, ErasableMask>.from(model.eraseMasks);
+      updatedMasks[imagePath] = mask;
+      return UpdateResult(model.copyWith(eraseMasks: updatedMasks));
   }
 
   return UpdateResult(model);

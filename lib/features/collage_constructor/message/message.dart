@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 import 'package:fit_me/core/common/base_message.dart';
+import 'package:fit_me/widgets/erasable_image.dart';
 
 import '../../collages/model/saved_collage.dart';
 import '../model/model.dart';
@@ -139,4 +140,23 @@ class CollageWithMetadataSaveError extends CollagesMessage {
   final String message;
 
   CollageWithMetadataSaveError(this.message);
+}
+
+class ToggleEraserMode extends CollagesMessage {
+  final bool isEnabled;
+  
+  ToggleEraserMode(this.isEnabled);
+}
+
+class SetEraserSize extends CollagesMessage {
+  final double size;
+  
+  SetEraserSize(this.size);
+}
+
+class UpdateImageMask extends CollagesMessage {
+  final String imagePath;
+  final ErasableMask mask;
+  
+  UpdateImageMask(this.imagePath, this.mask);
 }
