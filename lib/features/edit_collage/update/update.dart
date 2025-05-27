@@ -13,7 +13,16 @@ typedef Effect = Future<EditCollageMessage> Function();
     EditCollageUpdateName(name: final name) => (
         model.copyWith(
           name: name,
-          hasChanges: name != model.originalItem.name,
+          hasChanges: name != model.originalItem.name || 
+                     model.description != model.originalItem.description,
+        ),
+        null,
+      ),
+    EditCollageUpdateDescription(description: final description) => (
+        model.copyWith(
+          description: description,
+          hasChanges: description != model.originalItem.description || 
+                     model.name != model.originalItem.name,
         ),
         null,
       ),
@@ -41,7 +50,8 @@ typedef Effect = Future<EditCollageMessage> Function();
     model.copyWith(
       tags: newTags,
       hasChanges: _checkHasChanges(model.originalItem.tags, newTags) ||
-          model.name != model.originalItem.name,
+          model.name != model.originalItem.name ||
+          model.description != model.originalItem.description,
     ),
     null,
   );
@@ -53,7 +63,8 @@ typedef Effect = Future<EditCollageMessage> Function();
     model.copyWith(
       tags: newTags,
       hasChanges: _checkHasChanges(model.originalItem.tags, newTags) ||
-          model.name != model.originalItem.name,
+          model.name != model.originalItem.name ||
+          model.description != model.originalItem.description,
     ),
     null,
   );
@@ -82,6 +93,7 @@ Future<EditCollageMessage> _saveChanges(EditCollageModel model) async {
       name: model.name,
       imagePath: model.originalItem.imagePath,
       tags: List.from(model.tags),
+      description: model.description,
     );
 
     final key = model.originalItem.key;

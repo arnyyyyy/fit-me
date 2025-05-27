@@ -103,6 +103,25 @@ class _ImageMetaScreenState extends ConsumerState<ImageMetaScreen> {
               },
             ),
             const SizedBox(height: 20),
+            TextField(
+              style: AppTextStyles.body,
+              maxLength: 100,
+              maxLines: 3,
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context).description,
+                labelStyle: AppTextStyles.body
+                    .copyWith(color: AppColors.text.withValues(alpha: 0.6)),
+                filled: true,
+                fillColor: AppColors.inputBackground,
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                alignLabelWithHint: true,
+              ),
+              onChanged: (value) {
+                runtime.dispatch(ChangeImageDescription(value));
+              },
+            ),
+            const SizedBox(height: 20),
             Text(AppLocalizations.of(context).tags,
                 style: AppTextStyles.subtitle),
             const SizedBox(height: 8),

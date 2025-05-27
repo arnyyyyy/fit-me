@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-import 'package:flutter/material.dart';
+import 'dart:ui';
 
 class ImageConstructorModel {
   final ui.Image? originalImage;
@@ -13,6 +13,7 @@ class ImageConstructorModel {
   final String? errorMessage;
   
   final String imageName;
+  final String imageDescription;
   final List<String> selectedTags;
   final List<String> availableTags;
   final bool isTagsLoading;
@@ -29,6 +30,7 @@ class ImageConstructorModel {
     this.isProcessingImage = false,
     this.errorMessage,
     this.imageName = '',
+    this.imageDescription = '',
     this.selectedTags = const [],
     this.availableTags = const [],
     this.isTagsLoading = false,
@@ -46,6 +48,7 @@ class ImageConstructorModel {
     bool? isProcessingImage,
     String? errorMessage,
     String? imageName,
+    String? imageDescription,
     List<String>? selectedTags,
     List<String>? availableTags,
     bool? isTagsLoading,

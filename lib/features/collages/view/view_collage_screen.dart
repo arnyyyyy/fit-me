@@ -72,6 +72,25 @@ class ViewCollageScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              if (collage.description.isNotEmpty) ...[
+                const SizedBox(height: 24),
+                Text(
+                  AppLocalizations.of(context).description,
+                  style: AppTextStyles.subtitle,
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.cardBackground,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    collage.description,
+                    style: AppTextStyles.body,
+                  ),
+                ),
+              ],
               const SizedBox(height: 24),
               Text(
                 AppLocalizations.of(context).tagsLabel,

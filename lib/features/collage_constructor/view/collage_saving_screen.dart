@@ -103,6 +103,31 @@ class _CollageMetaScreenState extends ConsumerState<CollageMetaScreen> {
               },
             ),
             const SizedBox(height: 20),
+            TextField(
+              cursorColor: AppColors.icon,
+              style: AppTextStyles.body,
+              maxLength: 100,
+              maxLines: 3,
+              decoration: InputDecoration(
+                hintText: AppLocalizations.of(context).description,
+                hintStyle: AppTextStyles.emptyText,
+                filled: true,
+                fillColor: AppColors.cardBackground,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+                alignLabelWithHint: true,
+              ),
+              onChanged: (value) {
+                runtime.dispatch(CollageDescriptionChanged(value));
+              },
+            ),
+            const SizedBox(height: 20),
             Text(AppLocalizations.of(context).tags,
                 style: AppTextStyles.imageTitle),
             const SizedBox(height: 8),

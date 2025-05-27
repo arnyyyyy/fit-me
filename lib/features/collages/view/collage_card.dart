@@ -13,12 +13,14 @@ class CollageCard extends StatefulWidget {
   final SavedCollage savedCollage;
   final Function(Message) onMessage;
   final bool disableActions;
+  final Function()? onTap;
 
   const CollageCard({
     super.key,
     required this.savedCollage,
     required this.onMessage,
     this.disableActions = false,
+    this.onTap,
   });
 
   @override
@@ -36,7 +38,12 @@ class _CollageCardState extends State<CollageCard> {
 
     return GestureDetector(
       onTap: () {
-        widget.onMessage(ViewCollageWithSwipe(widget.savedCollage));
+        if (widget.onTap != null) {
+          widget.onTap!();
+        } 
+        else if (!widget.disableActions) {
+          widget.onMessage(ViewCollageWithSwipe(widget.savedCollage));
+        }
       },
       onLongPress: widget.disableActions
           ? null

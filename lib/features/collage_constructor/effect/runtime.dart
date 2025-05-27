@@ -132,10 +132,12 @@ class CollagesRuntime extends BaseRuntime<CollagesMessage> {
       File imageFile = File(imagePath);
       await imageFile.writeAsBytes(collageBytes);
 
+      final model = ref.read(collagesModelProvider);
       final savedCollage = SavedCollage(
         name: name,
         imagePath: imagePath,
         tags: tags,
+        description: model.collageDescription,
       );
 
       final box = await Hive.openBox<SavedCollage>('collagesBox');

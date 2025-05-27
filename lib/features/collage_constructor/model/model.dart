@@ -11,6 +11,7 @@ class CollagesModel {
   final Color customBackgroundColor;
 
   final String collageName;
+  final String collageDescription;
   final List<String> selectedTags;
   final Uint8List? collageBytes;
   final List<String> availableTags;
@@ -27,6 +28,7 @@ class CollagesModel {
     this.selectedBackground = CollageBackground.transparent,
     this.customBackgroundColor = const Color(0xFF613E3E),
     this.collageName = '',
+    this.collageDescription = '',
     this.selectedTags = const [],
     this.collageBytes,
     this.availableTags = const [],
@@ -43,6 +45,7 @@ class CollagesModel {
     CollageBackground? selectedBackground,
     Color? customBackgroundColor,
     String? collageName,
+    String? collageDescription,
     List<String>? selectedTags,
     Uint8List? collageBytes,
     List<String>? availableTags,
@@ -58,6 +61,7 @@ class CollagesModel {
       selectedBackground: selectedBackground ?? this.selectedBackground,
       customBackgroundColor: customBackgroundColor ?? this.customBackgroundColor,
       collageName: collageName ?? this.collageName,
+      collageDescription: collageDescription ?? this.collageDescription,
       selectedTags: selectedTags ?? this.selectedTags,
       collageBytes: collageBytes ?? this.collageBytes,
       availableTags: availableTags ?? this.availableTags,

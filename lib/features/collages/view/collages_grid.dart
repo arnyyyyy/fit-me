@@ -34,13 +34,11 @@ class CollagesGrid extends ConsumerWidget {
         final savedCollage = collages[index];
         
         if (selectionMode) {
-          return GestureDetector(
+          return CollageCard(
+            savedCollage: savedCollage,
+            onMessage: onMessage,
+            disableActions: true,
             onTap: () => onCollageSelected?.call(savedCollage),
-            child: CollageCard(
-              savedCollage: savedCollage,
-              onMessage: onMessage,
-              disableActions: true,
-            ),
           );
         }
         

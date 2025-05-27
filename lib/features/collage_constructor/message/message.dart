@@ -117,6 +117,12 @@ class CollageNameChanged extends CollagesMessage {
   CollageNameChanged(this.name);
 }
 
+class CollageDescriptionChanged extends CollagesMessage {
+  final String description;
+
+  CollageDescriptionChanged(this.description);
+}
+
 class CollageTagsChanged extends CollagesMessage {
   final List<String> tags;
 
@@ -125,9 +131,10 @@ class CollageTagsChanged extends CollagesMessage {
 
 class SaveCollageWithMetadata extends CollagesMessage {
   final String name;
+  final String description;
   final List<String> tags;
 
-  SaveCollageWithMetadata(this.name, this.tags);
+  SaveCollageWithMetadata(this.name, this.description, this.tags);
 }
 
 class CollageWithMetadataSaved extends CollagesMessage {

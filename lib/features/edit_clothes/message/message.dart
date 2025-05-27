@@ -8,6 +8,12 @@ class EditClothesUpdateName extends EditClothesMessage {
   EditClothesUpdateName(this.name);
 }
 
+class EditClothesUpdateDescription extends EditClothesMessage {
+  final String description;
+
+  EditClothesUpdateDescription(this.description);
+}
+
 class EditClothesAddTag extends EditClothesMessage {
   final String tag;
 

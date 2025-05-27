@@ -196,12 +196,16 @@ UpdateResult update(
     case ChangeImageName(:final name):
       return UpdateResult(model.copyWith(imageName: name));
 
+    case ChangeImageDescription(:final description):
+      return UpdateResult(model.copyWith(imageDescription: description));
+
     case ChangeSelectedTags(:final tags):
       return UpdateResult(model.copyWith(selectedTags: tags));
 
-    case SaveImageWithMeta(:final name, :final tags):
+    case SaveImageWithMeta(:final name, :final description, :final tags):
       return UpdateResult(model.copyWith(
         imageName: name,
+        imageDescription: description,
         selectedTags: tags,
         isSaving: true,
       ));

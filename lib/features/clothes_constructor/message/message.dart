@@ -93,6 +93,11 @@ class ChangeImageName extends ImageConstructorMessage {
   ChangeImageName(this.name);
 }
 
+class ChangeImageDescription extends ImageConstructorMessage {
+  final String description;
+  ChangeImageDescription(this.description);
+}
+
 class ChangeSelectedTags extends ImageConstructorMessage {
   final List<String> tags;
   ChangeSelectedTags(this.tags);
@@ -100,8 +105,9 @@ class ChangeSelectedTags extends ImageConstructorMessage {
 
 class SaveImageWithMeta extends ImageConstructorMessage {
   final String name;
+  final String description;
   final List<String> tags;
-  SaveImageWithMeta(this.name, this.tags);
+  SaveImageWithMeta(this.name, this.description, this.tags);
 }
 
 class ImageWithMetaSaved extends ImageConstructorMessage {}

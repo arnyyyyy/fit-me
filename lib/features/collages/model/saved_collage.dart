@@ -12,10 +12,14 @@ class SavedCollage extends HiveObject {
 
   @HiveField(2)
   final List<String> tags;
+  
+  @HiveField(3)
+  final String description;
 
   SavedCollage({
     required this.name,
     required this.imagePath,
     required this.tags,
+    this.description = '',
   });
 }

@@ -32,12 +32,14 @@ class _EditCollageScreenState extends State<EditCollageScreen> {
   late EditCollageModel _model;
   late EditCollageRuntime _runtime;
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _model = EditCollageModel(originalItem: widget.item);
     _nameController.text = _model.name;
+    _descriptionController.text = _model.description;
     _runtime = EditCollageRuntime(
       context: context,
       onMessage: _handleMessage,
@@ -47,6 +49,7 @@ class _EditCollageScreenState extends State<EditCollageScreen> {
   @override
   void dispose() {
     _nameController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -111,7 +114,18 @@ class _EditCollageScreenState extends State<EditCollageScreen> {
                   ),
                   const SizedBox(height: 16),
                   
-                  // Теги
+                  TextField(
+                    controller: _descriptionController,
+                    decoration: InputDecoration(
+                      labelText: localizations.description,
+                      border: const OutlineInputBorder(),
+                      alignLabelWithHint: true,
+                    ),
+                    maxLines: 4,
+                    onChanged: (value) => _handleMessage(EditCollageUpdateDescription(value)),
+                  ),
+                  const SizedBox(height: 16),
+                  
                   Text(
                     localizations.tagsLabel,
                     style: const TextStyle(

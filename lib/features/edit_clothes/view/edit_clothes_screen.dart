@@ -32,12 +32,14 @@ class _EditClothesScreenState extends State<EditClothesScreen> {
   late EditClothesModel _model;
   late EditClothesRuntime _runtime;
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _model = EditClothesModel(originalItem: widget.item);
     _nameController.text = _model.name;
+    _descriptionController.text = _model.description;
     _runtime = EditClothesRuntime(
       context: context,
       onMessage: _handleMessage,
@@ -47,6 +49,7 @@ class _EditClothesScreenState extends State<EditClothesScreen> {
   @override
   void dispose() {
     _nameController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -107,6 +110,18 @@ class _EditClothesScreenState extends State<EditClothesScreen> {
                     ),
                     onChanged: (value) =>
                         _handleMessage(EditClothesUpdateName(value)),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: _descriptionController,
+                    decoration: InputDecoration(
+                      labelText: localizations.description,
+                      border: const OutlineInputBorder(),
+                      alignLabelWithHint: true,
+                    ),
+                    maxLines: 4,
+                    onChanged: (value) =>
+                        _handleMessage(EditClothesUpdateDescription(value)),
                   ),
                   const SizedBox(height: 16),
                   Text(

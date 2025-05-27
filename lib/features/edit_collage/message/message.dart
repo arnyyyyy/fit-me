@@ -8,6 +8,12 @@ class EditCollageUpdateName extends EditCollageMessage {
   EditCollageUpdateName(this.name);
 }
 
+class EditCollageUpdateDescription extends EditCollageMessage {
+  final String description;
+
+  EditCollageUpdateDescription(this.description);
+}
+
 class EditCollageAddTag extends EditCollageMessage {
   final String tag;
 

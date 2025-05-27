@@ -213,7 +213,8 @@ class ImageConstructorRuntime {
       return;
     }
 
-    dispatch(SaveImageWithMeta(name, tags));
+    final model = ref.read(imageConstructorModelProvider);
+    dispatch(SaveImageWithMeta(name, model.imageDescription, tags));
 
     try {
       final dir = await getApplicationDocumentsDirectory();
@@ -222,8 +223,13 @@ class ImageConstructorRuntime {
       final file = File(imagePath);
       await file.writeAsBytes(imageBytes);
 
-      final savedImage =
-          SavedImage(name: name, imagePath: imagePath, tags: tags);
+      final model = ref.read(imageConstructorModelProvider);
+      final savedImage = SavedImage(
+        name: name, 
+        imagePath: imagePath, 
+        tags: tags,
+        description: model.imageDescription,
+      );
 
       final box = await Hive.openBox<SavedImage>('imagesBox');
       await box.add(savedImage);

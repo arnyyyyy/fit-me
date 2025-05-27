@@ -451,5 +451,9 @@
   "month": "Month",
   "@month": {
     "description": "Calendar format label"
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Description field label"
   }
 }

@@ -161,6 +161,9 @@ UpdateResult update(CollagesModel model, CollagesMessage message) {
 
     case CollageNameChanged(:final name):
       return UpdateResult(model.copyWith(collageName: name));
+      
+    case CollageDescriptionChanged(:final description):
+      return UpdateResult(model.copyWith(collageDescription: description));
 
     case CollageTagsChanged(:final tags):
       return UpdateResult(model.copyWith(selectedTags: tags));
