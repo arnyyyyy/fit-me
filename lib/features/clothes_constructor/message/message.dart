@@ -116,3 +116,17 @@ class ImageWithMetaSaveError extends ImageConstructorMessage {
   final String message;
   ImageWithMetaSaveError(this.message);
 }
+
+class ChangeImageScale extends ImageConstructorMessage {
+  final double scale;
+  ChangeImageScale(this.scale);
+}
+
+class ResetImageScale extends ImageConstructorMessage {}
+
+class ChangeImageOffset extends ImageConstructorMessage {
+  final Offset offset;
+  ChangeImageOffset(this.offset);
+}
+
+class ResetImageOffset extends ImageConstructorMessage {}

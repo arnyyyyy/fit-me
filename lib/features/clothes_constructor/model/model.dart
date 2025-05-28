@@ -11,6 +11,8 @@ class ImageConstructorModel {
   final bool isErasing;
   final bool isProcessingImage;
   final String? errorMessage;
+  final double userScale;
+  final Offset userOffset;
   
   final String imageName;
   final String imageDescription;
@@ -29,6 +31,8 @@ class ImageConstructorModel {
     this.isErasing = true,
     this.isProcessingImage = false,
     this.errorMessage,
+    this.userScale = 1.0,
+    this.userOffset = const Offset(0, 0),
     this.imageName = '',
     this.imageDescription = '',
     this.selectedTags = const [],
@@ -47,6 +51,8 @@ class ImageConstructorModel {
     bool? isErasing,
     bool? isProcessingImage,
     String? errorMessage,
+    double? userScale,
+    Offset? userOffset,
     String? imageName,
     String? imageDescription,
     List<String>? selectedTags,
@@ -64,7 +70,10 @@ class ImageConstructorModel {
       isErasing: isErasing ?? this.isErasing,
       isProcessingImage: isProcessingImage ?? this.isProcessingImage,
       errorMessage: errorMessage ?? this.errorMessage,
+      userScale: userScale ?? this.userScale,
+      userOffset: userOffset ?? this.userOffset,
       imageName: imageName ?? this.imageName,
+      imageDescription: imageDescription ?? this.imageDescription,
       selectedTags: selectedTags ?? this.selectedTags,
       availableTags: availableTags ?? this.availableTags,
       isTagsLoading: isTagsLoading ?? this.isTagsLoading,

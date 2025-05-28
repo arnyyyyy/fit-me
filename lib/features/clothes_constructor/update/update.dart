@@ -227,6 +227,18 @@ UpdateResult update(
         ),
         {LocalizableSnackBarEffect('imageSaveError', {'message': message})},
       );
+
+    case ChangeImageScale(:final scale):
+      return UpdateResult(model.copyWith(userScale: scale));
+
+    case ResetImageScale():
+      return UpdateResult(model.copyWith(userScale: 1.0));
+      
+    case ChangeImageOffset(:final offset):
+      return UpdateResult(model.copyWith(userOffset: offset));
+      
+    case ResetImageOffset():
+      return UpdateResult(model.copyWith(userOffset: const Offset(0, 0)));
   }
 
   return UpdateResult(model);
